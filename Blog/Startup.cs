@@ -29,6 +29,7 @@ namespace DDDN.CrossBlog.Blog
         {
             services.AddOptions();
             services.Configure<LocalizationConfigSection>(Config.GetSection(ConfigSectionNames.Localization));
+            services.Configure<LocalizationConfigSection>(Config.GetSection(ConfigSectionNames.Routing));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<LocalizationConfigSection>>().Value);
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RoutingConfigSection>>().Value);
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DDDN.CrossBlog.Blog.Configuration
+﻿namespace DDDN.CrossBlog.Blog.Configuration
 {
     public class ConfigSectionNames
     {

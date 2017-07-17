@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DDDN.CrossBlog.Blog.Configuration;
+using DDDN.CrossBlog.Blog.Localization;
+using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using DDDN.CrossBlog.Blog.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace DDDN.CrossBlog.Blog
@@ -29,23 +28,65 @@ namespace DDDN.CrossBlog.Blog
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<LocalizationSection>(Config.GetSection(ConfigSectionNames.Localization));
-            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<LocalizationSection>>().Value);
+            services.Configure<LocalizationConfigSection>(Config.GetSection(ConfigSectionNames.Localization));
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<LocalizationConfigSection>>().Value);
+            services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RoutingConfigSection>>().Value);
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddSingleton<IBlogCultures, BlogCultures>();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddRouting(options => options.LowercaseUrls = false);
             services.AddMvc();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IHostingEnvironment env,
+            IBlogCultures blogCultures,
+            IOptions<RoutingConfigSection> routingSection)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute
+                (
+                    name: RouteNames.Default,
+                    template: routingSection.Value.DefaultRouteTemplate,
+                    defaults: new { },
+                    constraints: new
+                    {
+                        area = $@"^{routingSection.Value.BlogAreas}",
+                        culture = $@"^{blogCultures.SupportedCulturesDelimitedString}",
+                        id = @"\d+"
+                    },
+                    dataTokens: new
+                    {
+                        RouteName = RouteNames.Default
+                    }
+                );
+
+                routes.MapRoute
+                (
+                    name: RouteNames.Redirect,
+                    template: "{*url}",
+                    defaults: new
+                    {
+                        area = RouteNames.Redirect,
+                        controller = RouteNames.Redirect,
+                        action = RouteNames.Redirect
+                    },
+                    constraints: new { },
+                    dataTokens: new
+                    {
+                        RouteName = RouteNames.Default
+                    }
+                );
             });
         }
     }

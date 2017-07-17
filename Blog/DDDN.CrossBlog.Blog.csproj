@@ -5,11 +5,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Blog\Views\Shared\NewFolder\**" />
+    <Content Remove="Areas\Blog\Views\Shared\NewFolder\**" />
+    <EmbeddedResource Remove="Areas\Blog\Views\Shared\NewFolder\**" />
+    <None Remove="Areas\Blog\Views\Shared\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Blog\Controllers\" />
+    <Folder Include="Areas\Blog\Views\Home\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-final" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Blog.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Blog.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Blog.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Blog.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@
     {
         public string BlogAreas { get; set; } = "Blog|Dashboard|Configuration";
         public string DefaultRouteTemplate { get; set; } = "{area}/{culture}/{controller}/{action}/{id?}";
+        public string RedirectRouteTemplate { get; set; } = "{*url}";
         public string DefaultArea { get; set; } = "Blog";
         public string DefaultController { get; set; } = "Home";
         public string DefaultAction { get; set; } = "Index";

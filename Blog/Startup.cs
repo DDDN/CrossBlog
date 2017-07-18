@@ -75,7 +75,7 @@ namespace DDDN.CrossBlog.Blog
                 routes.MapRoute
                 (
                     name: RouteNames.Redirect,
-                    template: "{*url}",
+                    template: routingSection.Value.RedirectRouteTemplate,
                     defaults: new
                     {
                         area = RouteNames.Redirect,

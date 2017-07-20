@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Blog\Controllers\" />
-    <Folder Include="Areas\Blog\Views\Home\" />
-    <Folder Include="msbuild\" />
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-final" />
   </ItemGroup>
 
@@ -28,6 +21,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="OutputDirectories">
+      <WWWDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)</WWWDirOut>
       <ImagesDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\images</ImagesDirOut>
       <JsDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\js</JsDirOut>
       <CssDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\css</CssDirOut>
@@ -42,6 +36,7 @@
     </PropertyGroup>
 
     <Message Text="Making output dirs..." Importance="high"></Message>
+    <MakeDir Condition="" Directories="$(WWWDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(ImagesDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(JsDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(CssDirOut)" ContinueOnError="false" />

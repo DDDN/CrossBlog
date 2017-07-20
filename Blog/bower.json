@@ -1,7 +1,7 @@
 {
-  "name": "asp.net",
-  "private": true,
-  "dependencies": {
-    "bootstrap": "v4.0.0-alpha.6"
-  }
+	"name": "asp.net",
+	"private": true,
+	"dependencies": {
+		"bootstrap": "v4.0.0-alpha.6"
+	}
 }

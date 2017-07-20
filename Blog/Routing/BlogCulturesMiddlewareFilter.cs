@@ -5,26 +5,26 @@ using System.Linq;
 
 namespace DDDN.CrossBlog.Blog.Routing
 {
-    public class BlogCulturesMiddlewareFilter
-    {
-        private RequestLocalizationOptions LocalizationOptions { get; set; }
+	public class BlogCulturesMiddlewareFilter
+	{
+		private RequestLocalizationOptions LocalizationOptions { get; set; }
 
-        public void Configure(IApplicationBuilder app, IBlogCultures blogCultures)
-        {
-            var supportedCultures = blogCultures.Select(p => p.Key).ToList();
+		public void Configure(IApplicationBuilder app, IBlogCultures blogCultures)
+		{
+			var supportedCultures = blogCultures.Select(p => p.Key).ToList();
 
-            this.LocalizationOptions = new RequestLocalizationOptions()
-            {
-                DefaultRequestCulture = new RequestCulture(blogCultures.DefaultCulture.Name),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures,
-                RequestCultureProviders = new[]
-                {
-                    new BlogRequestCultureProvider() { Options = LocalizationOptions }
-                }
-            };
+			this.LocalizationOptions = new RequestLocalizationOptions()
+			{
+				DefaultRequestCulture = new RequestCulture(blogCultures.DefaultCulture.Name),
+				SupportedCultures = supportedCultures,
+				SupportedUICultures = supportedCultures,
+				RequestCultureProviders = new[]
+				 {
+						  new BlogRequestCultureProvider() { Options = LocalizationOptions }
+					 }
+			};
 
-            app.UseRequestLocalization(LocalizationOptions);
-        }
-    }
+			app.UseRequestLocalization(LocalizationOptions);
+		}
+	}
 }

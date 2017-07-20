@@ -6,26 +6,47 @@ using System.Globalization;
 
 namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 {
-    [Area("Blog")]
-    [MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
-    public class HomeController : Controller
-    {
-        public IHttpContextAccessor _httpContextAccessor;
-        private IActionDescriptorCollectionProvider _descriptorCollectionProvider;
+	[Area("Blog")]
+	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
+	public class HomeController : Controller
+	{
+		public IHttpContextAccessor _httpContextAccessor;
+		private IActionDescriptorCollectionProvider _descriptorCollectionProvider;
 
-        public HomeController(
-            IHttpContextAccessor httpContextAccessor,
-            IActionDescriptorCollectionProvider descriptorCollectionProvider)
-        {
-            _httpContextAccessor = httpContextAccessor;
-            _descriptorCollectionProvider = descriptorCollectionProvider;
-        }
+		public HomeController(
+			 IHttpContextAccessor httpContextAccessor,
+			 IActionDescriptorCollectionProvider descriptorCollectionProvider)
+		{
+			_httpContextAccessor = httpContextAccessor;
+			_descriptorCollectionProvider = descriptorCollectionProvider;
+		}
 
-        public IActionResult Index()
-        {
-            ViewBag.CurrentCultureName = CultureInfo.CurrentCulture.Name;
+		public IActionResult Index()
+		{
+			ViewBag.Me = HttpContext.Request.Path;
 
-            return View();
-        }
-    }
+			return View();
+		}
+
+		public IActionResult Newest()
+		{
+			ViewBag.Me = HttpContext.Request.Path;
+
+			return View();
+		}
+
+		public IActionResult Archive()
+		{
+			ViewBag.Me = HttpContext.Request.Path;
+
+			return View();
+		}
+
+		public IActionResult About()
+		{
+			ViewBag.Me = HttpContext.Request.Path;
+
+			return View();
+		}
+	}
 }

@@ -23,7 +23,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Cult = $"CurrentCultureName:{CultureInfo.CurrentCulture.Name}";
+            ViewBag.CurrentCultureName = CultureInfo.CurrentCulture.Name;
 
             return View();
         }

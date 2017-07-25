@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Routing.Template;
 
 namespace DDDN.CrossBlog.Blog.Routing
 {
-	public class RouteMatcher
-	{
+	public class RouteMatcher : IRouteMatcher
+    {
 		public RouteValueDictionary Match(string routeTemplate, string requestPath)
 		{
 			if (string.IsNullOrWhiteSpace(routeTemplate))

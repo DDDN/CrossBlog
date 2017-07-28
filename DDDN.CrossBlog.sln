@@ -1,14 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26711.1
+VisualStudioVersion = 15.0.26724.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.CrossBlog.Blog", "Blog\DDDN.CrossBlog.Blog.csproj", "{E7C68E93-8E07-4371-A4C5-39120B6AEFEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDN.CrossBlog.Tests", "Tests\DDDN.CrossBlog.Tests.csproj", "{90968CFE-6A57-4A04-84A5-DA9690CCBB0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.CrossBlog.Tests", "Tests\DDDN.CrossBlog.Tests.csproj", "{90968CFE-6A57-4A04-84A5-DA9690CCBB0C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E7C68E93-8E07-4371-A4C5-39120B6AEFEC} = {E7C68E93-8E07-4371-A4C5-39120B6AEFEC}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1611219F-3D3F-439B-A433-99BD142A912E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{990C564D-DF93-4454-9787-C32EA148F61A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E7C68E93-8E07-4371-A4C5-39120B6AEFEC} = {1611219F-3D3F-439B-A433-99BD142A912E}
+		{90968CFE-6A57-4A04-84A5-DA9690CCBB0C} = {990C564D-DF93-4454-9787-C32EA148F61A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5B16BF3-9793-467D-882F-D6F2482DA252}

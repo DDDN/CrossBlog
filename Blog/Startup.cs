@@ -33,8 +33,8 @@ namespace DDDN.CrossBlog.Blog
             services.Configure<LocalizationConfigSection>(Config.GetSection(ConfigSectionNames.Routing));
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<LocalizationConfigSection>>().Value);
             services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RoutingConfigSection>>().Value);
-            services.TryAddSingleton<IStringLocalizerFactory, OfficeStringLocalizerFactory>();
-            services.TryAddSingleton<IStringLocalizer, OfficeStringLocalizer>();
+            services.TryAddSingleton<IStringLocalizerFactory, BlogStringLocalizerFactory>();
+            services.TryAddSingleton<IStringLocalizer, BlogStringLocalizer>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<IBlogCultures, BlogCultures>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");

@@ -36,18 +36,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="lib\**" />
-	  <Content Remove="lib\**" />
-	  <EmbeddedResource Remove="lib\**" />
-	  <None Remove="lib\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-final" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Localization\OpenXML\DDDN.Localization.OpenXML.csproj" />
+		<ProjectReference Include="..\..\Localization\OpenXML\DDDN.Localization.OpenXML.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="res\" />
 	</ItemGroup>
 
 	<Target Name="CopyFiles" BeforeTargets="Build">
@@ -56,6 +53,7 @@
 			<ImagesDirIn>$(MSBuildProjectDirectory)\images</ImagesDirIn>
 			<JsDirIn>$(MSBuildProjectDirectory)\js</JsDirIn>
 			<CssDirIn>$(MSBuildProjectDirectory)\css</CssDirIn>
+			<ResDirIn>$(MSBuildProjectDirectory)\res</ResDirIn>
 		</PropertyGroup>
 
 		<PropertyGroup Label="OutputDirectories">
@@ -63,7 +61,13 @@
 			<ImagesDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\images</ImagesDirOut>
 			<JsDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\js</JsDirOut>
 			<CssDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\css</CssDirOut>
+			<ResDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\res</ResDirOut>
 		</PropertyGroup>
+
+		<ItemGroup>
+			<ResDirInFiles Include="$(ResDirIn)\**\*.*"/>
+			<ImagesDirInFiles Include="$(ImagesDirIn)\**\*.*"/>
+		</ItemGroup>
 
 		<PropertyGroup Label="ImputFiles">
 			<ImageFilesIn>$(ImagesDirIn)\favicon.ico</ImageFilesIn>
@@ -78,10 +82,13 @@
 		<MakeDir Condition="" Directories="$(ImagesDirOut)" ContinueOnError="false" />
 		<MakeDir Condition="" Directories="$(JsDirOut)" ContinueOnError="false" />
 		<MakeDir Condition="" Directories="$(CssDirOut)" ContinueOnError="false" />
+		<MakeDir Condition="" Directories="$(ResDirOut)" ContinueOnError="false" />
 		<Message Text="Done Making output dirs." Importance="high"></Message>
 
 		<Message Text="Copying files..." Importance="high"></Message>
 		<Copy SourceFiles="$(ImageFilesIn)" DestinationFiles="$(ImageFilesOut)" ContinueOnError="false"></Copy>
+		<Copy SourceFiles="@(ResDirInFiles)" DestinationFiles="@(ResDirInFiles->'$(ResDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(ImagesDirInFiles)" DestinationFiles="@(ImagesDirInFiles->'$(ImagesDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Message Text="Done Copying files." Importance="high"></Message>
 	</Target>
 

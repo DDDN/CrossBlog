@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web" InitialTargets="">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Product>DDDN CrossBlog</Product>
+		<Copyright>Copyright(C) 2017 Lukasz Jaskiewicz</Copyright>
+		<Authors>Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)</Authors>
+		<Description>DDDN CrossBlog</Description>
+		<PackageProjectUrl>www.jaskiewicz.de</PackageProjectUrl>
+		<Version>0.0.0.1</Version>
+		<AssemblyVersion>0.0.0.1</AssemblyVersion>
+		<NeutralLanguage>en-US</NeutralLanguage>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<WWWOutputDir>wwwroot</WWWOutputDir>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-final" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="res\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Localization\src\DDDN.Localization.OpenXML\DDDN.Localization.OpenXML.csproj" />
+	</ItemGroup>
+
+	<Target Name="CopyFiles" BeforeTargets="Build">
+
+		<PropertyGroup Label="InputDirectories">
+			<ImagesDirIn>$(MSBuildProjectDirectory)\images</ImagesDirIn>
+			<JsDirIn>$(MSBuildProjectDirectory)\js</JsDirIn>
+			<CssDirIn>$(MSBuildProjectDirectory)\css</CssDirIn>
+			<ResDirIn>$(MSBuildProjectDirectory)\res</ResDirIn>
+		</PropertyGroup>
+
+		<PropertyGroup Label="OutputDirectories">
+			<WWWDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)</WWWDirOut>
+			<ImagesDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\images</ImagesDirOut>
+			<JsDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\js</JsDirOut>
+			<CssDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\css</CssDirOut>
+			<ResDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\res</ResDirOut>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<ResDirInFiles Include="$(ResDirIn)\**\*.*" />
+			<ImagesDirInFiles Include="$(ImagesDirIn)\**\*.*" />
+		</ItemGroup>
+
+		<PropertyGroup Label="ImputFiles">
+			<ImageFilesIn>$(ImagesDirIn)\favicon.ico</ImageFilesIn>
+		</PropertyGroup>
+
+		<PropertyGroup Label="OutputFiles">
+			<ImageFilesOut>$(ImagesDirOut)\favicon.ico</ImageFilesOut>
+		</PropertyGroup>
+
+		<Message Text="Making output dirs..." Importance="high"></Message>
+		<MakeDir Condition="" Directories="$(WWWDirOut)" ContinueOnError="false" />
+		<MakeDir Condition="" Directories="$(ImagesDirOut)" ContinueOnError="false" />
+		<MakeDir Condition="" Directories="$(JsDirOut)" ContinueOnError="false" />
+		<MakeDir Condition="" Directories="$(CssDirOut)" ContinueOnError="false" />
+		<MakeDir Condition="" Directories="$(ResDirOut)" ContinueOnError="false" />
+		<Message Text="Done Making output dirs." Importance="high"></Message>
+
+		<Message Text="Copying files..." Importance="high"></Message>
+		<Copy SourceFiles="$(ImageFilesIn)" DestinationFiles="$(ImageFilesOut)" ContinueOnError="false"></Copy>
+		<Copy SourceFiles="@(ResDirInFiles)" DestinationFiles="@(ResDirInFiles->'$(ResDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(ImagesDirInFiles)" DestinationFiles="@(ImagesDirInFiles->'$(ImagesDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Message Text="Done Copying files." Importance="high"></Message>
+	</Target>
+
+</Project>

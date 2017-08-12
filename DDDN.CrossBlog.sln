@@ -20,6 +20,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.Logging.Messages", "..
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.Localization.OpenXML", "..\Localization\src\DDDN.Localization.OpenXML\DDDN.Localization.OpenXML.csproj", "{C30D7DF6-65A5-4B4C-9343-8F26C358749F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{073C5365-E1F6-4EAC-AD57-8F7AFE901FD9}"
+	ProjectSection(SolutionItems) = preProject
+		tools\dotnet_build_debug.bat = tools\dotnet_build_debug.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

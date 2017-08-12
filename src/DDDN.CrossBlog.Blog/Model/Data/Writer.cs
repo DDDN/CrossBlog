@@ -29,7 +29,7 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 		public int State { get; set; }
 		public DateTimeOffset Created { get; set; }
 		[Required]
-		[StringLength(150)]
+		[StringLength(100)]
 		public string Name { get; set; }
 
 		public List<WriterPostMap> WriterPosts { get; set; }

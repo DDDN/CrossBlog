@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Configuration.ConfigSectionNames
+* DDDN.CrossBlog.Blog.Configuration.BlogConfigSection
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -16,10 +16,9 @@
 
 namespace DDDN.CrossBlog.Blog.Configuration
 {
-	public static class ConfigSectionNames
+	public class BlogConfigSection
 	{
-		public const string Localization = nameof(Localization);
-		public const string Routing = nameof(Routing);
-		public const string Blog = nameof(Blog);
+		public string Name { get; set; } = "CrossBlog";
+		public string Copyright { get; set; } = "Copyright (C) 2017 Lukasz Jaskiewicz";
 	}
 }

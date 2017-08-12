@@ -14,11 +14,13 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DDDN.CrossBlog.Blog.Configuration;
+using DDDN.CrossBlog.Blog.Model;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System.Globalization;
+using Microsoft.Extensions.Options;
 
 namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 {
@@ -26,19 +28,23 @@ namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
 	public class HomeController : Controller
 	{
-		public IStringLocalizer _homeLocalizer;
+		private readonly IStringLocalizer _homeLocalizer;
+		private readonly IOptions<BlogConfigSection> _blogConfigSection;
+		private readonly CrossBlogContext _crossBlogContext;
 
-		public HomeController(IStringLocalizer<HomeController> homeLocalizer)
+		public HomeController(
+			IStringLocalizer<HomeController> homeLocalizer,
+			IOptions<BlogConfigSection> blogConfigSection,
+			CrossBlogContext crossBlogContext
+			)
 		{
 			_homeLocalizer = homeLocalizer ?? throw new System.ArgumentNullException(nameof(homeLocalizer));
+			_blogConfigSection = blogConfigSection ?? throw new System.ArgumentNullException(nameof(blogConfigSection));
+			_crossBlogContext = crossBlogContext ?? throw new System.ArgumentNullException(nameof(crossBlogContext));
 		}
 
 		public IActionResult Index()
 		{
-			ViewBag.Me = HttpContext.Request.Path;
-			ViewBag.CurrentCultureName = CultureInfo.CurrentCulture.Name;
-			ViewBag.Test1 = _homeLocalizer["Test1"];
-
 			return View();
 		}
 

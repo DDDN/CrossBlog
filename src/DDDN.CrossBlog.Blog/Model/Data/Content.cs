@@ -1,5 +1,5 @@
-﻿/*
-* DDDN.CrossBlog.Blog.Configuration.ConfigSectionNames
+/*
+* DDDN.CrossBlog.Blog.Model.Data.Content
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,12 +14,24 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Configuration
+namespace DDDN.CrossBlog.Blog.Model.Data
 {
-	public static class ConfigSectionNames
+	using System;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	[Table("Content")]
+	public partial class Content
 	{
-		public const string Localization = nameof(Localization);
-		public const string Routing = nameof(Routing);
-		public const string Blog = nameof(Blog);
+		[Key]
+		public Guid ContentId { get; set; }
+		public int State { get; set; }
+		public DateTimeOffset Created { get; set; }
+		[Required]
+		public byte[] Binary { get; set; }
+		[StringLength(512)]
+		public string Name { get; set; }
+
+		public Document Document { get; set; }
 	}
 }

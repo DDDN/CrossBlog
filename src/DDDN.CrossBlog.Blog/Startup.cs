@@ -16,11 +16,13 @@
 
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Localization;
+using DDDN.CrossBlog.Blog.Model;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -49,9 +51,14 @@ namespace DDDN.CrossBlog.Blog
 
 			services.AddOptions();
 			services.Configure<LocalizationConfigSection>(localizationConfigSection);
-			services.Configure<LocalizationConfigSection>(Config.GetSection(ConfigSectionNames.Routing));
-			services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<LocalizationConfigSection>>().Value);
-			services.AddScoped(cfg => cfg.GetService<IOptionsSnapshot<RoutingConfigSection>>().Value);
+			services.AddScoped(cfg => cfg.GetService<IOptions<LocalizationConfigSection>>().Value);
+
+			services.Configure<RoutingConfigSection>(Config.GetSection(ConfigSectionNames.Routing));
+			services.AddScoped(cfg => cfg.GetService<IOptions<RoutingConfigSection>>().Value);
+
+			services.Configure<BlogConfigSection>(Config.GetSection(ConfigSectionNames.Blog));
+			services.AddScoped(cfg => cfg.GetService<IOptions<BlogConfigSection>>().Value);
+
 			services.TryAddSingleton<IStringLocalizerFactory, BlogStringLocalizerFactory>();
 			services.TryAddSingleton<IStringLocalizer, BlogStringLocalizer>();
 			services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -60,6 +67,9 @@ namespace DDDN.CrossBlog.Blog
 			services.AddRouting(options => options.LowercaseUrls = false);
 			services.AddMvc()
 				 .AddViewLocalization();
+
+			services.AddDbContext<CrossBlogContext>(options =>
+				options.UseSqlServer(Config.GetConnectionString("CrossBlogLocalDBConnection")));
 		}
 
 		public void Configure(

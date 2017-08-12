@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Configuration.ConfigSectionNames
+* DDDN.CrossBlog.Blog.Model.Data.WriterPostMap
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,12 +14,18 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Configuration
+namespace DDDN.CrossBlog.Blog.Model.Data
 {
-	public static class ConfigSectionNames
+	using System;
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	[Table("WriterPost")]
+	public partial class WriterPostMap
 	{
-		public const string Localization = nameof(Localization);
-		public const string Routing = nameof(Routing);
-		public const string Blog = nameof(Blog);
+		public Guid WriterId { get; set; }
+		public Writer Writer { get; set; }
+
+		public Guid PostId { get; set; }
+		public Post Post { get; set; }
 	}
 }

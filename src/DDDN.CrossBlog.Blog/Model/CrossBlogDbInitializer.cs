@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Configuration.ConfigSectionNames
+* DDDN.CrossBlog.Blog.Model.CrossBlogDbInitializer
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,12 +14,18 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Configuration
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace DDDN.CrossBlog.Blog.Model
 {
-	public static class ConfigSectionNames
+	public class CrossBlogDbInitializer
 	{
-		public const string Localization = nameof(Localization);
-		public const string Routing = nameof(Routing);
-		public const string Blog = nameof(Blog);
+		public static void Initialize(CrossBlogContext context)
+		{
+			context.Database.EnsureCreated();
+		}
 	}
 }

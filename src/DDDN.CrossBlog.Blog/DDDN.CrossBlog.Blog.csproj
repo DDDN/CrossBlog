@@ -24,22 +24,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Data\**" />
-	  <Content Remove="Data\**" />
-	  <EmbeddedResource Remove="Data\**" />
-	  <None Remove="Data\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-final" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0-preview2-final" />
 		<DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.Dotnet" Version="2.0.0-preview2-final" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Areas\Dashboard\" />
-		<Folder Include="Areas\Configuration\" />
-		<Folder Include="BusinessLayer\" />
-		<Folder Include="res\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -19,6 +19,7 @@ namespace DDDN.CrossBlog.Blog.Configuration
 	public class BlogConfigSection
 	{
 		public string Name { get; set; } = "CrossBlog";
+		public string Version { get; set; }
 		public string Copyright { get; set; } = "Copyright (C) 2017 Lukasz Jaskiewicz";
 	}
 }

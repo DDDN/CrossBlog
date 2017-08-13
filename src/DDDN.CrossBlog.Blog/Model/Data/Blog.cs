@@ -28,6 +28,8 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 		public Guid BlogId { get; set; }
 		public int State { get; set; }
 		public DateTimeOffset Created { get; set; }
+		[StringLength(15)]
+		public string Version { get; set; }
 		[Required]
 		[StringLength(200)]
 		public string Name { get; set; }

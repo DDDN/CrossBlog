@@ -36,6 +36,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Areas\Dashboard\" />
+		<Folder Include="Areas\Configuration\" />
 		<Folder Include="BusinessLayer\" />
 		<Folder Include="res\" />
 	</ItemGroup>

@@ -1,0 +1,66 @@
+﻿<!--
+DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Shared._Layout
+
+Copyright(C) 2017 Lukasz Jaskiewicz
+Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+
+This program is free software; you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program; if not, write
+to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+@using DDDN.CrossBlog.Blog.Routing
+@using System.Globalization
+
+<html lang="@CultureInfo.CurrentCulture.Name">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="~/images/favicon.ico">
+
+	<title>CrossBlog</title>
+
+	<link href="~/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/css/blog.min.css" rel="stylesheet">
+</head>
+<body>
+	<div class="blog-masthead">
+		<div class="container">
+			<nav class="nav blog-nav">
+				<a class="nav-link active" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Index", culture = @CultureInfo.CurrentCulture.Name })">Home</a>
+				<a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Newest", culture = @CultureInfo.CurrentCulture.Name })">Newest</a>
+				<a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Archive", culture = @CultureInfo.CurrentCulture.Name })">Archive</a>
+				<a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "About", culture = @CultureInfo.CurrentCulture.Name })">About</a>
+			</nav>
+		</div>
+	</div>
+
+	<div class="blog-header">
+		<div class="container">
+			<h1 class="blog-title">CrossBlog</h1>
+			<p class="lead blog-description">An example blog template built with Bootstrap.</p>
+		</div>
+	</div>
+
+	<div class="container">
+		@RenderBody()
+	</div><!-- /.container -->
+
+	<footer class="blog-footer">
+		<p>Copyright (C) 2017 CrossBlog</p>
+		<p><a href="#">Back to top</a></p>
+	</footer>
+
+	<script src="~/js/jquery.min.js"></script>
+	<script src="~/js/tether.min.js"></script>
+	<script src="~/js/bootstrap.min.js"></script>
+	<script src="~/js/ie10-viewport-bug-workaround.min.js"></script>
+</body>
+</html>

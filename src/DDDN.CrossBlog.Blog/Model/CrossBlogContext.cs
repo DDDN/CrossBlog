@@ -25,12 +25,12 @@ namespace DDDN.CrossBlog.Blog.Model
 				: base(options)
 		{ }
 
-		public virtual DbSet<Blog> Blogs { get; set; }
+		public virtual DbSet<CrossBlog> CrossBlogs { get; set; }
 		public virtual DbSet<Writer> Writers { get; set; }
 		public virtual DbSet<WriterPostMap> WriterPosts { get; set; }
 		public virtual DbSet<Post> Posts { get; set; }
-		public virtual DbSet<PostKeywordMap> PostKeywords { get; set; }
-		public virtual DbSet<Keyword> Keywords { get; set; }
+		public virtual DbSet<PostCategoryMap> PostCategories { get; set; }
+		public virtual DbSet<Category> Categories { get; set; }
 		public virtual DbSet<Comment> Comments { get; set; }
 		public virtual DbSet<Document> Documents { get; set; }
 		public virtual DbSet<Content> Contents { get; set; }
@@ -52,18 +52,18 @@ namespace DDDN.CrossBlog.Blog.Model
 				.HasForeignKey(pt => pt.PostId);
 
 			// PostKeyword
-			modelBuilder.Entity<PostKeywordMap>()
-				.HasKey(t => new { t.PostId, t.KeywordId });
+			modelBuilder.Entity<PostCategoryMap>()
+				.HasKey(t => new { t.PostId, t.CategoryId });
 
-			modelBuilder.Entity<PostKeywordMap>()
+			modelBuilder.Entity<PostCategoryMap>()
 				.HasOne(pt => pt.Post)
-				.WithMany(p => p.PostKeywords)
+				.WithMany(p => p.PostCategories)
 				.HasForeignKey(pt => pt.PostId);
 
-			modelBuilder.Entity<PostKeywordMap>()
-				.HasOne(pt => pt.Keyword)
-				.WithMany(t => t.PostKeywords)
-				.HasForeignKey(pt => pt.KeywordId);
+			modelBuilder.Entity<PostCategoryMap>()
+				.HasOne(pt => pt.Category)
+				.WithMany(t => t.PostCategories)
+				.HasForeignKey(pt => pt.CategoryId);
 		}
 	}
 }

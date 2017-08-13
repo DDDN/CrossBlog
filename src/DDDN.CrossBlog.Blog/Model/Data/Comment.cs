@@ -33,7 +33,6 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 		[StringLength(100)]
 		public string Mail { get; set; }
 		[Required]
-		[StringLength(500)]
 		public string Text { get; set; }
 
 		public Post Post { get; set; }

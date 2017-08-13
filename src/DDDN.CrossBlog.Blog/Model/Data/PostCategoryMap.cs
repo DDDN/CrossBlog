@@ -1,5 +1,5 @@
-/*
-* DDDN.CrossBlog.Blog.Model.Data.Keyword
+﻿/*
+* DDDN.CrossBlog.Blog.Model.Data.PostCategoryMap
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -17,20 +17,15 @@
 namespace DDDN.CrossBlog.Blog.Model.Data
 {
 	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel.DataAnnotations;
 	using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("Keyword")]
-	public partial class Keyword
+	[Table("PostCategoryMap")]
+	public partial class PostCategoryMap
 	{
-		[Key]
-		public Guid KeywordId { get; set; }
-		public int State { get; set; }
-		[Required]
-		[StringLength(100)]
-		public string Word { get; set; }
+		public Guid CategoryId { get; set; }
+		public Category Category { get; set; }
 
-		public List<PostKeywordMap> PostKeywords { get; set; }
+		public Guid PostId { get; set; }
+		public Post Post { get; set; }
 	}
 }

@@ -19,7 +19,7 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System;
 	using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("WriterPost")]
+	[Table("WriterPostMap")]
 	public partial class WriterPostMap
 	{
 		public Guid WriterId { get; set; }

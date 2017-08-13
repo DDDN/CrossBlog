@@ -29,7 +29,7 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 		public DateTimeOffset Created { get; set; }
 		[Required]
 		public byte[] Binary { get; set; }
-		[StringLength(500)]
+		[StringLength(300)]
 		public string Name { get; set; }
 
 		public Document Document { get; set; }

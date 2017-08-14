@@ -2,7 +2,7 @@
 	{
 		"outputFileName": "wwwroot/css/bootstrap.min.css",
 		"inputFiles": [
-			"lib/bower/bootstrap/dist/css/bootstrap.css"
+			"css/bootstrap.css"
 		],
 		"minify": {
 			"enabled": true,

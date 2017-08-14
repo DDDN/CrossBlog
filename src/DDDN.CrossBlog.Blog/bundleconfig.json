@@ -2,10 +2,10 @@
 	{
 		"outputFileName": "wwwroot/css/bootstrap.min.css",
 		"inputFiles": [
-			"css/bootstrap.css"
+			"css/bootstrap.min.css"
 		],
 		"minify": {
-			"enabled": true,
+			"enabled": false,
 			"renameLocals": true
 		},
 		"sourceMap": false
@@ -24,18 +24,7 @@
 	{
 		"outputFileName": "wwwroot/js/bootstrap.min.js",
 		"inputFiles": [
-			"lib/bower/bootstrap/dist/js/bootstrap.js"
-		],
-		"minify": {
-			"enabled": true,
-			"renameLocals": true
-		},
-		"sourceMap": false
-	},
-	{
-		"outputFileName": "wwwroot/js/jquery.min.js",
-		"inputFiles": [
-			"lib/bower/jquery/dist/jquery.js"
+			"node_modules/bootstrap/dist/js/bootstrap.min.js"
 		],
 		"minify": {
 			"enabled": false,
@@ -44,25 +33,25 @@
 		"sourceMap": false
 	},
 	{
-		"outputFileName": "wwwroot/js/tether.min.js",
+		"outputFileName": "wwwroot/js/jquery.slim.min.js",
 		"inputFiles": [
-			"lib/bower/tether/dist/js/tether.js"
+			"node_modules/jquery/dist/jquery.slim.min.js"
 		],
 		"minify": {
-			"enabled": true,
+			"enabled": false,
 			"renameLocals": true
 		},
 		"sourceMap": false
 	},
 	{
-		"outputFileName": "wwwroot/js/ie10-viewport-bug-workaround.min.js",
+		"outputFileName": "wwwroot/js/popper.min.js",
 		"inputFiles": [
-			"js/ie10-viewport-bug-workaround.js"
+			"node_modules/popper.js/dist/umd/popper.min.js"
 		],
 		"minify": {
-			"enabled": true,
+			"enabled": false,
 			"renameLocals": true
 		},
-		"sourceMap": false
+		"sourceMap": true
 	}
 ]

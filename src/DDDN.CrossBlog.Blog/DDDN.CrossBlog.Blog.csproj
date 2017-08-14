@@ -34,6 +34,10 @@
     <ProjectReference Include="..\..\..\Localization\src\DDDN.Localization.OpenXML\DDDN.Localization.OpenXML.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
   <Target Name="CopyFiles" BeforeTargets="Build">
 
     <PropertyGroup Label="InputDirectories">

@@ -1,8 +1,9 @@
 ﻿[
 	{
-		"outputFileName": "wwwroot/css/bootstrap.min.css",
+		"outputFileName": "wwwroot/css/head-bundle.min.css",
 		"inputFiles": [
-			"css/bootstrap.min.css"
+			"css/bootstrap.min.css",
+			"css/blog.css"
 		],
 		"minify": {
 			"enabled": false,
@@ -11,19 +12,10 @@
 		"sourceMap": false
 	},
 	{
-		"outputFileName": "wwwroot/css/blog.min.css",
+		"outputFileName": "wwwroot/js/bottom-bundle.min.js",
 		"inputFiles": [
-			"css/blog.css"
-		],
-		"minify": {
-			"enabled": true,
-			"renameLocals": true
-		},
-		"sourceMap": false
-	},
-	{
-		"outputFileName": "wwwroot/js/bootstrap.min.js",
-		"inputFiles": [
+			"node_modules/jquery/dist/jquery.slim.min.js",
+			"node_modules/popper.js/dist/umd/popper.min.js",
 			"node_modules/bootstrap/dist/js/bootstrap.min.js"
 		],
 		"minify": {
@@ -31,27 +23,5 @@
 			"renameLocals": true
 		},
 		"sourceMap": false
-	},
-	{
-		"outputFileName": "wwwroot/js/jquery.slim.min.js",
-		"inputFiles": [
-			"node_modules/jquery/dist/jquery.slim.min.js"
-		],
-		"minify": {
-			"enabled": false,
-			"renameLocals": true
-		},
-		"sourceMap": false
-	},
-	{
-		"outputFileName": "wwwroot/js/popper.min.js",
-		"inputFiles": [
-			"node_modules/popper.js/dist/umd/popper.min.js"
-		],
-		"minify": {
-			"enabled": false,
-			"renameLocals": true
-		},
-		"sourceMap": true
 	}
 ]

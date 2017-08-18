@@ -1,6 +1,6 @@
 ﻿[
   {
-    "outputFile": "css/bootstrap.css",
+    "outputFile": "assets/css/bootstrap.css",
     "inputFile": "node_modules/bootstrap/scss/bootstrap.scss"
   }
 ]

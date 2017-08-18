@@ -35,7 +35,6 @@
   <Target Name="CopyFiles" BeforeTargets="Build">
 
     <PropertyGroup Label="InputDirectories">
-      <ImagesDirIn>$(MSBuildProjectDirectory)\images</ImagesDirIn>
       <JsDirIn>$(MSBuildProjectDirectory)\js</JsDirIn>
       <CssDirIn>$(MSBuildProjectDirectory)\css</CssDirIn>
       <ResDirIn>$(MSBuildProjectDirectory)\res</ResDirIn>
@@ -44,7 +43,6 @@
 
     <PropertyGroup Label="OutputDirectories">
       <WWWDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)</WWWDirOut>
-      <ImagesDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\images</ImagesDirOut>
       <JsDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\js</JsDirOut>
       <CssDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\css</CssDirOut>
       <ResDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\res</ResDirOut>
@@ -53,21 +51,11 @@
 
     <ItemGroup>
       <ResDirInFiles Include="$(ResDirIn)\**\*.*" />
-      <ImagesDirInFiles Include="$(ImagesDirIn)\**\*.*" />
       <NpmFAFontsDirInFiles Include="$(NpmFAFontsDirIn)\**\*.*" />
     </ItemGroup>
 
-    <PropertyGroup Label="ImputFiles">
-      <ImageFilesIn>$(ImagesDirIn)\favicon.ico</ImageFilesIn>
-    </PropertyGroup>
-
-    <PropertyGroup Label="OutputFiles">
-      <ImageFilesOut>$(ImagesDirOut)\favicon.ico</ImageFilesOut>
-    </PropertyGroup>
-
     <Message Text="Making output dirs..." Importance="high"></Message>
     <MakeDir Condition="" Directories="$(WWWDirOut)" ContinueOnError="false" />
-    <MakeDir Condition="" Directories="$(ImagesDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(JsDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(CssDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(ResDirOut)" ContinueOnError="false" />
@@ -75,7 +63,6 @@
     <Message Text="Done Making output dirs." Importance="high"></Message>
 
     <Message Text="Copying files..." Importance="high"></Message>
-    <Copy SourceFiles="$(ImageFilesIn)" DestinationFiles="$(ImageFilesOut)" ContinueOnError="false"></Copy>
     <Copy SourceFiles="@(ResDirInFiles)" DestinationFiles="@(ResDirInFiles->'$(ResDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(ImagesDirInFiles)" DestinationFiles="@(ImagesDirInFiles->'$(ImagesDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(NpmFAFontsDirInFiles)" DestinationFiles="@(NpmFAFontsDirInFiles->'$(NpmFAFontsDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />

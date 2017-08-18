@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <WWWOutputDir>wwwroot</WWWOutputDir>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Localization\src\DDDN.Localization.OpenXML\DDDN.Localization.OpenXML.csproj" />
+  </ItemGroup>
 
   <PropertyGroup>
     <Product>DDDN CrossBlog</Product>
@@ -19,23 +21,11 @@
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <WWWOutputDir>wwwroot</WWWOutputDir>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="BuildWebCompiler" Version="1.11.326" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-final" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0-preview2-final" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.Dotnet" Version="2.0.0-preview2-final" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Localization\src\DDDN.Localization.OpenXML\DDDN.Localization.OpenXML.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <Target Name="CopyFiles" BeforeTargets="Build">
@@ -45,6 +35,7 @@
       <JsDirIn>$(MSBuildProjectDirectory)\js</JsDirIn>
       <CssDirIn>$(MSBuildProjectDirectory)\css</CssDirIn>
       <ResDirIn>$(MSBuildProjectDirectory)\res</ResDirIn>
+      <NpmFAFontsDirIn>$(MSBuildProjectDirectory)\node_modules\font-awesome\fonts</NpmFAFontsDirIn>
     </PropertyGroup>
 
     <PropertyGroup Label="OutputDirectories">
@@ -53,11 +44,13 @@
       <JsDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\js</JsDirOut>
       <CssDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\css</CssDirOut>
       <ResDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\res</ResDirOut>
+      <NpmFAFontsDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\fonts</NpmFAFontsDirOut>
     </PropertyGroup>
 
     <ItemGroup>
       <ResDirInFiles Include="$(ResDirIn)\**\*.*" />
       <ImagesDirInFiles Include="$(ImagesDirIn)\**\*.*" />
+      <NpmFAFontsDirInFiles Include="$(NpmFAFontsDirIn)\**\*.*" />
     </ItemGroup>
 
     <PropertyGroup Label="ImputFiles">
@@ -74,12 +67,14 @@
     <MakeDir Condition="" Directories="$(JsDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(CssDirOut)" ContinueOnError="false" />
     <MakeDir Condition="" Directories="$(ResDirOut)" ContinueOnError="false" />
+    <MakeDir Condition="" Directories="$(NpmFAFontsDirOut)" ContinueOnError="false" />
     <Message Text="Done Making output dirs." Importance="high"></Message>
 
     <Message Text="Copying files..." Importance="high"></Message>
     <Copy SourceFiles="$(ImageFilesIn)" DestinationFiles="$(ImageFilesOut)" ContinueOnError="false"></Copy>
     <Copy SourceFiles="@(ResDirInFiles)" DestinationFiles="@(ResDirInFiles->'$(ResDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(ImagesDirInFiles)" DestinationFiles="@(ImagesDirInFiles->'$(ImagesDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(NpmFAFontsDirInFiles)" DestinationFiles="@(NpmFAFontsDirInFiles->'$(NpmFAFontsDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Message Text="Done Copying files." Importance="high"></Message>
   </Target>
 

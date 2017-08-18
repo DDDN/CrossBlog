@@ -17,46 +17,61 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 @using DDDN.CrossBlog.Blog.Routing
 @using System.Globalization
 
+<!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="icon" href="~/images/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="~/images/favicon.ico">
+    <title>CrossBlog</title>
 
-	<title>CrossBlog</title>
-
-	<link href="~/css/head-bundle.min.css" rel="stylesheet">
+    <link href="~/css/blog.min.css" rel="stylesheet">
 </head>
 <body>
-	<div class="blog-masthead">
-		<div class="container">
-			<nav class="nav blog-nav">
-				<a class="nav-link active" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Index", culture = @CultureInfo.CurrentCulture.Name })">Home</a>
-				<a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Newest", culture = @CultureInfo.CurrentCulture.Name })">Newest</a>
-				<a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Archive", culture = @CultureInfo.CurrentCulture.Name })">Archive</a>
-				<a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "About", culture = @CultureInfo.CurrentCulture.Name })">About</a>
-			</nav>
-		</div>
-	</div>
+    <nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center">
+        <a href="/" class="navbar-brand d-flex w-50 mr-auto">Brand</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="collapsingNavbar3">
+            <ul class="navbar-nav mx-auto w-100 justify-content-center">
+                <li class="nav-item active">
+                    <a class="nav-link active" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Index", culture = @CultureInfo.CurrentCulture.Name })">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Newest", culture = @CultureInfo.CurrentCulture.Name })">Newest</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "Archive", culture = @CultureInfo.CurrentCulture.Name })">Archive</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.RouteUrl(RouteNames.Default, new { Action = "About", culture = @CultureInfo.CurrentCulture.Name })">About</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Right</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Right</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Right</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidebar p-2">Sidebar</div>
+            <div class="col bg-dark text-white pt-2">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
 
-	<div class="blog-header">
-		<div class="container">
-			<h1 class="blog-title">CrossBlog</h1>
-			<p class="lead blog-description">An example blog template built with Bootstrap.</p>
-		</div>
-	</div>
-
-	<div class="container">
-		@RenderBody()
-	</div><!-- /.container -->
-
-	<footer class="blog-footer">
-		<p>Copyright (C) 2017 CrossBlog</p>
-		<p><a href="#">Back to top</a></p>
-	</footer>
-
-	<script src="~/js/bottom-bundle.min.js"></script>
+    <script src="~/js/bottom-bundle.min.js"></script>
 </body>
 </html>

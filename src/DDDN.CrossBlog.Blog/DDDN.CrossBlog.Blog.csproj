@@ -28,6 +28,10 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.Dotnet" Version="2.0.0-preview2-final" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
   <Target Name="CopyFiles" BeforeTargets="Build">
 
     <PropertyGroup Label="InputDirectories">

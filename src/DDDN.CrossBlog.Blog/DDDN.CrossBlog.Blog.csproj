@@ -29,32 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="assets\js\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
-
-  <Target Name="CopyFiles" BeforeTargets="Build">
-
-    <PropertyGroup Label="InputDirectories">
-      <ResDirIn>$(MSBuildProjectDirectory)\res</ResDirIn>
-    </PropertyGroup>
-
-    <PropertyGroup Label="OutputDirectories">
-      <WWWDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)</WWWDirOut>
-      <ResDirOut>$(MSBuildProjectDirectory)\$(WWWOutputDir)\res</ResDirOut>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <ResDirInFiles Include="$(ResDirIn)\**\*.*" />
-    </ItemGroup>
-
-    <Message Text="Making output dirs..." Importance="high"></Message>
-    <MakeDir Condition="" Directories="$(ResDirOut)" ContinueOnError="false" />
-    <Message Text="Done Making output dirs." Importance="high"></Message>
-
-    <Message Text="Copying files..." Importance="high"></Message>
-    <Copy SourceFiles="@(ResDirInFiles)" DestinationFiles="@(ResDirInFiles->'$(ResDirOut)\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Message Text="Done Copying files." Importance="high"></Message>
-  </Target>
 
 </Project>

@@ -9,9 +9,22 @@ var gulp = require('gulp'),
     rename = require('gulp-rename');
 
 gulp.task('_beforeBuild', [
+    'copyAssetResourceFiles',
     'copyAssetImageFiles',
     'bundleCssBlog', 'bundleCssDashboard', 'bundleCssConfig',
     'copyNodeJsFiles', 'bundleJsBodyDefault']);
+
+/// copy resource files from assets to wwwroot
+var nodeJsFiles = [
+    'node_modules/jquery/dist/jquery.slim.js',
+    'node_modules/popper.js/dist/umd/popper.js',
+    'node_modules/bootstrap/dist/js/bootstrap.js'
+];
+gulp.task('copyAssetResourceFiles', function () {
+    gulp
+        .src('assets/resources/*.*')
+        .pipe(gulp.dest('wwwroot/resources'));
+});
 
 /// copy image assets to wwwroot
 gulp.task('copyAssetImageFiles', function () {

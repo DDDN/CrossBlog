@@ -22,7 +22,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BuildWebCompiler" Version="1.11.326" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-final" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0-preview2-final" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.Dotnet" Version="2.0.0-preview2-final" />

@@ -24,7 +24,6 @@ gulp.task('scssBuildBootstrap', function () {
 	return gulp.src('node_modules/bootstrap/scss/bootstrap.scss')
 		.pipe(sass())
 		.pipe(autoprefixer())
-		.pipe(plumber())
 		.pipe(gulp.dest('assets/styles'));
 });
 
@@ -71,9 +70,10 @@ var assetsCssBlog = [
 ];
 gulp.task('bundleCssBlog', function () {
 	return gulp.src(assetsCssBlog)
-		.on('error', notify.onError("Error: <%= error.message %>"))
+		.pipe(sourcemaps.init())
 		.pipe(concat('blog.min.css'))
 		.pipe(cleanCSS({ compatibility: 'ie8' }))
+		.pipe(sourcemaps.write('/'))
 		.pipe(gulp.dest('wwwroot/css'));
 });
 
@@ -85,8 +85,10 @@ var assetsCssDashboard = [
 ];
 gulp.task('bundleCssDashboard', function () {
 	return gulp.src(assetsCssDashboard)
+		.pipe(sourcemaps.init())
 		.pipe(concat('dashboard.min.css'))
 		.pipe(cleanCSS({ compatibility: 'ie8' }))
+		.pipe(sourcemaps.write('/'))
 		.pipe(gulp.dest('wwwroot/css'));
 });
 
@@ -98,8 +100,10 @@ var assetsCssConfig = [
 ];
 gulp.task('bundleCssConfig', function () {
 	return gulp.src(assetsCssConfig)
+		.pipe(sourcemaps.init())
 		.pipe(concat('config.min.css'))
 		.pipe(cleanCSS({ compatibility: 'ie8' }))
+		.pipe(sourcemaps.write('/'))
 		.pipe(gulp.dest('wwwroot/css'));
 });
 

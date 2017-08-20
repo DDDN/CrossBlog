@@ -5,7 +5,7 @@
 	"dependencies": {
 		"bootstrap": "4.0.0-beta",
 		"font-awesome": "4.7.0",
-		"help": "^3.0.2",
+		"help": "3.0.2",
 		"jquery": "3.2.1",
 		"popper.js": "1.11.1"
 	},
@@ -15,7 +15,7 @@
 		"gulp-clean-css": "3.7.0",
 		"gulp-concat": "2.6.1",
 		"gulp-notify": "3.0.0",
-		"gulp-plumber": "^1.1.0",
+		"gulp-plumber": "1.1.0",
 		"gulp-rename": "1.2.2",
 		"gulp-sass": "3.1.0",
 		"gulp-sourcemaps": "2.6.1",

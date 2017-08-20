@@ -20,6 +20,5 @@ namespace DDDN.CrossBlog.Blog.Areas
 	{
 		public const string Blog = nameof(Blog);
 		public const string Dashboard = nameof(Dashboard);
-		public const string Configuration = nameof(Configuration);
 	}
 }

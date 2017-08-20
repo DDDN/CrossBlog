@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="assets\scripts\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

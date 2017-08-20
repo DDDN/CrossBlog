@@ -1,5 +1,5 @@
-/*
-* DDDN.CrossBlog.Blog.Model.Data.Writer
+﻿/*
+* DDDN.CrossBlog.Blog.Model.Data.Session
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -17,26 +17,15 @@
 namespace DDDN.CrossBlog.Blog.Model.Data
 {
 	using System;
-	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
 	using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("Writer")]
-	public partial class Writer
+	[Table("Session")]
+	public partial class Session
 	{
 		[Key]
-		public Guid WriterId { get; set; }
+		public Guid SessionId { get; set; }
 		public int State { get; set; }
 		public DateTimeOffset Created { get; set; }
-		[Required]
-		[StringLength(100)]
-		public string Name { get; set; }
-		[StringLength(100)]
-		public string Mail { get; set; }
-		public byte[] Password { get; set; }
-		public byte[] Salt { get; set; }
-
-		public List<Session> Sessions { get; set; }
-		public List<WriterPostMap> WriterPosts { get; set; }
 	}
 }

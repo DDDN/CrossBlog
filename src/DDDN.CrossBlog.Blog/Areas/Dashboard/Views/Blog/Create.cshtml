@@ -1,5 +1,5 @@
 <!--
-DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Home.Index
+DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Blog.Create
 
 Copyright(C) 2017 Lukasz Jaskiewicz
 Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -15,10 +15,23 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 -->
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IViewLocalizer Loc
 
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = @Loc["CreateBlog"];
 	Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
 }
 
+<h2 class="pb-2">@Loc["CreateBlog"]</h2>
+
+<form>
+	<div class="form-group">
+		<label for="blogName">@Loc["BlogName"]</label>
+		<input type="text" class="form-control" id="blogName" placeholder="@Loc["EnterBlogName"]">
+	</div>
+	<div class="form-group">
+		<label for="blogName">@Loc["BlogCopyright"]</label>
+		<input type="text" class="form-control" id="blogName" placeholder="@Loc["EnterBlogCopyright"]">
+	</div>
+	<button type="submit" class="btn btn-primary">@Loc["BlogSave"]</button>
+</form>

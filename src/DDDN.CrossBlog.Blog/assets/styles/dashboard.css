@@ -14,9 +14,11 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+/* Sidebar */
 #sidebar {
 	min-height: 100vh;
 	background-color: #eee;
+	color: #343a40;
 }
 
 	#sidebar i {
@@ -26,7 +28,7 @@
 	#sidebar .list-group-item {
 		border-radius: 0;
 		background-color: #eee;
-		color: #000;
+		color: #343a40;
 		border-left: 0;
 		border-right: 0;
 		border-color: #fff;
@@ -41,4 +43,9 @@
 	.hidden-sm-down-fix {
 		display: none;
 	}
+}
+
+/* Main */
+#main {
+	color: #343a40;
 }

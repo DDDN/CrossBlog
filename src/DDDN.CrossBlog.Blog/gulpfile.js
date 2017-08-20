@@ -39,8 +39,8 @@ gulp.task('scssBuildFontawesome', function () {
 /// copy resource files from assets to wwwroot
 gulp.task('copyLocalizationDocumentsFromAreasToWwwroot', function () {
 	gulp
-		.src('Areas/**/l10n/*.*')
-		.pipe(gulp.dest('wwwroot/l10n/Areas'));
+		.src('**/l10n/*.*')
+		.pipe(gulp.dest('wwwroot/l10n'));
 });
 
 /// copy image assets to wwwroot

@@ -25,7 +25,7 @@ namespace DDDN.CrossBlog.Blog.Model
 				: base(options)
 		{ }
 
-		public virtual DbSet<CrossBlog> CrossBlogs { get; set; }
+		public virtual DbSet<BlogInfo> BlogInfo { get; set; }
 		public virtual DbSet<Writer> Writers { get; set; }
 		public virtual DbSet<WriterPostMap> WriterPosts { get; set; }
 		public virtual DbSet<Post> Posts { get; set; }

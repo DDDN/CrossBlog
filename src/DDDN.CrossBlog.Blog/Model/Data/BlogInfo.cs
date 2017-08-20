@@ -1,5 +1,5 @@
 /*
-* DDDN.CrossBlog.Blog.Model.Data.CrossBlog
+* DDDN.CrossBlog.Blog.Model.Data.BlogInfo
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -21,8 +21,8 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System.ComponentModel.DataAnnotations;
 	using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("CrossBlog")]
-	public partial class CrossBlog
+	[Table("BlogInfo")]
+	public partial class BlogInfo
 	{
 		[Key]
 		public Guid CrossBlogId { get; set; }

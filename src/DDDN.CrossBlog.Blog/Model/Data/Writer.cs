@@ -26,7 +26,7 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	{
 		[Key]
 		public Guid WriterId { get; set; }
-		public int State { get; set; }
+		public WriterState State { get; set; }
 		public DateTimeOffset Created { get; set; }
 		[Required]
 		[StringLength(100)]

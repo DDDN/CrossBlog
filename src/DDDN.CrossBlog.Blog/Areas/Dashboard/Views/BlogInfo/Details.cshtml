@@ -1,0 +1,61 @@
+﻿@*
+	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.BlogInfo.Details
+
+	Copyright(C) 2017 Lukasz Jaskiewicz
+	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+@model DDDN.CrossBlog.Blog.Model.Data.BlogInfo
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Loc
+
+@{
+	ViewData["Title"] = "CreateBlog";
+	Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+	<h4>Blog Details</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.Name)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Name)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.State)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.State)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Created)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Created)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Copyright)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Copyright)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Version)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Version)
+		</dd>
+	</dl>
+</div>

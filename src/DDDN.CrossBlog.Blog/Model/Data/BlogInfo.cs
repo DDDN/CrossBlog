@@ -25,8 +25,8 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	public partial class BlogInfo
 	{
 		[Key]
-		public Guid CrossBlogId { get; set; }
-		public int State { get; set; }
+		public Guid BlogInfoId { get; set; }
+		public BlogState State { get; set; }
 		public DateTimeOffset Created { get; set; }
 		[Required]
 		[StringLength(15)]

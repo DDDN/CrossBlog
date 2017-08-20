@@ -1,5 +1,5 @@
-/*
-* DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers.HomeController
+﻿/*
+* DDDN.CrossBlog.Blog.Areas.Dashboard.Data.BlogInfoCreate
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,27 +14,33 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.CrossBlog.Blog.Routing;
-using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
+namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Data
 {
-	[Area("Dashboard")]
-	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
-	public class HomeController : Controller
+	public class BlogInfoCreate
 	{
-		public IActionResult Index()
-		{
-			return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = "Blog",
-					 action = "Index"
-				 });
-		}
+		[Required]
+		public string BlogInfoName { get; set; }
+		[Required]
+		public string BlogInfoCopyright { get; set; }
+		[Required]
+		public string WriterName { get; set; }
+		[Required]
+		[DataType(DataType.EmailAddress)]
+		public string WriterMail { get; set; }
+		[Required]
+		[DataType(DataType.Password)]
+		public string WriterPassword { get; set; }
+		[Required]
+		[DataType(DataType.Password)]
+		[Compare("WriterPassword")]
+		public string WriterPasswordCompare { get; set; }
+
+
 	}
 }

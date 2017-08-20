@@ -90,7 +90,7 @@ namespace DDDN.CrossBlog.Blog.Localization
 
 		private Dictionary<string, string> GetAllFromOfficeFile(string resourceKey)
 		{
-			var resourcePath = Path.Combine(_hostingEnvironment.WebRootPath, _localizationConfigSection.Value.StringResourceFolder);
+			var resourcePath = Path.Combine(_hostingEnvironment.WebRootPath, _localizationConfigSection.Value.WwwrootL10nFolder);
 			IOpenXMLStringResource stringRes = new OpenXMLStringResource(resourceKey, resourcePath);
 			var translations = stringRes.GetStrings();
 			return translations;

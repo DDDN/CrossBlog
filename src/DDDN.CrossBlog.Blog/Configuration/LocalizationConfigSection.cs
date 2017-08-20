@@ -24,6 +24,6 @@ namespace DDDN.CrossBlog.Blog.Configuration
         public string DefaultForNaturalCulturesSuffix { get; set; } = "*";
         public string OfficeLocalizerFactoryTypeNamespaceLocation { get; set; }
         public bool IgnoreOfficeLocalizerFactoryTypeNamespaceLocation { get; set; } = true;
-        public string StringResourceFolder { get; set; } = "resources";
+        public string WwwrootL10nFolder { get; set; } = "l10n";
     }
 }

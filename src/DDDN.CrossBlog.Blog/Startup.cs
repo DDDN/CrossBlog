@@ -47,7 +47,7 @@ namespace DDDN.CrossBlog.Blog
 		public void ConfigureServices(IServiceCollection services)
 		{
 			var localizationConfigSection = Config.GetSection(ConfigSectionNames.Localization);
-			var stringResourceFolder = localizationConfigSection.Get<LocalizationConfigSection>().StringResourceFolder;
+			var wwwrootL10nFolder = localizationConfigSection.Get<LocalizationConfigSection>().WwwrootL10nFolder;
 
 			services.AddOptions();
 			services.Configure<LocalizationConfigSection>(localizationConfigSection);
@@ -63,7 +63,7 @@ namespace DDDN.CrossBlog.Blog
 			services.TryAddSingleton<IStringLocalizer, BlogStringLocalizer>();
 			services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.TryAddSingleton<IBlogCultures, BlogCultures>();
-			services.AddLocalization(options => options.ResourcesPath = stringResourceFolder);
+			services.AddLocalization(options => options.ResourcesPath = wwwrootL10nFolder);
 			services.AddRouting(options => options.LowercaseUrls = false);
 			services.AddMvc()
 				 .AddViewLocalization();

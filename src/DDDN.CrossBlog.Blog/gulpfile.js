@@ -17,7 +17,7 @@ gulp.task('_beforeBuild', [
 	'copyLocalizationDocumentsFromAreasToWwwroot',
 	'copyAssetImageFiles',
 	'bundleCssBlog', 'bundleCssDashboard', 'bundleCssConfig',
-	'copyNodeJsFiles', 'bundleJsBodyDefault']);
+	'copyNodeJsFiles', 'bundleJsBlogBody', 'bundleJsDashboardBody']);
 
 /// compile Bootstrap scss
 gulp.task('scssBuildBootstrap', function () {
@@ -116,10 +116,27 @@ var assetsJsBodyDefault = [
 	'assets/scripts/popper.js',
 	'assets/scripts/bootstrap.js'
 ];
-gulp.task('bundleJsBodyDefault', function () {
+gulp.task('bundleJsBlogBody', function () {
 	return gulp.src(assetsJsBodyDefault)
 		.pipe(sourcemaps.init())
-		.pipe(concat('bodyDefault.min.js'))
+		.pipe(concat('blog.body.min.js'))
+		.pipe(uglify())
+		.pipe(sourcemaps.write('/'))
+		.pipe(gulp.dest('wwwroot/js'));
+});
+
+/// copy and uglify JavaScript assets to wwwroot
+var assetsJsDahsboardBody = [
+	'assets/scripts/jquery.slim.js',
+	'assets/scripts/jquery.validate.js',
+	'assets/scripts/jquery.validate.unobtrusive.js',
+	'assets/scripts/popper.js',
+	'assets/scripts/bootstrap.js'
+];
+gulp.task('bundleJsDashboardBody', function () {
+	return gulp.src(assetsJsBodyDefault)
+		.pipe(sourcemaps.init())
+		.pipe(concat('dashboard.body.min.js'))
 		.pipe(uglify())
 		.pipe(sourcemaps.write('/'))
 		.pipe(gulp.dest('wwwroot/js'));

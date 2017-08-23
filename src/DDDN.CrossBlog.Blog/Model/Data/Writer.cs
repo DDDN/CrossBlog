@@ -37,6 +37,6 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 		public byte[] Salt { get; set; }
 
 		public List<Session> Sessions { get; set; }
-		public List<WriterPostMap> WriterPosts { get; set; }
+		public List<Post> Posts { get; set; }
 	}
 }

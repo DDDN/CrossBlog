@@ -27,7 +27,6 @@ namespace DDDN.CrossBlog.Blog.Model
 
 		public virtual DbSet<BlogInfo> BlogInfo { get; set; }
 		public virtual DbSet<Writer> Writers { get; set; }
-		public virtual DbSet<WriterPostMap> WriterPosts { get; set; }
 		public virtual DbSet<Post> Posts { get; set; }
 		public virtual DbSet<PostCategoryMap> PostCategories { get; set; }
 		public virtual DbSet<Category> Categories { get; set; }
@@ -37,20 +36,6 @@ namespace DDDN.CrossBlog.Blog.Model
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			// WriterPost
-			modelBuilder.Entity<WriterPostMap>()
-				.HasKey(t => new { t.WriterId, t.PostId });
-
-			modelBuilder.Entity<WriterPostMap>()
-				 .HasOne(pt => pt.Writer)
-				 .WithMany(t => t.WriterPosts)
-				 .HasForeignKey(pt => pt.WriterId);
-
-			modelBuilder.Entity<WriterPostMap>()
-				.HasOne(pt => pt.Post)
-				.WithMany(p => p.WriterPosts)
-				.HasForeignKey(pt => pt.PostId);
-
 			// PostKeyword
 			modelBuilder.Entity<PostCategoryMap>()
 				.HasKey(t => new { t.PostId, t.CategoryId });

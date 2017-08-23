@@ -34,7 +34,6 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 
 		public List<Comment> Comments { get; set; }
 		public List<Document> Documents { get; set; }
-		public List<WriterPostMap> WriterPosts { get; set; }
 		public List<PostCategoryMap> PostCategories { get; set; }
 	}
 }

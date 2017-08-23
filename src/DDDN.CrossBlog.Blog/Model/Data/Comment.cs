@@ -21,15 +21,17 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	[Table("Comment")]
-	public partial class Comment
+	public class Comment
 	{
 		[Key]
 		public Guid CommentId { get; set; }
-		public int State { get; set; }
-		public DateTimeOffset Created { get; set; }
-		[Required]
+        [Required]
+        public CommentState State { get; set; }
+        [Required]
+        public DateTimeOffset Created { get; set; }
 		[StringLength(100)]
-		public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 		[StringLength(100)]
 		public string Mail { get; set; }
 		[Required]

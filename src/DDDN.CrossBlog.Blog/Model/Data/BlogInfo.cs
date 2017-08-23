@@ -22,18 +22,20 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	[Table("BlogInfo")]
-	public partial class BlogInfo
+	public class BlogInfo
 	{
 		[Key]
 		public Guid BlogInfoId { get; set; }
-		public BlogState State { get; set; }
-		public DateTimeOffset Created { get; set; }
-		[Required]
-		[StringLength(15)]
-		public string Version { get; set; }
-		[Required]
+        [Required]
+        public BlogState State { get; set; }
+        [Required]
+        public DateTimeOffset Created { get; set; }
+        [StringLength(15)]
+        [Required]
+        public string Version { get; set; }
 		[StringLength(200)]
-		public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 		[StringLength(200)]
 		public string Copyright { get; set; }
 

@@ -16,27 +16,32 @@
 
 namespace DDDN.CrossBlog.Blog.Model.Data
 {
-	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel.DataAnnotations;
-	using System.ComponentModel.DataAnnotations.Schema;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("Writer")]
-	public partial class Writer
-	{
-		[Key]
-		public Guid WriterId { get; set; }
-		public WriterState State { get; set; }
-		public DateTimeOffset Created { get; set; }
-		[Required]
-		[StringLength(100)]
-		public string Name { get; set; }
-		[StringLength(100)]
-		public string Mail { get; set; }
-		public byte[] Password { get; set; }
-		public byte[] Salt { get; set; }
+    [Table("Writer")]
+    public class Writer
+    {
+        [Key]
+        public Guid WriterId { get; set; }
+        [Required]
+        public WriterState State { get; set; }
+        [Required]
+        public DateTimeOffset Created { get; set; }
+        [StringLength(100)]
+        [Required]
+        public string Name { get; set; }
+        [StringLength(100)]
+        [Required]
+        public string Mail { get; set; }
+        [Required]
+        public byte[] Password { get; set; }
+        [Required]
+        public byte[] Salt { get; set; }
 
-		public List<Session> Sessions { get; set; }
-		public List<Post> Posts { get; set; }
-	}
+        public List<Session> Sessions { get; set; }
+        public List<Post> Posts { get; set; }
+    }
 }

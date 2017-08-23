@@ -16,27 +16,28 @@
 
 namespace DDDN.CrossBlog.Blog.Model.Data
 {
-	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel.DataAnnotations;
-	using System.ComponentModel.DataAnnotations.Schema;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("Document")]
-	public partial class Document
-	{
-		[Key]
-		public Guid DocumentId { get; set; }
-		public DateTimeOffset State { get; set; }
-		public DateTimeOffset Created { get; set; }
-		[Required]
-		public byte[] Binary { get; set; }
-		[Required]
-		public string Html { get; set; }
-		[Required]
-		public string Css { get; set; }
+    [Table("Document")]
+    public class Document
+    {
+        [Key]
+        public Guid DocumentId { get; set; }
+        [Required]
+        public DocumentState State { get; set; }
+        [Required]
+        public DateTimeOffset Created { get; set; }
+        [Required]
+        public byte[] Binary { get; set; }
+        [Required]
+        public string Html { get; set; }
+        [Required]
+        public string Css { get; set; }
 
-		public Post Post { get; set; }
-
-		public List<Content> Contents { get; set; }
-	}
+        public Post Post { get; set; }
+        public List<Content> Contents { get; set; }
+    }
 }

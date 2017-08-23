@@ -21,11 +21,13 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	[Table("Session")]
-	public partial class Session
+	public class Session
 	{
 		[Key]
 		public Guid SessionId { get; set; }
-		public int State { get; set; }
-		public DateTimeOffset Created { get; set; }
+        [Required]
+		public SessionState State { get; set; }
+        [Required]
+        public DateTimeOffset Created { get; set; }
 	}
 }

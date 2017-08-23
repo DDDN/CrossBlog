@@ -16,39 +16,39 @@
 
 namespace DDDN.CrossBlog.Blog.Model
 {
-	using Microsoft.EntityFrameworkCore;
-	using DDDN.CrossBlog.Blog.Model.Data;
+    using Microsoft.EntityFrameworkCore;
+    using DDDN.CrossBlog.Blog.Model.Data;
 
-	public partial class CrossBlogContext : DbContext
-	{
-		public CrossBlogContext(DbContextOptions<CrossBlogContext> options)
-				: base(options)
-		{ }
+    public class CrossBlogContext : DbContext
+    {
+        public CrossBlogContext(DbContextOptions<CrossBlogContext> options)
+                : base(options)
+        { }
 
-		public virtual DbSet<BlogInfo> BlogInfo { get; set; }
-		public virtual DbSet<Writer> Writers { get; set; }
-		public virtual DbSet<Post> Posts { get; set; }
-		public virtual DbSet<PostCategoryMap> PostCategories { get; set; }
-		public virtual DbSet<Category> Categories { get; set; }
-		public virtual DbSet<Comment> Comments { get; set; }
-		public virtual DbSet<Document> Documents { get; set; }
-		public virtual DbSet<Content> Contents { get; set; }
+        public DbSet<BlogInfo> BlogInfo { get; set; }
+        public DbSet<Writer> Writers { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostCategoryMap> PostCategories { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<Content> Contents { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			// PostKeyword
-			modelBuilder.Entity<PostCategoryMap>()
-				.HasKey(t => new { t.PostId, t.CategoryId });
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // PostKeyword
+            modelBuilder.Entity<PostCategoryMap>()
+                .HasKey(t => new { t.PostId, t.CategoryId });
 
-			modelBuilder.Entity<PostCategoryMap>()
-				.HasOne(pt => pt.Post)
-				.WithMany(p => p.PostCategories)
-				.HasForeignKey(pt => pt.PostId);
+            modelBuilder.Entity<PostCategoryMap>()
+                .HasOne(pt => pt.Post)
+                .WithMany(p => p.PostCategories)
+                .HasForeignKey(pt => pt.PostId);
 
-			modelBuilder.Entity<PostCategoryMap>()
-				.HasOne(pt => pt.Category)
-				.WithMany(t => t.PostCategories)
-				.HasForeignKey(pt => pt.CategoryId);
-		}
-	}
+            modelBuilder.Entity<PostCategoryMap>()
+                .HasOne(pt => pt.Category)
+                .WithMany(t => t.PostCategories)
+                .HasForeignKey(pt => pt.CategoryId);
+        }
+    }
 }

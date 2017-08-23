@@ -22,14 +22,15 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	[Table("Category")]
-	public partial class Category
+	public class Category
 	{
 		[Key]
 		public Guid CategoryId { get; set; }
-		public int State { get; set; }
-		[Required]
+        [Required]
+        public CategoryState State { get; set; }
 		[StringLength(50)]
-		public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
 		public List<PostCategoryMap> PostCategories { get; set; }
 	}

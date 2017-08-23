@@ -20,7 +20,7 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	[Table("PostCategoryMap")]
-	public partial class PostCategoryMap
+	public class PostCategoryMap
 	{
 		public Guid CategoryId { get; set; }
 		public Category Category { get; set; }

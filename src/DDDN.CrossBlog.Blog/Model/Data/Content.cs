@@ -21,12 +21,14 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	[Table("Content")]
-	public partial class Content
+	public class Content
 	{
 		[Key]
 		public Guid ContentId { get; set; }
-		public int State { get; set; }
-		public DateTimeOffset Created { get; set; }
+        [Required]
+        public int ContentState { get; set; }
+        [Required]
+        public DateTimeOffset Created { get; set; }
 		[Required]
 		public byte[] Binary { get; set; }
 		[StringLength(300)]

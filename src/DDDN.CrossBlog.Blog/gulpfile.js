@@ -62,7 +62,6 @@ gulp.task('copyAssetImageFiles', function () {
 var npmJsFiles = [
     'node_modules/jquery/dist/jquery.js',
     'node_modules/jquery-validation/dist/jquery.validate.js',
-    'node_modules/jquery-validation/dist/additional-methods.js',
     'node_modules/popper.js/dist/umd/popper.js',
     'node_modules/bootstrap/dist/js/bootstrap.js'
 ];

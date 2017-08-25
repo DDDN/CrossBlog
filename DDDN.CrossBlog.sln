@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.CrossBlog.Blog", "src\DDDN.CrossBlog.Blog\DDDN.CrossBlog.Blog.csproj", "{E7C68E93-8E07-4371-A4C5-39120B6AEFEC}"
 EndProject
@@ -17,8 +17,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.Office.Odf", "..\Office.Odf\src\DDDN.Office.Odf\DDDN.Office.Odf.csproj", "{427A5E50-DFA9-4668-9554-0EDCA039918F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.Logging.Messages", "..\Logging\src\DDDN.Logging.Messages\DDDN.Logging.Messages.csproj", "{123945AB-CABA-4275-ADEA-46B9AF1AED5A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.Localization.OpenXML", "..\Localization\src\DDDN.Localization.OpenXML\DDDN.Localization.OpenXML.csproj", "{C30D7DF6-65A5-4B4C-9343-8F26C358749F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{073C5365-E1F6-4EAC-AD57-8F7AFE901FD9}"
 	ProjectSection(SolutionItems) = preProject
@@ -47,10 +45,6 @@ Global
 		{123945AB-CABA-4275-ADEA-46B9AF1AED5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{123945AB-CABA-4275-ADEA-46B9AF1AED5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{123945AB-CABA-4275-ADEA-46B9AF1AED5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C30D7DF6-65A5-4B4C-9343-8F26C358749F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C30D7DF6-65A5-4B4C-9343-8F26C358749F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C30D7DF6-65A5-4B4C-9343-8F26C358749F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C30D7DF6-65A5-4B4C-9343-8F26C358749F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,7 +54,6 @@ Global
 		{90968CFE-6A57-4A04-84A5-DA9690CCBB0C} = {990C564D-DF93-4454-9787-C32EA148F61A}
 		{427A5E50-DFA9-4668-9554-0EDCA039918F} = {1611219F-3D3F-439B-A433-99BD142A912E}
 		{123945AB-CABA-4275-ADEA-46B9AF1AED5A} = {1611219F-3D3F-439B-A433-99BD142A912E}
-		{C30D7DF6-65A5-4B4C-9343-8F26C358749F} = {1611219F-3D3F-439B-A433-99BD142A912E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5B16BF3-9793-467D-882F-D6F2482DA252}

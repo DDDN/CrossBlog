@@ -15,7 +15,7 @@
 */
 
 using DDDN.CrossBlog.Blog.Configuration;
-using DDDN.Localization.OpenXML;
+using DDDN.CrossBlog.Blog.Localization.ODF;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -91,7 +91,7 @@ namespace DDDN.CrossBlog.Blog.Localization
 		private Dictionary<string, string> GetAllFromOfficeFile(string resourceKey)
 		{
 			var resourcePath = Path.Combine(_hostingEnvironment.WebRootPath, _localizationConfigSection.Value.WwwrootL10nFolder);
-			IOpenXMLStringResource stringRes = new OpenXMLStringResource(resourceKey, resourcePath);
+			IODTStringResource stringRes = new ODTStringResource(resourceKey, resourcePath);
 			var translations = stringRes.GetStrings();
 			return translations;
 		}

@@ -6,10 +6,6 @@
     <WWWOutputDir>wwwroot</WWWOutputDir>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Localization\src\DDDN.Localization.OpenXML\DDDN.Localization.OpenXML.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <Product>DDDN CrossBlog</Product>
     <Copyright>Copyright(C) 2017 Lukasz Jaskiewicz</Copyright>
@@ -31,6 +27,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Office.Odf\src\DDDN.Office.Odf\DDDN.Office.Odf.csproj" />
   </ItemGroup>
 
 </Project>

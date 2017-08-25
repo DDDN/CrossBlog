@@ -14,6 +14,12 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using DDDN.CrossBlog.Blog.Areas.Dashboard.Data;
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Model;
@@ -22,133 +28,128 @@ using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 {
-	[Area("Dashboard")]
-	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
-	public class BlogInfoController : Controller
-	{
-		private readonly IOptions<RoutingConfigSection> _routingConfigSection;
-		private readonly CrossBlogContext _ctx;
+    [Area("Dashboard")]
+    [MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
+    public class BlogInfoController : Controller
+    {
+        private readonly IOptions<RoutingConfigSection> _routingConfigSection;
+        private readonly CrossBlogContext _ctx;
 
-		public BlogInfoController(
-			IOptions<RoutingConfigSection> routingConfigSection,
-			CrossBlogContext crossBlogContext
-			)
-		{
-			_routingConfigSection = routingConfigSection ?? throw new System.ArgumentNullException(nameof(routingConfigSection));
-			_ctx = crossBlogContext ?? throw new System.ArgumentNullException(nameof(crossBlogContext));
-		}
+        public BlogInfoController(
+            IOptions<RoutingConfigSection> routingConfigSection,
+            CrossBlogContext crossBlogContext
+            )
+        {
+            _routingConfigSection = routingConfigSection ?? throw new System.ArgumentNullException(nameof(routingConfigSection));
+            _ctx = crossBlogContext ?? throw new System.ArgumentNullException(nameof(crossBlogContext));
+        }
 
-		public IActionResult Index()
-		{
-			_ctx.Database.EnsureCreated();
-			var blogInfo = _ctx.BlogInfo.AsNoTracking().FirstOrDefault();
+        public IActionResult Index()
+        {
+            _ctx.Database.EnsureCreated();
+            var blogInfo = _ctx.BlogInfo.AsNoTracking().FirstOrDefault();
 
-			if (blogInfo == default(BlogInfo))
-			{
-				return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = nameof(BlogInfo),
-					 action = nameof(Create)
-				 });
-			}
-			else
-			{
-				return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = nameof(BlogInfo),
-					 action = nameof(Details)
-				 });
-			}
-		}
+            if (blogInfo == default(BlogInfo))
+            {
+                return RedirectToRoute(
+                 routeName: RouteNames.Default,
+                 routeValues: new
+                 {
+                     area = AreaNames.Dashboard,
+                     culture = CultureInfo.CurrentCulture,
+                     controller = nameof(BlogInfo),
+                     action = nameof(Create)
+                 });
+            }
+            else
+            {
+                return RedirectToRoute(
+                 routeName: RouteNames.Default,
+                 routeValues: new
+                 {
+                     area = AreaNames.Dashboard,
+                     culture = CultureInfo.CurrentCulture,
+                     controller = nameof(BlogInfo),
+                     action = nameof(Details)
+                 });
+            }
+        }
 
-		public async Task<IActionResult> Details()
-		{
-			var blogInfo = await _ctx.BlogInfo.FirstOrDefaultAsync();
+        public async Task<IActionResult> Details()
+        {
+            var blogInfo = await _ctx.BlogInfo.FirstOrDefaultAsync();
 
-			if (blogInfo == default(BlogInfo))
-			{
-				return NotFound();
-			}
+            if (blogInfo == default(BlogInfo))
+            {
+                return NotFound();
+            }
 
-			return View(blogInfo);
-		}
+            return View(blogInfo);
+        }
 
-		public IActionResult Create()
-		{
-			return View();
-		}
+        public IActionResult Create()
+        {
+            _ctx.Database.EnsureCreated();
+            return View();
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(BlogInfoCreate blogInfoCreate)
-		{
-			if (blogInfoCreate == null)
-			{
-				throw new System.ArgumentNullException(nameof(blogInfoCreate));
-			}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(BlogInfoCreate blogInfoCreate)
+        {
+            if (blogInfoCreate == null)
+            {
+                throw new System.ArgumentNullException(nameof(blogInfoCreate));
+            }
 
-			var blogInfo = _ctx.BlogInfo.AsNoTracking().FirstOrDefault();
+            var blogInfo = _ctx.BlogInfo.AsNoTracking().FirstOrDefault();
 
-			if (blogInfo != default(BlogInfo))
-			{
-				return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = nameof(BlogInfo),
-					 action = nameof(Details)
-				 });
-			}
+            if (blogInfo != default(BlogInfo))
+            {
+                return RedirectToRoute(
+                 routeName: RouteNames.Default,
+                 routeValues: new
+                 {
+                     area = AreaNames.Dashboard,
+                     culture = CultureInfo.CurrentCulture,
+                     controller = nameof(BlogInfo),
+                     action = nameof(Details)
+                 });
+            }
 
-			var created = DateTimeOffset.Now;
-			var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName()?.Version.ToString();
+            var created = DateTimeOffset.Now;
+            var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName()?.Version.ToString();
 
-			blogInfo = new BlogInfo
-			{
-				Name = blogInfoCreate.BlogInfoName,
-				Copyright = blogInfoCreate.BlogInfoCopyright,
-				Created = created,
-				BlogInfoId = Guid.NewGuid(),
-				State = BlogState.Active,
-				Version = version,
-				Writers = new List<Writer>()
-			};
+            blogInfo = new BlogInfo
+            {
+                Name = blogInfoCreate.BlogInfoName,
+                Copyright = blogInfoCreate.BlogInfoCopyright,
+                Created = created,
+                BlogInfoId = Guid.NewGuid(),
+                State = BlogState.Active,
+                Version = version,
+                Writers = new List<Writer>()
+            };
 
-			var writer = new Writer
-			{
-				WriterId = Guid.NewGuid(),
-				Created = created,
-				Name = blogInfoCreate.WriterName,
-				Mail = blogInfoCreate.WriterMail,
-				Password = Encoding.Unicode.GetBytes(blogInfoCreate.WriterPassword),
-				Salt = Encoding.Unicode.GetBytes(blogInfoCreate.BlogInfoName + blogInfoCreate.WriterMail),
-				State = WriterState.Active
-			};
+            var writer = new Writer
+            {
+                WriterId = Guid.NewGuid(),
+                Created = created,
+                Name = blogInfoCreate.WriterName,
+                Mail = blogInfoCreate.WriterMail,
+                Password = Encoding.Unicode.GetBytes(blogInfoCreate.WriterPassword),
+                Salt = Encoding.Unicode.GetBytes(blogInfoCreate.BlogInfoName + blogInfoCreate.WriterMail),
+                State = WriterState.Active
+            };
 
-			blogInfo.Writers.Add(writer);
-			_ctx.BlogInfo.Add(blogInfo);
-			await _ctx.SaveChangesAsync();
+            blogInfo.Writers.Add(writer);
+            _ctx.BlogInfo.Add(blogInfo);
+            await _ctx.SaveChangesAsync();
 
-			return View();
-		}
-	}
+            return View();
+        }
+    }
 }

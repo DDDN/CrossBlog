@@ -14,7 +14,6 @@
     to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
-@model DDDN.CrossBlog.Blog.Areas.Dashboard.Data.BlogInfoCreate
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Loc
 
@@ -23,47 +22,22 @@
     Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="Create" id="blogInfoCreateForm">
-    <div class="form-group">
-        <h2 class="pb-2">@Loc["CreateBlog"]</h2>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="BlogInfoName">@Loc["BlogName"]</label>
-            <input asp-for="BlogInfoName" class="form-control" />
-            <span asp-validation-for="BlogInfoName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="BlogInfoCopyright">@Loc["BlogCopyright"]</label>
-            <input asp-for="BlogInfoCopyright" class="form-control" />
-            <span asp-validation-for="BlogInfoCopyright" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="WriterName">@Loc["AdminName"]</label>
-            <input asp-for="WriterName" class="form-control" />
-            <span asp-validation-for="WriterName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="WriterMail">@Loc["AdminMail"]</label>
-            <input asp-for="WriterMail" class="form-control" />
-            <span asp-validation-for="WriterMail" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="WriterPassword">@Loc["AdminPassword"]</label>
-            <input asp-for="WriterPassword" class="form-control" />
-            <span asp-validation-for="WriterPassword" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="WriterPasswordCompare">@Loc["AdminPassword"]</label>
-            <input asp-for="WriterPasswordCompare" class="form-control" />
-            <span asp-validation-for="WriterPasswordCompare" class="text-danger"></span>
-        </div>
-        <input type="submit" value="@Loc["BlogSave"]" class="btn btn-primary" />
-    </div>
-</form>
+<h2 class="pb-2">@Loc["CreateBlog"]</h2>
 
-@section Scripts
-    {
-    <script>
-        $('#blogInfoCreateForm').validate();
-    </script>
-}
+<form id="formBlogInfoCreate" asp-action="Create">
+    <div class="form-group">
+        <label for="BlogInfoName">@Loc["BlogInfoName"]</label>
+        <input type="text" id="BlogInfoName" name="BlogInfoName" class="form-control" required maxlength="200">
+        <label for="BlogInfoCopyright">@Loc["BlogInfoCopyright"]</label>
+        <input type="text" id="BlogInfoCopyright" name="BlogInfoCopyright" class="form-control" required maxlength="200">
+        <label for="WriterName">@Loc["WriterName"]</label>
+        <input type="text" id="WriterName" name="WriterName" class="form-control" required maxlength="100">
+        <label for="WriterMail">@Loc["WriterMail"]</label>
+        <input type="email" id="WriterMail" name="WriterMail" class="form-control" required maxlength="100">
+        <label for="WriterPassword">@Loc["WriterPassword"]</label>
+        <input type="password" id="WriterPassword" name="WriterPassword" class="form-control" required>
+        <label for="WriterPasswordCompare">@Loc["WriterPasswordCompare"]</label>
+        <input type="password" id="WriterPasswordCompare" name="WriterPasswordCompare" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">value="@Loc["BlogSave"]"</button>
+</form>

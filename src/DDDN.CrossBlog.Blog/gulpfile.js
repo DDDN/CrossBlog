@@ -81,7 +81,7 @@ gulp.task('bundleCssBlog', function () {
     return gulp.src(assetsCssBlog)
         .pipe(sourcemaps.init())
         .pipe(concat('blog.bundle.min.css'))
-        .pipe(cleanCSS({ compatibility: 'ie9' }))
+        .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(sourcemaps.write('/'))
         .pipe(gulp.dest('wwwroot/css'));
 });
@@ -96,7 +96,7 @@ gulp.task('bundleCssDashboard', function () {
     return gulp.src(assetsCssDashboard)
         .pipe(sourcemaps.init())
         .pipe(concat('dashboard.bundle.min.css'))
-        .pipe(cleanCSS({ compatibility: 'ie9' }))
+        .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(sourcemaps.write('/'))
         .pipe(gulp.dest('wwwroot/css'));
 });

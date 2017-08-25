@@ -22,25 +22,13 @@ using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Data
 {
-	public class BlogInfoCreate
-	{
-		[Required]
-		public string BlogInfoName { get; set; }
-		[Required]
-		public string BlogInfoCopyright { get; set; }
-		[Required]
-		public string WriterName { get; set; }
-		[Required]
-		[DataType(DataType.EmailAddress)]
-		public string WriterMail { get; set; }
-		[Required]
-		[DataType(DataType.Password)]
-		public string WriterPassword { get; set; }
-		[Required]
-		[DataType(DataType.Password)]
-		[Compare("WriterPassword")]
-		public string WriterPasswordCompare { get; set; }
-
-
-	}
+    public class BlogInfoCreate
+    {
+        public string BlogInfoName { get; set; }
+        public string BlogInfoCopyright { get; set; }
+        public string WriterName { get; set; }
+        public string WriterMail { get; set; }
+        public string WriterPassword { get; set; }
+        public string WriterPasswordCompare { get; set; }
+    }
 }

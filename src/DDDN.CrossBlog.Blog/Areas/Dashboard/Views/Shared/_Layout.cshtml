@@ -52,6 +52,10 @@
         </div>
     </div>
     <script src="~/js/dashboard.body.bundle.min.js"></script>
+    @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName != "en")
+    {
+        <script src="@Url.Content($"~/js/localization/messages_{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}.js")"></script>
+    }
     @RenderSection("Scripts", required: false)
 </body>
 </html>

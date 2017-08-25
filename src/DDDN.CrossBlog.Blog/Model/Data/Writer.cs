@@ -38,6 +38,8 @@ namespace DDDN.CrossBlog.Blog.Model.Data
         public string Mail { get; set; }
         [Required]
         public byte[] Password { get; set; }
+        [NotMapped]
+        public byte[] PasswordCompare { get; set; }
         [Required]
         public byte[] Salt { get; set; }
 

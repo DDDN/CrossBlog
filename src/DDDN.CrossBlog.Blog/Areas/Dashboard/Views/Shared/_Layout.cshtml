@@ -1,17 +1,17 @@
 ﻿@*
-	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Shared._Layout
+    DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Shared._Layout
 
-	Copyright(C) 2017 Lukasz Jaskiewicz
-	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+    Copyright(C) 2017 Lukasz Jaskiewicz
+    Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
 
-	This program is free software; you can redistribute it and/or modify it under the terms of the
-	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+    This program is free software; you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation; version 2 of the License.
 
-	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License along with this program; if not, write
-	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+    You should have received a copy of the GNU General Public License along with this program; if not, write
+    to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
 @using DDDN.CrossBlog.Blog.Routing
@@ -22,37 +22,36 @@
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="icon" href="~/images/favicon.ico">
-	<title>CrossBlog DashBoard</title>
-	<link href="~/css/dashboard.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="~/images/favicon.ico">
+    <title>CrossBlog DashBoard</title>
+    <link href="~/css/dashboard.min.css" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-dark bg-dark">
-		<a class="navbar-brand pl-1" href="#">CrossBlog Dashboard</a>
-		<a href="#sidebar" data-toggle="collapse" class="pull-right"><i class="fa fa-navicon fa-2x"></i></a>
-	</nav>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-2 col-1 pl-0 pr-0" id="sidebar">
-				<a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-desktop"></i><span class="hidden-sm-down-fix">@Localizer["Blog"]</span></a>
-				<a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-users"></i><span class="hidden-sm-down-fix">@Localizer["Writers"]</span></a>
-				<a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-file-text"></i><span class="hidden-sm-down-fix">@Localizer["Posts"]</span></a>
-				<a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-clone"></i><span class="hidden-sm-down-fix">@Localizer["Comments"]</span></a>
-				<a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-list"></i><span class="hidden-sm-down-fix">@Localizer["Categories"]</span></a>
-			</div>
-			<main class="col-md-10 col" id="main">
-				<div class="p-5">
-					@RenderBody()
-				</div>
-			</main>
-		</div>
-	</div>
-
-	<script src="~/js/dashboard.body.min.js"></script>
-	@RenderSection("Scripts", required: false)
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand pl-1" href="#">CrossBlog Dashboard</a>
+        <a href="#sidebar" data-toggle="collapse" class="pull-right"><i class="fa fa-navicon fa-2x"></i></a>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 col-1 pl-0 pr-0" id="sidebar">
+                <a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-desktop"></i><span class="hidden-sm-down-fix">@Localizer["Blog"]</span></a>
+                <a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-users"></i><span class="hidden-sm-down-fix">@Localizer["Writers"]</span></a>
+                <a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-file-text"></i><span class="hidden-sm-down-fix">@Localizer["Posts"]</span></a>
+                <a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-clone"></i><span class="hidden-sm-down-fix">@Localizer["Comments"]</span></a>
+                <a href="#" class="list-group-item" data-parent="#sidebar"><i class="fa fa-list"></i><span class="hidden-sm-down-fix">@Localizer["Categories"]</span></a>
+            </div>
+            <main class="col-md-10 col" id="main">
+                <div class="p-5">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="~/js/dashboard.body.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

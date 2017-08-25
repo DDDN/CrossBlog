@@ -54,7 +54,7 @@ gulp.task('copyLocalizationDocumentsFromModelToWwwroot', function () {
 /// copy image assets to wwwroot
 gulp.task('copyAssetImageFiles', function () {
     gulp
-        .src('assets/images/*.*')
+        .src('assets/app/images/*.*')
         .pipe(gulp.dest('wwwroot/images'));
 });
 
@@ -75,12 +75,12 @@ gulp.task('copyNpmJsFilesToAssetsFolder', function () {
 var assetsCssBlog = [
     'assets/styles/font-awesome.css',
     'assets/styles/bootstrap.css',
-    'assets/styles/blog.css'
+    'assets/app/styles/blog.css'
 ];
 gulp.task('bundleCssBlog', function () {
     return gulp.src(assetsCssBlog)
         .pipe(sourcemaps.init())
-        .pipe(concat('blog.min.css'))
+        .pipe(concat('blog.bundle.min.css'))
         .pipe(cleanCSS({ compatibility: 'ie9' }))
         .pipe(sourcemaps.write('/'))
         .pipe(gulp.dest('wwwroot/css'));
@@ -90,12 +90,12 @@ gulp.task('bundleCssBlog', function () {
 var assetsCssDashboard = [
     'assets/styles/font-awesome.css',
     'assets/styles/bootstrap.css',
-    'assets/styles/dashboard.css'
+    'assets/app/styles/dashboard.css'
 ];
 gulp.task('bundleCssDashboard', function () {
     return gulp.src(assetsCssDashboard)
         .pipe(sourcemaps.init())
-        .pipe(concat('dashboard.min.css'))
+        .pipe(concat('dashboard.bundle.min.css'))
         .pipe(cleanCSS({ compatibility: 'ie9' }))
         .pipe(sourcemaps.write('/'))
         .pipe(gulp.dest('wwwroot/css'));
@@ -105,7 +105,8 @@ gulp.task('bundleCssDashboard', function () {
 var assetsJsBlogBody = [
     'assets/scripts/jquery.js',
     'assets/scripts/popper.js',
-    'assets/scripts/bootstrap.js'
+    'assets/scripts/bootstrap.js',
+    'assets/app/scripts/blog.js'
 ];
 gulp.task('bundleBlogBodyJsFiles', function () {
     return gulp.src(assetsJsBlogBody)
@@ -121,7 +122,8 @@ var assetsJsDahsboardBody = [
     'assets/scripts/jquery.js',
     'assets/scripts/jquery.validate.js',
     'assets/scripts/popper.js',
-    'assets/scripts/bootstrap.js'
+    'assets/scripts/bootstrap.js',
+    'assets/app/scripts/dashboard.js'
 ];
 gulp.task('bundleDashboardBodyJsFiles', function () {
     return gulp.src(assetsJsDahsboardBody)

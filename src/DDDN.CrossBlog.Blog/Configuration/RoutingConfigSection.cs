@@ -18,7 +18,7 @@ namespace DDDN.CrossBlog.Blog.Configuration
 {
 	public class RoutingConfigSection
 	{
-		public string BlogAreas { get; set; } = "Blog|Dashboard";
+		public string BlogAreas { get; set; } = "Blog|Dashboard|Administration";
 		public string DefaultRouteTemplate { get; set; } = "{area}/{culture}/{controller}/{action}/{id?}";
 		public string RedirectRouteTemplate { get; set; } = "{*url}";
 		public string DefaultArea { get; set; } = "Blog";

@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Areas.Dashboard.Model.BlogInfoView
+* DDDN.CrossBlog.Blog.Areas.Administration.Model.BlogInfoView
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 
-namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Model
+namespace DDDN.CrossBlog.Blog.Areas.Administration.Model
 {
 	public class BlogInfoView
 	{

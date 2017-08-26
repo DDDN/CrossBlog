@@ -29,4 +29,8 @@
     <ProjectReference Include="..\..\..\Office.Odf\src\DDDN.Office.Odf\DDDN.Office.Odf.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

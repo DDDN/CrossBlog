@@ -1,5 +1,5 @@
 ﻿@*
-	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.BlogInfo.Edit
+	DDDN.CrossBlog.Blog.Areas.Administration.Views.Writers.Create
 
 	Copyright(C) 2017 Lukasz Jaskiewicz
 	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -15,29 +15,31 @@
 *@
 
 @inject IViewLocalizer Loc
-@model DDDN.CrossBlog.Blog.Areas.Dashboard.Model.BlogInfoView
 
 @{
-	ViewData["Title"] = Loc["EditBlog"];
+	ViewData["Title"] = Loc["CreateWriter"];
 }
 
-<h2 class="pb-2">@Loc["EditBlog"]</h2>
+<h2 class="pb-2">@Loc["CreateWriter"]</h2>
 <hr />
-<form id="formValidation" asp-action="Edit">
-	<input type="hidden" asp-for="BlogInfoId" />
+<form id="formValidation" asp-action="Create">
 	<div class="form-group">
-		<label for="Name">@Loc["State"]</label>
-		<select asp-for="State" asp-items="Model.States" class="form-control" required></select>
+		<label for="Name">@Loc["Name"]</label>
+		<input type="text" id="Name" name="Name" class="form-control" required maxlength="200">
 	</div>
 	<div class="form-group">
-		<label for="BlogInfoName">@Loc["BlogInfoName"]</label>
-		<input type="text" asp-for="BlogInfoName" class="form-control" required maxlength="200">
+		<label for="Mail">@Loc["Mail"]</label>
+		<input type="email" id="Mail" name="Mail" class="form-control" required maxlength="100">
 	</div>
 	<div class="form-group">
-		<label for="BlogInfoCopyright">@Loc["BlogInfoCopyright"]</label>
-		<input type="text" asp-for="BlogInfoCopyright" class="form-control" required maxlength="200">
+		<label for="Password">@Loc["Password"]</label>
+		<input type="password" id="Password" name="Password" class="form-control" required>
 	</div>
-	<button type="submit" class="btn btn-primary">@Loc["BlogSave"]</button>
+	<div class="form-group">
+		<label for="PasswordCompare">@Loc["PasswordCompare"]</label>
+		<input type="password" id="PasswordCompare" name="PasswordCompare" class="form-control" required>
+	</div>
+	<button type="submit" class="btn btn-primary">@Loc["CreateWriter"]</button>
 </form>
 <hr />
-<a asp-action="Index">Back to List</a>
+<a asp-action="Index">@Loc["BackToList"]</a>

@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers.BlogInfoController
+* DDDN.CrossBlog.Blog.Areas.Administration.Controllers.BlogInfoController
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,7 +14,7 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.CrossBlog.Blog.Areas.Dashboard.Model;
+using DDDN.CrossBlog.Blog.Areas.Administration.Model;
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Model;
 using DDDN.CrossBlog.Blog.Routing;
@@ -27,9 +27,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
+namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 {
-	[Area("Dashboard")]
+	[Area("Administration")]
 	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
 	public class BlogInfoController : Controller
 	{

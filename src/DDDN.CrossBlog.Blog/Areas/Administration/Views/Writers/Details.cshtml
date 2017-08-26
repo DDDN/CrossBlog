@@ -1,5 +1,5 @@
 ﻿@*
-	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.BlogInfo.Details
+	DDDN.CrossBlog.Blog.Areas.Administration.Views.Writers.Details
 
 	Copyright(C) 2017 Lukasz Jaskiewicz
 	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,22 +14,16 @@
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
-@model DDDN.CrossBlog.Blog.Model.BlogInfo
 @inject IViewLocalizer Loc
+@model DDDN.CrossBlog.Blog.Model.Writer
 
 @{
-	ViewData["Title"] = Loc["BlogDetails"];
+	ViewData["Title"] = Loc["Details"];
 }
 
-<h2>@Loc["BlogDetails"]</h2>
+<h2 class="pb-2">@Loc["WriterDetails"]</h2>
 <hr />
 <dl class="dl-horizontal">
-	<dt>
-		@Html.DisplayNameFor(model => model.Name)
-	</dt>
-	<dd>
-		@Html.DisplayFor(model => model.Name)
-	</dd>
 	<dt>
 		@Html.DisplayNameFor(model => model.State)
 	</dt>
@@ -43,18 +37,19 @@
 		@Html.DisplayFor(model => model.Created)
 	</dd>
 	<dt>
-		@Html.DisplayNameFor(model => model.Copyright)
+		@Html.DisplayNameFor(model => model.Name)
 	</dt>
 	<dd>
-		@Html.DisplayFor(model => model.Copyright)
+		@Html.DisplayFor(model => model.Name)
 	</dd>
 	<dt>
-		@Html.DisplayNameFor(model => model.Version)
+		@Html.DisplayNameFor(model => model.Mail)
 	</dt>
 	<dd>
-		@Html.DisplayFor(model => model.Version)
+		@Html.DisplayFor(model => model.Mail)
 	</dd>
 </dl>
 <hr />
-<a asp-action="Edit" asp-route-id="@Model.BlogInfoId">Edit</a> |
-<a asp-action="Details">Back to Details</a>
+<a asp-action="Edit" asp-route-id="@Model.WriterId">Edit</a> |
+<a asp-action="Index">Back to List</a>
+

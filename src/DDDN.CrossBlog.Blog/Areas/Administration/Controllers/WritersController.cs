@@ -1,4 +1,4 @@
-﻿using DDDN.CrossBlog.Blog.Areas.Dashboard.Model;
+﻿using DDDN.CrossBlog.Blog.Areas.Administration.Model;
 using DDDN.CrossBlog.Blog.Model;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
+namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 {
-	[Area("Dashboard")]
+	[Area("Administration")]
 	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
 	public class WritersController : Controller
 	{

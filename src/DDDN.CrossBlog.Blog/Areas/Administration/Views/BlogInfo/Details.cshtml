@@ -1,5 +1,5 @@
 ﻿@*
-	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Writers.Delete
+	DDDN.CrossBlog.Blog.Areas.Administration.Views.BlogInfo.Details
 
 	Copyright(C) 2017 Lukasz Jaskiewicz
 	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,17 +14,22 @@
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
+@model DDDN.CrossBlog.Blog.Model.BlogInfo
 @inject IViewLocalizer Loc
-@model DDDN.CrossBlog.Blog.Model.Writer
 
 @{
-	ViewData["Title"] = Loc["DeleteWriter"];
+	ViewData["Title"] = Loc["BlogDetails"];
 }
 
-<h2 class="pb-2">@Loc["DeleteWriter"]</h2>
-<h3>Are you sure you want to delete this?</h3>
+<h2>@Loc["BlogDetails"]</h2>
 <hr />
 <dl class="dl-horizontal">
+	<dt>
+		@Html.DisplayNameFor(model => model.Name)
+	</dt>
+	<dd>
+		@Html.DisplayFor(model => model.Name)
+	</dd>
 	<dt>
 		@Html.DisplayNameFor(model => model.State)
 	</dt>
@@ -38,24 +43,18 @@
 		@Html.DisplayFor(model => model.Created)
 	</dd>
 	<dt>
-		@Html.DisplayNameFor(model => model.Name)
+		@Html.DisplayNameFor(model => model.Copyright)
 	</dt>
 	<dd>
-		@Html.DisplayFor(model => model.Name)
+		@Html.DisplayFor(model => model.Copyright)
 	</dd>
 	<dt>
-		@Html.DisplayNameFor(model => model.Mail)
+		@Html.DisplayNameFor(model => model.Version)
 	</dt>
 	<dd>
-		@Html.DisplayFor(model => model.Mail)
+		@Html.DisplayFor(model => model.Version)
 	</dd>
 </dl>
-
-<form asp-action="Delete">
-	<div class="form-actions no-color">
-		<input type="hidden" asp-for="WriterId" />
-		<input type="submit" value="Delete" class="btn btn-default" />
-	</div>
-</form>
 <hr />
-<a asp-action="Index">Back to List</a>
+<a asp-action="Edit" asp-route-id="@Model.BlogInfoId">Edit</a> |
+<a asp-action="Details">Back to Details</a>

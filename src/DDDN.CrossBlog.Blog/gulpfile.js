@@ -16,8 +16,8 @@ gulp.task('_beforeBuild', [
     'scssBuildBootstrap', 'scssBuildFontawesome',
     'copyLocalizationDocumentsFromAreasToWwwroot', 'copyLocalizationDocumentsFromModelToWwwroot',
     'copyAssetImageFiles',
-    'bundleCssBlog', 'bundleCssDashboard',
-    'copyNpmJsFilesToAssetsFolder', 'bundleBlogBodyJsFiles', 'bundleDashboardBodyJsFiles',
+    'bundleCssBlog', 'bundleCssAdministration',
+    'copyNpmJsFilesToAssetsFolder', 'bundleBlogBodyJsFiles', 'bundleAdministrationBodyJsFiles',
     'copyJqueryValidationLocalizationFolderFromNpmToAssets', 'copyJqueryValidationLocalizationFolderFromAssetsToWwwroot']);
 
 /// compile Bootstrap scss
@@ -86,16 +86,16 @@ gulp.task('bundleCssBlog', function () {
         .pipe(gulp.dest('wwwroot/css'));
 });
 
-/// copy and clean Dashboard area CSS assets to wwwroot
-var assetsCssDashboard = [
+/// copy and clean Administration area CSS assets to wwwroot
+var assetsCssAdministration = [
     'assets/styles/font-awesome.css',
     'assets/styles/bootstrap.css',
-    'assets/app/styles/dashboard.css'
+    'assets/app/styles/administration.css'
 ];
-gulp.task('bundleCssDashboard', function () {
-    return gulp.src(assetsCssDashboard)
+gulp.task('bundleCssAdministration', function () {
+    return gulp.src(assetsCssAdministration)
         .pipe(sourcemaps.init())
-        .pipe(concat('dashboard.bundle.min.css'))
+        .pipe(concat('administration.bundle.min.css'))
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(sourcemaps.write('/'))
         .pipe(gulp.dest('wwwroot/css'));
@@ -118,17 +118,17 @@ gulp.task('bundleBlogBodyJsFiles', function () {
 });
 
 /// copy and uglify JavaScript assets to wwwroot
-var assetsJsDahsboardBody = [
+var assetsJsAdministrationBody = [
     'assets/scripts/jquery.js',
     'assets/scripts/jquery.validate.js',
     'assets/scripts/popper.js',
     'assets/scripts/bootstrap.js',
-    'assets/app/scripts/dashboard.js'
+    'assets/app/scripts/administration.js'
 ];
-gulp.task('bundleDashboardBodyJsFiles', function () {
-    return gulp.src(assetsJsDahsboardBody)
+gulp.task('bundleAdministrationBodyJsFiles', function () {
+    return gulp.src(assetsJsAdministrationBody)
         .pipe(sourcemaps.init())
-        .pipe(concat('dashboard.body.bundle.min.js'))
+        .pipe(concat('administration.body.bundle.min.js'))
         .pipe(uglify())
         .pipe(sourcemaps.write('/'))
         .pipe(gulp.dest('wwwroot/js'));

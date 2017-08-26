@@ -1,5 +1,5 @@
-/*
-* DDDN.CrossBlog.Blog.Model.Data.Post
+﻿/*
+* DDDN.CrossBlog.Blog.Areas.Dashboard.Model.WriterView
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,28 +14,25 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Model.Data
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+
+namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Model
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+	public class WriterView
+	{
+		public Guid WriterId { get; set; }
+		public string State { get; set; }
+		public string Name { get; set; }
+		public string Mail { get; set; }
+		public string Password { get; set; }
+		public string PasswordCompare { get; set; }
 
-    [Table("Post")]
-    public class Post
-    {
-        [Key]
-        public Guid PostId { get; set; }
-        [Required]
-        public PostState State { get; set; }
-        [Required]
-        public DateTimeOffset Created { get; set; }
-        [StringLength(200)]
-        [Required]
-        public string Title { get; set; }
-
-        public List<Comment> Comments { get; set; }
-        public List<Document> Documents { get; set; }
-        public List<PostCategoryMap> PostCategories { get; set; }
-    }
+		public List<SelectListItem> States { get; } = new List<SelectListItem>
+		{
+			new SelectListItem { Value = "1", Text = "Active" },
+			new SelectListItem { Value = "2", Text = "Inactive" }
+		};
+	}
 }

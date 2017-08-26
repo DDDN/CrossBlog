@@ -14,11 +14,6 @@
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
-@using DDDN.CrossBlog.Blog.Routing
-@using System.Globalization
-@using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Loc
-
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
@@ -35,6 +30,9 @@
 		<div class="row">
 			<div class="col-md-3 pl-0 pr-0" id="sidebar">
 				<h1 class="pt-5 text-center"><i class="fa fa-3x fa-book"></i>CrossBlog</h1>
+				<div class="align-bottom text-center">
+					<a href="@Url.Content($"~/Dashboard/{CultureInfo.CurrentCulture.Name}/BlogInfo/Details")">Dashboard</a>
+				</div>
 			</div>
 			<main class="col-md-9" id="main">
 				<content class="p-5">

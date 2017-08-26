@@ -1,5 +1,5 @@
 /*
-* DDDN.CrossBlog.Blog.Model.Data.Document
+* DDDN.CrossBlog.Blog.Model.BlogInfo
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,30 +14,32 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Model.Data
+namespace DDDN.CrossBlog.Blog.Model
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+	using System;
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Document")]
-    public class Document
-    {
-        [Key]
-        public Guid DocumentId { get; set; }
-        [Required]
-        public DocumentState State { get; set; }
-        [Required]
-        public DateTimeOffset Created { get; set; }
-        [Required]
-        public byte[] Binary { get; set; }
-        [Required]
-        public string Html { get; set; }
-        [Required]
-        public string Css { get; set; }
+	[Table("BlogInfo")]
+	public class BlogInfo
+	{
+		[Key]
+		public Guid BlogInfoId { get; set; }
+		[Required]
+		[StringLength(2)]
+		public string State { get; set; }
+		[Required]
+		public DateTimeOffset Created { get; set; }
+		[StringLength(15)]
+		[Required]
+		public string Version { get; set; }
+		[StringLength(200)]
+		[Required]
+		public string Name { get; set; }
+		[StringLength(200)]
+		public string Copyright { get; set; }
 
-        public Post Post { get; set; }
-        public List<Content> Contents { get; set; }
-    }
+		public List<Writer> Writers { get; set; }
+	}
 }

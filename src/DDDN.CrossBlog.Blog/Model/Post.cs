@@ -1,5 +1,5 @@
 /*
-* DDDN.CrossBlog.Blog.Model.Data.Category
+* DDDN.CrossBlog.Blog.Model.Post
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,24 +14,29 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Model.Data
+namespace DDDN.CrossBlog.Blog.Model
 {
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
 	using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("Category")]
-	public class Category
+	[Table("Post")]
+	public class Post
 	{
 		[Key]
-		public Guid CategoryId { get; set; }
-        [Required]
-        public CategoryState State { get; set; }
-		[StringLength(50)]
-        [Required]
-        public string Name { get; set; }
+		public Guid PostId { get; set; }
+		[Required]
+		[StringLength(2)]
+		public string State { get; set; }
+		[Required]
+		public DateTimeOffset Created { get; set; }
+		[StringLength(200)]
+		[Required]
+		public string Title { get; set; }
 
+		public List<Comment> Comments { get; set; }
+		public List<Document> Documents { get; set; }
 		public List<PostCategoryMap> PostCategories { get; set; }
 	}
 }

@@ -23,7 +23,7 @@ using System.Globalization;
 
 namespace DDDN.CrossBlog.Blog.Localization
 {
-	public class BlogCultures : IBlogCultures, IEnumerable<KeyValuePair<CultureInfo, bool>>
+	public class BlogCultures : IBlogCultures
 	{
 		public CultureInfo DefaultCulture { get; protected set; }
 		public string SupportedCulturesDelimitedString { get; protected set; }

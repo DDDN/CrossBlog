@@ -1,5 +1,5 @@
-﻿/*
-* DDDN.CrossBlog.Blog.Model.CategoryState
+/*
+* DDDN.CrossBlog.Blog.Model.Document
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -16,10 +16,29 @@
 
 namespace DDDN.CrossBlog.Blog.Model
 {
-    public enum CategoryState
-    {
-        None,
-        Active,
-        Inactive
-    }
+	using System;
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	[Table("Document")]
+	public class Document
+	{
+		[Key]
+		public Guid DocumentId { get; set; }
+		[Required]
+		[StringLength(2)]
+		public string State { get; set; }
+		[Required]
+		public DateTimeOffset Created { get; set; }
+		[Required]
+		public byte[] Binary { get; set; }
+		[Required]
+		public string Html { get; set; }
+		[Required]
+		public string Css { get; set; }
+
+		public Post Post { get; set; }
+		public List<Content> Contents { get; set; }
+	}
 }

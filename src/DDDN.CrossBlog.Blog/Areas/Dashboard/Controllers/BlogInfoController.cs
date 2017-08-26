@@ -14,20 +14,18 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DDDN.CrossBlog.Blog.Areas.Dashboard.Data;
+using DDDN.CrossBlog.Blog.Areas.Dashboard.Model;
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Model;
-using DDDN.CrossBlog.Blog.Model.Data;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 {
@@ -45,37 +43,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 		{
 			_routingConfigSection = routingConfigSection ?? throw new System.ArgumentNullException(nameof(routingConfigSection));
 			_ctx = crossBlogContext ?? throw new System.ArgumentNullException(nameof(crossBlogContext));
-		}
-
-		public IActionResult Index()
-		{
-			_ctx.Database.EnsureCreated();
-			var blogInfo = _ctx.BlogInfo.AsNoTracking().FirstOrDefault();
-
-			if (blogInfo == default(BlogInfo))
-			{
-				return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = nameof(BlogInfo),
-					 action = nameof(Create)
-				 });
-			}
-			else
-			{
-				return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = nameof(BlogInfo),
-					 action = nameof(Details)
-				 });
-			}
 		}
 
 		public async Task<IActionResult> Details()
@@ -97,15 +64,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 			if (blogInfo != default(BlogInfo))
 			{
-				return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = nameof(BlogInfo),
-					 action = nameof(Details)
-				 });
+				return RedirectToAction(nameof(Details));
 			}
 
 			return View();
@@ -113,38 +72,31 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(BlogInfoCreate blogInfoCreate)
+		public async Task<IActionResult> Create(BlogInfoView blogInfoView)
 		{
-			if (blogInfoCreate == null)
+			if (blogInfoView == null)
 			{
-				throw new System.ArgumentNullException(nameof(blogInfoCreate));
+				throw new System.ArgumentNullException(nameof(blogInfoView));
 			}
 
 			var blogInfo = _ctx.BlogInfo.AsNoTracking().FirstOrDefault();
 
 			if (blogInfo != default(BlogInfo))
 			{
-				return RedirectToRoute(
-				 routeName: RouteNames.Default,
-				 routeValues: new
-				 {
-					 area = AreaNames.Dashboard,
-					 culture = CultureInfo.CurrentCulture,
-					 controller = nameof(BlogInfo),
-					 action = nameof(Details)
-				 });
+				return RedirectToAction(nameof(Details));
 			}
 
 			var created = DateTimeOffset.Now;
 			var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName()?.Version.ToString();
+			var state = "1";
 
 			blogInfo = new BlogInfo
 			{
-				Name = blogInfoCreate.BlogInfoName,
-				Copyright = blogInfoCreate.BlogInfoCopyright,
+				Name = blogInfoView.BlogInfoName,
+				Copyright = blogInfoView.BlogInfoCopyright,
 				Created = created,
 				BlogInfoId = Guid.NewGuid(),
-				State = BlogState.Active,
+				State = state,
 				Version = version,
 				Writers = new List<Writer>()
 			};
@@ -153,18 +105,18 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			{
 				WriterId = Guid.NewGuid(),
 				Created = created,
-				Name = blogInfoCreate.WriterName,
-				Mail = blogInfoCreate.WriterMail,
-				Password = Encoding.Unicode.GetBytes(blogInfoCreate.WriterPassword),
-				Salt = Encoding.Unicode.GetBytes(blogInfoCreate.BlogInfoName + blogInfoCreate.WriterMail),
-				State = WriterState.Active
+				Name = blogInfoView.WriterName,
+				Mail = blogInfoView.WriterMail,
+				Password = Encoding.Unicode.GetBytes(blogInfoView.WriterPassword),
+				Salt = Encoding.Unicode.GetBytes(blogInfoView.BlogInfoName + blogInfoView.WriterMail),
+				State = state
 			};
 
 			blogInfo.Writers.Add(writer);
 			_ctx.BlogInfo.Add(blogInfo);
 			await _ctx.SaveChangesAsync();
 
-			return View();
+			return RedirectToAction(nameof(Details));
 		}
 	}
 }

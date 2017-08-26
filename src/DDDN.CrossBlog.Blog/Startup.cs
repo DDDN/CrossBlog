@@ -96,7 +96,7 @@ namespace DDDN.CrossBlog.Blog
 								{
 									area = $@"^{routingSection.Value.BlogAreas}",
 									culture = $@"^{blogCultures.SupportedCulturesDelimitedString}",
-									id = @"\d+"
+									//id = @"\d+"
 								},
 								dataTokens: new
 								{
@@ -117,7 +117,7 @@ namespace DDDN.CrossBlog.Blog
 								constraints: new { },
 								dataTokens: new
 								{
-									RouteName = RouteNames.Default
+									RouteName = RouteNames.Redirect
 								}
 						 );
 			});

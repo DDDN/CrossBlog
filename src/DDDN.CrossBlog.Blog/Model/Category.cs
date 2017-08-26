@@ -1,5 +1,5 @@
-﻿/*
-* DDDN.CrossBlog.Blog.Model.SessionState
+/*
+* DDDN.CrossBlog.Blog.Model.Category
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -16,10 +16,23 @@
 
 namespace DDDN.CrossBlog.Blog.Model
 {
-    public enum SessionState
-    {
-        None,
-        Active,
-        Inactive
-    }
+	using System;
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	[Table("Category")]
+	public class Category
+	{
+		[Key]
+		public Guid CategoryId { get; set; }
+		[Required]
+		[StringLength(2)]
+		public string State { get; set; }
+		[StringLength(50)]
+		[Required]
+		public string Name { get; set; }
+
+		public List<PostCategoryMap> PostCategories { get; set; }
+	}
 }

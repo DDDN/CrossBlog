@@ -1,3 +1,3 @@
 ﻿$(document).ready(function () {
-    $('#formBlogInfoCreate').validate();
+    $('#formValidation').validate();
 });

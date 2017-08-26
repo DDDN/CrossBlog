@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Model.Data.Session
+* DDDN.CrossBlog.Blog.Model.Session
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,7 +14,7 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Model.Data
+namespace DDDN.CrossBlog.Blog.Model
 {
 	using System;
 	using System.ComponentModel.DataAnnotations;
@@ -25,9 +25,10 @@ namespace DDDN.CrossBlog.Blog.Model.Data
 	{
 		[Key]
 		public Guid SessionId { get; set; }
-        [Required]
-		public SessionState State { get; set; }
-        [Required]
-        public DateTimeOffset Created { get; set; }
+		[Required]
+		[StringLength(2)]
+		public string State { get; set; }
+		[Required]
+		public DateTimeOffset Created { get; set; }
 	}
 }

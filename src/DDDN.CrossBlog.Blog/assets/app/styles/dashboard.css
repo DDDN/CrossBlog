@@ -49,3 +49,7 @@
 #main {
 	color: #343a40;
 }
+
+.error {
+	color: red;
+}

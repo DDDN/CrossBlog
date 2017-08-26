@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Model
 {
-	public class CrossBlogDbInitializer
+	public static class CrossBlogDbInitializer
 	{
 		public static void Initialize(CrossBlogContext context)
 		{

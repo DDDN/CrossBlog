@@ -1,5 +1,5 @@
-﻿/*
-* DDDN.CrossBlog.Blog.Model.CommentState
+/*
+* DDDN.CrossBlog.Blog.Model.Comment
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -16,10 +16,28 @@
 
 namespace DDDN.CrossBlog.Blog.Model
 {
-    public enum CommentState
-    {
-        None,
-        Active,
-        Inactive
-    }
+	using System;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	[Table("Comment")]
+	public class Comment
+	{
+		[Key]
+		public Guid CommentId { get; set; }
+		[Required]
+		[StringLength(2)]
+		public string State { get; set; }
+		[Required]
+		public DateTimeOffset Created { get; set; }
+		[StringLength(100)]
+		[Required]
+		public string Name { get; set; }
+		[StringLength(100)]
+		public string Mail { get; set; }
+		[Required]
+		public string Text { get; set; }
+
+		public Post Post { get; set; }
+	}
 }

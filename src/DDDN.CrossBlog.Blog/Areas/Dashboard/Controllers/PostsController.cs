@@ -14,16 +14,18 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Routing;
+using DDDN.Office.Odf.Odt;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DDDN.CrossBlog.Blog.Model;
-using DDDN.CrossBlog.Blog.Routing;
-using DDDN.CrossBlog.Blog.Areas.Dashboard.Models;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 {
@@ -62,31 +64,65 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 		public IActionResult Create()
 		{
+			var uploadedPosts = _context.Posts
+				.Where(p => p.State == Post.States.Published);
+
 			return View();
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("FileName,Title,Published")] PostView postView)
+		public async Task<IActionResult> Create(IList<IFormFile> files)
 		{
+			List<Post> posts = new List<Post>();
+
 			if (ModelState.IsValid)
 			{
-				var post = new Post
+				foreach (var file in files)
 				{
-					PostId = Guid.NewGuid(),
-					State = "1",
-					Created = DateTimeOffset.Now,
-					Published = postView.Published,
-					Title = postView.Title
-				};
+					using (var fileContent = new MemoryStream())
+					{
+						await file.CopyToAsync(fileContent);
 
-				_context.Add(post);
+						using (var sha1 = new SHA1Managed())
+						{
+							var fileContentBytes = fileContent.ToArray();
+							var sha1Hash = sha1.ComputeHash(fileContentBytes);
+
+							using (IODTFile odtFile = new ODTFile(fileContent))
+							{
+								using (IODTConvert odtCon = new ODTConvert(odtFile))
+								{
+									var html = odtCon.GetHtml();
+									var css = odtCon.GetCss();
+
+									var post = new Post
+									{
+										PostId = Guid.NewGuid(),
+										State = Post.States.Uploaded,
+										Created = DateTimeOffset.Now,
+										Binary = fileContentBytes,
+										Hash = sha1Hash,
+										Title = "Title alternative",
+										Html = html,
+										Css = css,
+										Writer = _context.Writers.First()
+									};
+
+									_context.AddRange(post);
+								}
+							}
+						}
+					}
+				}
+
+				_context.AddRange(posts);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
 			else
 			{
-				return View(postView);
+				return View();
 			}
 		}
 

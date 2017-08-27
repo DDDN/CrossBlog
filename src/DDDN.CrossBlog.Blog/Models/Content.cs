@@ -1,5 +1,5 @@
 /*
-* DDDN.CrossBlog.Blog.Model.Content
+* DDDN.CrossBlog.Blog.Models.Content
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,7 +14,7 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Model
+namespace DDDN.CrossBlog.Blog.Models
 {
 	using System;
 	using System.ComponentModel.DataAnnotations;
@@ -35,6 +35,6 @@ namespace DDDN.CrossBlog.Blog.Model
 		[StringLength(300)]
 		public string Name { get; set; }
 
-		public Document Document { get; set; }
+		public Post Post { get; set; }
 	}
 }

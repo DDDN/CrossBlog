@@ -1,5 +1,5 @@
 /*
-* DDDN.CrossBlog.Blog.Model.CrossBlogContext
+* DDDN.CrossBlog.Blog.Models.CrossBlogContext
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,7 +14,7 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Model
+namespace DDDN.CrossBlog.Blog.Models
 {
 	using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +30,6 @@ namespace DDDN.CrossBlog.Blog.Model
 		public DbSet<PostCategoryMap> PostCategories { get; set; }
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<Comment> Comments { get; set; }
-		public DbSet<Document> Documents { get; set; }
 		public DbSet<Content> Contents { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

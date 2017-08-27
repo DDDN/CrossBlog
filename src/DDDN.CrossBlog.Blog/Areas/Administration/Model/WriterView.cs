@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Areas.Administration.Model.WriterView
+* DDDN.CrossBlog.Blog.Areas.Administration.Models.WriterView
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,25 +14,25 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using Microsoft.AspNetCore.Mvc.Rendering;
+using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Views.Models;
+using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 
-namespace DDDN.CrossBlog.Blog.Areas.Administration.Model
+namespace DDDN.CrossBlog.Blog.Areas.Administration.Models
 {
-	public class WriterView
+	public class WriterView : ViewModel
 	{
+		public WriterView(IStringLocalizer localizer)
+			: base(typeof(Writer.States), localizer)
+		{
+		}
+
 		public Guid WriterId { get; set; }
-		public string State { get; set; }
+		public Writer.States State { get; set; }
 		public string Name { get; set; }
 		public string Mail { get; set; }
 		public string Password { get; set; }
 		public string PasswordCompare { get; set; }
-
-		public List<SelectListItem> States { get; } = new List<SelectListItem>
-		{
-			new SelectListItem { Value = "1", Text = "Active" },
-			new SelectListItem { Value = "2", Text = "Inactive" }
-		};
 	}
 }

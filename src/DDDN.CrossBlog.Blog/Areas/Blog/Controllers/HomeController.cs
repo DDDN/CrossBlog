@@ -15,7 +15,7 @@
 */
 
 using DDDN.CrossBlog.Blog.Configuration;
-using DDDN.CrossBlog.Blog.Model;
+using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,9 @@
-﻿using DDDN.CrossBlog.Blog.Areas.Administration.Model;
-using DDDN.CrossBlog.Blog.Model;
+﻿using DDDN.CrossBlog.Blog.Areas.Administration.Models;
+using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,12 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 	public class WritersController : Controller
 	{
 		private readonly CrossBlogContext _context;
+		private readonly IStringLocalizer<WritersController> _localizer;
 
-		public WritersController(CrossBlogContext context)
+		public WritersController(CrossBlogContext context, IStringLocalizer<WritersController> localizer)
 		{
-			_context = context;
+			_context = context ?? throw new ArgumentNullException(nameof(context));
+			_localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
 		}
 
 		public async Task<IActionResult> Index()
@@ -59,7 +62,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 				WriterId = Guid.NewGuid(),
 				Password = Encoding.Unicode.GetBytes(writerView.Password),
 				Salt = Encoding.Unicode.GetBytes(writerView.Name + writerView.Mail),
-				State = "1",
+				State = Writer.States.Active,
 				Created = DateTimeOffset.Now
 			};
 
@@ -81,7 +84,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 				return NotFound();
 			}
 
-			var writerView = new WriterView
+			var writerView = new WriterView(_localizer)
 			{
 				WriterId = writer.WriterId,
 				State = writer.State,

@@ -14,7 +14,7 @@ var gulp = require('gulp'),
 gulp.task('_beforeBuild', [
 	'copyFromNodeFontawesomeFontfolderToAssets', 'copyFontsToWwwroot',
 	'scssBuildBootstrap', 'scssBuildFontawesome',
-	'copyLocalizationDocumentsFromAreasToWwwroot', 'copyLocalizationDocumentsFromModelToWwwroot',
+	'copyLocalizationDocumentsFromAreasToWwwroot', 'copyLocalizationDocumentsFromModelsToWwwroot',
 	'copyAssetImageFiles',
 	'bundleCssBlog', 'bundleCssDashboard', 'bundleCssAdministration',
 	'copyNpmJsFilesToAssetsFolder', 'bundleBlogBodyJsFiles', 'bundleDashboardBodyJsFiles', 'bundleAdministrationBodyJsFiles',
@@ -45,10 +45,10 @@ gulp.task('copyLocalizationDocumentsFromAreasToWwwroot', function () {
 });
 
 /// copy resource files from Model to wwwroot
-gulp.task('copyLocalizationDocumentsFromModelToWwwroot', function () {
+gulp.task('copyLocalizationDocumentsFromModelsToWwwroot', function () {
 	gulp
-		.src('Model/**/l10n/*.*')
-		.pipe(gulp.dest('wwwroot/l10n/Model'));
+		.src('Models/**/l10n/*.*')
+		.pipe(gulp.dest('wwwroot/l10n/Models'));
 });
 
 /// copy image assets to wwwroot

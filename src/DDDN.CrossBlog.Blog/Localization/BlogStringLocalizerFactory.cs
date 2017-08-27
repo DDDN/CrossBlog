@@ -15,7 +15,7 @@
 */
 
 using DDDN.CrossBlog.Blog.Configuration;
-using DDDN.CrossBlog.Blog.Localization.ODF;
+using DDDN.Office.Odf.Odt;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;

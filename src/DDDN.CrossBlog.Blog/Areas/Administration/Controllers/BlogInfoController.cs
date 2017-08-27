@@ -14,12 +14,13 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.CrossBlog.Blog.Areas.Administration.Model;
+using DDDN.CrossBlog.Blog.Areas.Administration.Models;
 using DDDN.CrossBlog.Blog.Configuration;
-using DDDN.CrossBlog.Blog.Model;
+using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -35,14 +36,18 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 	{
 		private readonly IOptions<RoutingConfigSection> _routingConfigSection;
 		private readonly CrossBlogContext _ctx;
+		private readonly IStringLocalizer<BlogInfoController> _localizer;
+
 
 		public BlogInfoController(
 			 IOptions<RoutingConfigSection> routingConfigSection,
-			 CrossBlogContext crossBlogContext
+			 CrossBlogContext crossBlogContext,
+			 IStringLocalizer<BlogInfoController> localizer
 			 )
 		{
 			_routingConfigSection = routingConfigSection ?? throw new System.ArgumentNullException(nameof(routingConfigSection));
 			_ctx = crossBlogContext ?? throw new System.ArgumentNullException(nameof(crossBlogContext));
+			_localizer = localizer ?? throw new System.ArgumentNullException(nameof(localizer));
 		}
 
 		public async Task<IActionResult> Details()
@@ -94,7 +99,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 
 			var created = DateTimeOffset.Now;
 			var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName()?.Version.ToString();
-			var state = "1";
 
 			blogInfo = new BlogInfo
 			{
@@ -102,7 +106,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 				Copyright = blogInfoView.BlogInfoCopyright,
 				Created = created,
 				BlogInfoId = Guid.NewGuid(),
-				State = state,
+				State = BlogInfo.States.Active,
 				Version = version,
 				Writers = new List<Writer>()
 			};
@@ -115,7 +119,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 				Mail = blogInfoView.WriterMail,
 				Password = Encoding.Unicode.GetBytes(blogInfoView.WriterPassword),
 				Salt = Encoding.Unicode.GetBytes(blogInfoView.BlogInfoName + blogInfoView.WriterMail),
-				State = state
+				State = Writer.States.Active
 			};
 
 			blogInfo.Writers.Add(writer);

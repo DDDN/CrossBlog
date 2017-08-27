@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Model.Session
+* DDDN.CrossBlog.Blog.Views.Models.ViewModel
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,23 +14,40 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.Model
-{
-	using System;
-	using System.ComponentModel.DataAnnotations;
-	using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
+using System;
+using System.Collections.Generic;
 
-	[Table("Session")]
-	public class Session
+namespace DDDN.CrossBlog.Blog.Views.Models
+{
+	public class ViewModel
 	{
-		[Key]
-		public Guid SessionId { get; set; }
-		[Required]
-		[StringLength(2)]
-		public string State { get; set; }
-		[Required]
-		public DateTimeOffset Created { get; set; }
-		[Required]
-		public Guid WriterId { get; set; }
+		public List<SelectListItem> States { get; }
+
+		public ViewModel(Type enumType, IStringLocalizer localizer)
+		{
+			States = new List<SelectListItem>();
+
+			if (localizer == null)
+			{
+				return;
+			}
+
+			var values = Enum.GetValues(enumType);
+			var names = Enum.GetNames(enumType);
+
+			for (int i = 0; i < values.Length; i++)
+			{
+				var item = new SelectListItem
+				{
+					Value = values.GetValue(i) as string,
+					Text = localizer[names.GetValue(i) as string]
+				};
+
+				States.Add(item);
+			}
+		}
+
 	}
 }

@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Model.CrossBlogDbInitializer
+* DDDN.CrossBlog.Blog.Models.CrossBlogDbInitializer
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DDDN.CrossBlog.Blog.Model
+namespace DDDN.CrossBlog.Blog.Models
 {
 	public static class CrossBlogDbInitializer
 	{

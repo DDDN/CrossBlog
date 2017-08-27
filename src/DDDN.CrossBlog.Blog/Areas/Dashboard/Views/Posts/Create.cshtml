@@ -15,7 +15,7 @@
 *@
 
 @inject IViewLocalizer Loc
-@model DDDN.CrossBlog.Blog.Areas.Dashboard.Models.PostView
+@*@model DDDN.CrossBlog.Blog.Areas.Dashboard.Models.PostView*@
 
 @{
 	ViewData["Title"] = Loc["CreatePost"];
@@ -23,18 +23,10 @@
 
 <h2 class="pb-2">@Loc["CreatePost"]</h2>
 <hr />
-<form id="formValidation" asp-action="Create">
+<form id="formValidation" asp-action="Create" enctype="multipart/form-data">
 	<div class="form-group">
-		<label for="BlogInfoName">@Loc["FileName"]</label>
-		<input type="file" asp-for="FileName" class="form-control" required>
-	</div>
-	<div class="form-group">
-		<label for="BlogInfoName">@Loc["Title"]</label>
-		<input type="text" asp-for="Title" class="form-control" required maxlength="200">
-	</div>
-	<div class="form-group">
-		<label for="BlogInfoCopyright">@Loc["Published"]</label>
-		<input type="date" asp-for="Published" class="form-control" required>
+		<label for="FileName">@Loc["files"]</label>
+		<input type="file" id="files" name="files" class="form-control" required>
 	</div>
 	<button type="submit" class="btn btn-primary">@Loc["CreatePost"]</button>
 </form>

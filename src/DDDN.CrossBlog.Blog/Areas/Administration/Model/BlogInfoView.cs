@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Areas.Administration.Model.BlogInfoView
+* DDDN.CrossBlog.Blog.Areas.Administration.Models.BlogInfoView
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,16 +14,30 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Views.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 
-namespace DDDN.CrossBlog.Blog.Areas.Administration.Model
+namespace DDDN.CrossBlog.Blog.Areas.Administration.Models
 {
-	public class BlogInfoView
+	public class BlogInfoView : ViewModel
 	{
+		public BlogInfoView()
+			: base(typeof(BlogInfo.States), null)
+		{
+
+		}
+
+		public BlogInfoView(IStringLocalizer localizer)
+			: base(typeof(BlogInfo.States), localizer)
+		{
+		}
+
 		public Guid BlogInfoId { get; set; }
-		public string State { get; set; }
+		public BlogInfo.States State { get; set; }
 		public string BlogInfoName { get; set; }
 		public string BlogInfoCopyright { get; set; }
 		public string WriterName { get; set; }

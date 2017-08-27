@@ -16,7 +16,7 @@
 
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Localization;
-using DDDN.CrossBlog.Blog.Model;
+using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

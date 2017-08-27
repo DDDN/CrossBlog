@@ -1,5 +1,5 @@
 /*
-* DDDN.CrossBlog.Blog.Areas.Dashboard.Models.BlogInfoView
+* DDDN.CrossBlog.Blog.Areas.Dashboard.Models.PostView
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,25 +14,24 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using Microsoft.AspNetCore.Mvc.Rendering;
+using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Views.Models;
+using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Models
 {
-	public class PostView
+	public class PostView : ViewModel
 	{
+		public PostView(IStringLocalizer localizer)
+			: base(typeof(Post.States), localizer)
+		{
+		}
+
 		public string PostId { get; set; }
-		public string State { get; set; }
+		public Post.States State { get; set; }
 		public DateTimeOffset Created { get; set; }
-		public DateTimeOffset Published { get; set; }
 		public string FileName { get; set; }
 		public string Title { get; set; }
-
-		public List<SelectListItem> States { get; } = new List<SelectListItem>
-		{
-			new SelectListItem { Value = "1", Text = "Visible" },
-			new SelectListItem { Value = "2", Text = "Hidden" }
-		};
 	}
 }

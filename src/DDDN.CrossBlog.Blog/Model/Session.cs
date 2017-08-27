@@ -30,5 +30,7 @@ namespace DDDN.CrossBlog.Blog.Model
 		public string State { get; set; }
 		[Required]
 		public DateTimeOffset Created { get; set; }
+		[Required]
+		public Guid WriterId { get; set; }
 	}
 }

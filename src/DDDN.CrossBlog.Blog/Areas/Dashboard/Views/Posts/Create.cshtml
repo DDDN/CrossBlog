@@ -1,40 +1,43 @@
-﻿@model DDDN.CrossBlog.Blog.Model.Post
+﻿@*
+	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Posts.Create.cshtml
+
+	Copyright(C) 2017 Lukasz Jaskiewicz
+	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+@inject IViewLocalizer Loc
+@model DDDN.CrossBlog.Blog.Areas.Dashboard.Models.PostView
 
 @{
-    ViewData["Title"] = "Create";
+	ViewData["Title"] = Loc["CreatePost"];
 }
 
-<h2>Create</h2>
-
-<h4>Post</h4>
+<h2 class="pb-2">@Loc["CreatePost"]</h2>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                <input asp-for="State" class="form-control" />
-                <span asp-validation-for="State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control" />
-                <span asp-validation-for="Created" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<form id="formValidation" asp-action="Create">
+	<div class="form-group">
+		<label for="BlogInfoName">@Loc["FileName"]</label>
+		<input type="file" asp-for="FileName" class="form-control" required>
+	</div>
+	<div class="form-group">
+		<label for="BlogInfoName">@Loc["Title"]</label>
+		<input type="text" asp-for="Title" class="form-control" required maxlength="200">
+	</div>
+	<div class="form-group">
+		<label for="BlogInfoCopyright">@Loc["Published"]</label>
+		<input type="date" asp-for="Published" class="form-control" required>
+	</div>
+	<button type="submit" class="btn btn-primary">@Loc["CreatePost"]</button>
+</form>
+<hr />
+<a asp-action="Index">@Loc["BackToList"]</a>
 

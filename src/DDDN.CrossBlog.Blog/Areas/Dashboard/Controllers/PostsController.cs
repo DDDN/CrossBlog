@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+* DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers.PostsController
+* 
+* Copyright(C) 2017 Lukasz Jaskiewicz
+* Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+*
+* This program is free software; you can redistribute it and/or modify it under the terms of the
+* GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License along with this program; if not, write
+* to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +23,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DDDN.CrossBlog.Blog.Model;
 using DDDN.CrossBlog.Blog.Routing;
+using DDDN.CrossBlog.Blog.Areas.Dashboard.Models;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 {
@@ -21,13 +38,11 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			_context = context;
 		}
 
-		// GET: Dashboard/Posts
 		public async Task<IActionResult> Index()
 		{
 			return View(await _context.Posts.ToListAsync());
 		}
 
-		// GET: Dashboard/Posts/Details/5
 		public async Task<IActionResult> Details(Guid? id)
 		{
 			if (id == null)
@@ -45,30 +60,36 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			return View(post);
 		}
 
-		// GET: Dashboard/Posts/Create
 		public IActionResult Create()
 		{
 			return View();
 		}
 
-		// POST: Dashboard/Posts/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("PostId,State,Created,Title")] Post post)
+		public async Task<IActionResult> Create([Bind("FileName,Title,Published")] PostView postView)
 		{
 			if (ModelState.IsValid)
 			{
-				post.PostId = Guid.NewGuid();
+				var post = new Post
+				{
+					PostId = Guid.NewGuid(),
+					State = "1",
+					Created = DateTimeOffset.Now,
+					Published = postView.Published,
+					Title = postView.Title
+				};
+
 				_context.Add(post);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
-			return View(post);
+			else
+			{
+				return View(postView);
+			}
 		}
 
-		// GET: Dashboard/Posts/Edit/5
 		public async Task<IActionResult> Edit(Guid? id)
 		{
 			if (id == null)
@@ -84,9 +105,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			return View(post);
 		}
 
-		// POST: Dashboard/Posts/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(Guid id, [Bind("PostId,State,Created,Title")] Post post)
@@ -119,7 +137,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			return View(post);
 		}
 
-		// GET: Dashboard/Posts/Delete/5
 		public async Task<IActionResult> Delete(Guid? id)
 		{
 			if (id == null)
@@ -137,7 +154,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			return View(post);
 		}
 
-		// POST: Dashboard/Posts/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(Guid id)

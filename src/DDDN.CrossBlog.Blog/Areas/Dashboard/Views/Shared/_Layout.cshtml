@@ -14,6 +14,8 @@
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
+@inject IViewLocalizer Localizer
+
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
@@ -22,53 +24,52 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<link rel="icon" href="~/images/favicon.ico">
-	<title>CrossBlog Dashboard</title>
-	<link href="~/css/dashboard.bundle.min.css" rel="stylesheet">
+	<title>CrossBlog Administration </title>
+	<link href="~/css/administration.bundle.min.css" rel="stylesheet">
 </head>
 <body>
-	<div class="container">
-		<div class="masthead">
-			<h3 class="text-muted">CrossBlog Dashboard</h3>
-			<nav class="navbar navbar-expand-md navbar-light bg-light rounded mb-3">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarCollapse">
-					<ul class="navbar-nav text-md-center nav-justified w-100">
-						<li class="nav-item active">
-							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Projects</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Services</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Downloads</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">About</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-							<div class="dropdown-menu" aria-labelledby="dropdown01">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<a class="dropdown-item" href="#">Something else here</a>
-							</div>
-						</li>
-					</ul>
+	<nav class="navbar navbar-dark bg-dark">
+		<a class="navbar-brand pl-1" href="#">CrossBlog Administration</a>
+		<a href="#sidebar" data-toggle="collapse" class="pull-right"><i class="fa fa-navicon fa-2x"></i></a>
+	</nav>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2 col-1 pl-0 pr-0" id="sidebar">
+				<a asp-controller="BlogInfo" asp-action="Details" class="list-group-item" data-parent="#sidebar">
+					<i class="fa fa-desktop"></i>
+					<span class="hidden-sm-down-fix">@Localizer["Blog"]</span>
+				</a>
+				<a asp-controller="Writers" asp-action="Index" class="list-group-item" data-parent="#sidebar">
+					<i class="fa fa-users"></i>
+					<span class="hidden-sm-down-fix">@Localizer["Writers"]</span>
+				</a>
+				<a asp-controller="Posts" asp-action="Index" class="list-group-item" data-parent="#sidebar">
+					<i class="fa fa-file-text"></i>
+					<span class="hidden-sm-down-fix">@Localizer["Posts"]</span>
+				</a>
+				<a asp-controller="Comments" asp-action="Index" class="list-group-item" data-parent="#sidebar">
+					<i class="fa fa-clone"></i>
+					<span class="hidden-sm-down-fix">@Localizer["Comments"]</span>
+				</a>
+				<a asp-controller="Categories" asp-action="Index" class="list-group-item" data-parent="#sidebar">
+					<i class="fa fa-list"></i>
+					<span class="hidden-sm-down-fix">@Localizer["Categories"]</span>
+				</a>
+			</div>
+			<main class="col-md-10 col" id="main">
+				<div class="p-5">
+					@RenderBody()
 				</div>
-			</nav>
+			</main>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-lg-12">
-			@RenderBody()
-		</div>
-	</div>
-	<script src="~/js/dashboard.body.bundle.min.js"></script>
+	<script src="~/js/administration.body.bundle.min.js"></script>
+
+	@if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName != "en")
+	{
+		<script src="@Url.Content($"~/js/localization/messages_{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}.js")"></script>
+	}
 	@RenderSection("Scripts", required: false)
+
 </body>
 </html>

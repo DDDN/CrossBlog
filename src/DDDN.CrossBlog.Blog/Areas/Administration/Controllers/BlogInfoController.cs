@@ -47,14 +47,18 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 
 		public async Task<IActionResult> Details()
 		{
-			var blogInfo = await _ctx.BlogInfo.FirstOrDefaultAsync();
+			_ctx.Database.EnsureCreated();
+			var blogInfo = await _ctx.BlogInfo.AsNoTracking().FirstOrDefaultAsync();
 
 			if (blogInfo == default(BlogInfo))
 			{
-				return NotFound();
+				return RedirectToAction(nameof(Create));
+			}
+			else
+			{
+				return View(blogInfo);
 			}
 
-			return View(blogInfo);
 		}
 
 		public IActionResult Create()
@@ -66,8 +70,10 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 			{
 				return RedirectToAction(nameof(Details));
 			}
-
-			return View();
+			else
+			{
+				return View();
+			}
 		}
 
 		[HttpPost]

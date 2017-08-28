@@ -21,8 +21,14 @@
 
 @foreach (Post post in Model)
 {
-    <div>
-        <a asp-action="Show" asp-route-id="@post.PostId"><h2>@post.FirstHeaderText</h2></a>
+    <div class="alert alert-secondary">
+        <a asp-action="Show" asp-route-id="@post.PostId">
+            <h4 class="alert-heading">
+                @post.FirstHeaderText
+            </h4>
+        </a>
         @Html.Raw(WebUtility.HtmlDecode((string)post.FirstParagraphHtml))
+        <hr>
+        <p class="mb-0">@post.Writer.Created.ToString("dddd, d MMMM, yyyy", CultureInfo.CurrentCulture), by @post.Writer?.Name</p>
     </div>
 }

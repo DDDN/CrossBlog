@@ -48,7 +48,12 @@ namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 
         public IActionResult Index()
         {
-            var tenNewestPosts = _cxt.Posts.AsNoTracking().OrderByDescending(p => p.Created).Take(10);
+            var tenNewestPosts = _cxt.Posts
+                .AsNoTracking()
+                .Include(p => p.Writer)
+                .OrderByDescending(p => p.Created)
+                .Take(10);
+
             return View(tenNewestPosts);
         }
 

@@ -16,44 +16,46 @@
 
 namespace DDDN.CrossBlog.Blog.Models
 {
-	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel.DataAnnotations;
-	using System.ComponentModel.DataAnnotations.Schema;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-	[Table("Post")]
-	public class Post
-	{
-		public enum States
-		{
-			Uploaded,
-			Published,
-			Hidden,
-			Removed
-		}
+    [Table("Post")]
+    public class Post
+    {
+        public enum States
+        {
+            Uploaded,
+            Published,
+            Hidden,
+            Removed
+        }
 
-		[Key]
-		public Guid PostId { get; set; }
-		[Required]
-		[StringLength(2)]
-		public States State { get; set; }
-		[Required]
-		public DateTimeOffset Created { get; set; }
-		[StringLength(200)]
-		[Required]
-		public string Title { get; set; }
-		[Required]
-		public byte[] Binary { get; set; }
-		[Required]
-		public byte[] Hash { get; set; }
-		[Required]
-		public string Html { get; set; }
-		[Required]
-		public string Css { get; set; }
+        [Key]
+        public Guid PostId { get; set; }
+        [Required]
+        [StringLength(2)]
+        public States State { get; set; }
+        [Required]
+        public DateTimeOffset Created { get; set; }
+        [Required]
+        public byte[] Hash { get; set; }
+        [Required]
+        public byte[] Binary { get; set; }
+        [Required]
+        public string Html { get; set; }
+        [Required]
+        public string Css { get; set; }
+        [StringLength(300)]
+        [Required]
+        public string FirstHeaderText { get; set; }
+        [Required]
+        public string FirstParagraphHtml { get; set; }
 
-		public Writer Writer { get; set; }
-		public List<Content> Contents { get; set; }
-		public List<Comment> Comments { get; set; }
-		public List<PostCategoryMap> PostCategories { get; set; }
-	}
+        public Writer Writer { get; set; }
+        public List<Content> Contents { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<PostCategoryMap> PostCategories { get; set; }
+    }
 }

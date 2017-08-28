@@ -1,5 +1,5 @@
 @*
-    DDDN.CrossBlog.Blog.Areas.Blog.Views.Home.Index
+    DDDN.CrossBlog.Blog.Areas.Blog.Views.Home.Show
 
     Copyright(C) 2017 Lukasz Jaskiewicz
     Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,15 +14,15 @@
     to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
-@inject IViewLocalizer Loc
-@model IEnumerable<Post>
+@model Post
 
-@{ ViewData["Title"] = "Newest posts"; }
+@{ ViewData["Title"] = Model.FirstHeaderText; }
 
-@foreach (Post post in Model)
-{
-    <div>
-        <a asp-action="Show" asp-route-id="@post.PostId"><h2>@post.FirstHeaderText</h2></a>
-        @Html.Raw(WebUtility.HtmlDecode((string)post.FirstParagraphHtml))
-    </div>
+@section Styles
+    {
+    <style>
+        @Html.Raw(WebUtility.HtmlDecode(Model.Css))
+    </style>
 }
+
+@Html.Raw(WebUtility.HtmlDecode((string)Model.Html))

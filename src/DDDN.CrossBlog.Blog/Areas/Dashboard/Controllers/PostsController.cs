@@ -37,7 +37,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
         public PostsController(CrossBlogContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IActionResult> Index()

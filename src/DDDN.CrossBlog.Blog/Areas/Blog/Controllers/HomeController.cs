@@ -19,54 +19,65 @@ using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using System;
+using System.Linq;
 
 namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 {
-	[Area("Blog")]
-	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
-	public class HomeController : Controller
-	{
-		private readonly IStringLocalizer _homeLocalizer;
-		private readonly IOptions<BlogConfigSection> _blogConfigSection;
-		private readonly CrossBlogContext _crossBlogContext;
+    [Area("Blog")]
+    [MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
+    public class HomeController : Controller
+    {
+        private readonly IStringLocalizer _homeLocalizer;
+        private readonly IOptions<BlogConfigSection> _blogConfigSection;
+        private readonly CrossBlogContext _cxt;
 
-		public HomeController(
-			IStringLocalizer<HomeController> homeLocalizer,
-			IOptions<BlogConfigSection> blogConfigSection,
-			CrossBlogContext crossBlogContext
-			)
-		{
-			_homeLocalizer = homeLocalizer ?? throw new System.ArgumentNullException(nameof(homeLocalizer));
-			_blogConfigSection = blogConfigSection ?? throw new System.ArgumentNullException(nameof(blogConfigSection));
-			_crossBlogContext = crossBlogContext ?? throw new System.ArgumentNullException(nameof(crossBlogContext));
-		}
+        public HomeController(
+            IStringLocalizer<HomeController> homeLocalizer,
+            IOptions<BlogConfigSection> blogConfigSection,
+            CrossBlogContext crossBlogContext
+            )
+        {
+            _homeLocalizer = homeLocalizer ?? throw new System.ArgumentNullException(nameof(homeLocalizer));
+            _blogConfigSection = blogConfigSection ?? throw new System.ArgumentNullException(nameof(blogConfigSection));
+            _cxt = crossBlogContext ?? throw new System.ArgumentNullException(nameof(crossBlogContext));
+        }
 
-		public IActionResult Index()
-		{
-			return View();
-		}
+        public IActionResult Index()
+        {
+            var tenNewestPosts = _cxt.Posts.AsNoTracking().OrderByDescending(p => p.Created).Take(10);
+            return View(tenNewestPosts);
+        }
 
-		public IActionResult Newest()
-		{
-			ViewBag.Me = HttpContext.Request.Path;
+        public IActionResult Show(Guid id)
+        {
+            var post = _cxt.Posts.AsNoTracking().Where(p => p.PostId == id).FirstOrDefault();
 
-			return View();
-		}
+            if (post != default(Post))
+            {
+                return View(post);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
 
-		public IActionResult Archive()
-		{
-			ViewBag.Me = HttpContext.Request.Path;
+        public IActionResult Archive()
+        {
+            ViewBag.Me = HttpContext.Request.Path;
 
-			return View();
-		}
+            return View();
+        }
 
-		public IActionResult About()
-		{
-			ViewBag.Me = HttpContext.Request.Path;
+        public IActionResult About()
+        {
+            ViewBag.Me = HttpContext.Request.Path;
 
-			return View();
-		}
-	}
+            return View();
+        }
+    }
 }

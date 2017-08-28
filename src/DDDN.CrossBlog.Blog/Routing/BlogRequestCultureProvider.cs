@@ -14,6 +14,11 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Localization;
 using Microsoft.AspNetCore.Http;
@@ -21,18 +26,13 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Routing
 {
-	public class BlogRequestCultureProvider : RequestCultureProvider
+    public class BlogRequestCultureProvider : RequestCultureProvider
 	{
 		public string RouteDataStringKey { get; set; } = "culture";
-		private static readonly Task<ProviderCultureResult> NullProviderCultureResult = Task.FromResult(default(ProviderCultureResult));
+		private new static readonly Task<ProviderCultureResult> NullProviderCultureResult = Task.FromResult(default(ProviderCultureResult));
 
 		public override Task<ProviderCultureResult> DetermineProviderCultureResult(HttpContext httpContext)
 		{

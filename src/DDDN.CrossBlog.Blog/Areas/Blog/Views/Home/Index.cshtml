@@ -1,17 +1,17 @@
 @*
-    DDDN.CrossBlog.Blog.Areas.Blog.Views.Home.Index
+	DDDN.CrossBlog.Blog.Areas.Blog.Views.Home.Index
 
-    Copyright(C) 2017 Lukasz Jaskiewicz
-    Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+	Copyright(C) 2017 Lukasz Jaskiewicz
+	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
 
-    This program is free software; you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+	This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program; if not, write
-    to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+	You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
 @inject IViewLocalizer Loc
@@ -21,14 +21,28 @@
 
 @foreach (Post post in Model)
 {
-    <div class="alert alert-secondary">
-        <a asp-action="Show" asp-route-id="@post.PostId">
-            <h4 class="alert-heading">
-                @post.FirstHeaderText
-            </h4>
-        </a>
-        @Html.Raw(WebUtility.HtmlDecode((string)post.FirstParagraphHtml))
-        <hr>
-        <p class="mb-0">@post.Writer.Created.ToString("dddd, d MMMM, yyyy", CultureInfo.CurrentCulture), by @post.Writer?.Name</p>
-    </div>
+	<div class="alert alert-secondary">
+		<a asp-action="Show" asp-route-id="@post.PostId">
+			<h4 class="alert-heading">
+				@if (post.FirstHeaderText == null)
+				{
+					@post.AlternativeTitle
+				}
+				else
+				{
+					@post.FirstHeaderText
+				}
+			</h4>
+		</a>
+		@if (post.FirstParagraphHtml == null)
+		{
+			@post.AlternativeTeaser
+		}
+		else
+		{
+			@Html.Raw(WebUtility.HtmlDecode((string)post.FirstParagraphHtml))
+		}
+		<hr>
+		<p class="mb-0">@post.Writer.Created.ToString("dddd, d MMMM, yyyy", CultureInfo.CurrentCulture) - written by @post.Writer?.Name</p>
+	</div>
 }

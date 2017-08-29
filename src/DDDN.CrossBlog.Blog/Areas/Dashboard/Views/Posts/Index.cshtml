@@ -37,6 +37,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.FirstHeaderText)
             </th>
+		  	<th>
+		  		@Html.DisplayNameFor(model => model.AlternativeTitle)
+		  </th>
             <th></th>
         </tr>
     </thead>
@@ -53,6 +56,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstHeaderText)
                 </td>
+					<td>
+						@Html.DisplayFor(modelItem => item.AlternativeTitle)
+					</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |

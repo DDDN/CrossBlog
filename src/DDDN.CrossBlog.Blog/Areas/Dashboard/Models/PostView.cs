@@ -23,15 +23,24 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Models
 {
 	public class PostView : ViewModel
 	{
+		public PostView()
+			: base(typeof(Post.States), null)
+		{
+		}
+
 		public PostView(IStringLocalizer localizer)
 			: base(typeof(Post.States), localizer)
 		{
 		}
 
-		public string PostId { get; set; }
+		public Guid PostId { get; set; }
 		public Post.States State { get; set; }
 		public DateTimeOffset Created { get; set; }
 		public string FileName { get; set; }
 		public string Title { get; set; }
+		public string FirstHeaderText { get; set; }
+		public string FirstParagraphHtml { get; set; }
+		public string AlternativeTitle { get; set; }
+		public string AlternativeTeaser { get; set; }
 	}
 }

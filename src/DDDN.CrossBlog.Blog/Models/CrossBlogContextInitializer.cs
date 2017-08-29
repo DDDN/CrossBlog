@@ -1,5 +1,5 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Models.CrossBlogDbInitializer
+* DDDN.CrossBlog.Blog.Models.CrossBlogContextInitializer
 * 
 * Copyright(C) 2017 Lukasz Jaskiewicz
 * Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,14 +14,9 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace DDDN.CrossBlog.Blog.Models
 {
-	public static class CrossBlogDbInitializer
+	public static class CrossBlogContextInitializer
 	{
 		public static void Initialize(CrossBlogContext context)
 		{

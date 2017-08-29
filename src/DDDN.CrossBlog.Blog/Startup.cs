@@ -121,6 +121,13 @@ namespace DDDN.CrossBlog.Blog
 								}
 						 );
 			});
+
+			using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+			{
+				var cxt = serviceScope.ServiceProvider.GetService<CrossBlogContext>();
+				//.Database.Migrate();
+				CrossBlogContextInitializer.Initialize(cxt);
+			}
 		}
 	}
 }

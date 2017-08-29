@@ -52,7 +52,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 
 		public async Task<IActionResult> Details()
 		{
-			_ctx.Database.EnsureCreated();
 			var blogInfo = await _ctx.BlogInfo.AsNoTracking().FirstOrDefaultAsync();
 
 			if (blogInfo == default(BlogInfo))
@@ -68,7 +67,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 
 		public IActionResult Create()
 		{
-			_ctx.Database.EnsureCreated();
 			var blogInfo = _ctx.BlogInfo.AsNoTracking().FirstOrDefault();
 
 			if (blogInfo != default(BlogInfo))

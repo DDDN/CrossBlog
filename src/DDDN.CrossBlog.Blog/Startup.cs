@@ -18,6 +18,7 @@ using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Localization;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,16 @@ namespace DDDN.CrossBlog.Blog
 	public class Startup
 	{
 		public IConfiguration Config { get; }
+
+		public static void Main(string[] args)
+		{
+			BuildWebHost(args).Run();
+		}
+
+		public static IWebHost BuildWebHost(string[] args) =>
+			 WebHost.CreateDefaultBuilder(args)
+				  .UseStartup<Startup>()
+				  .Build();
 
 		public Startup(IHostingEnvironment env)
 		{

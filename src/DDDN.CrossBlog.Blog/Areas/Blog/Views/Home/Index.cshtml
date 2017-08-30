@@ -24,23 +24,31 @@
 	<div class="alert alert-secondary">
 		<a asp-action="Show" asp-route-id="@post.PostId">
 			<h4 class="alert-heading">
-				@if (post.FirstHeaderText == null)
+				@if (!string.IsNullOrWhiteSpace(post.FirstHeaderText))
+				{
+					@post.FirstHeaderText
+				}
+				else if (!string.IsNullOrWhiteSpace(post.AlternativeTitle))
 				{
 					@post.AlternativeTitle
 				}
 				else
 				{
-					@post.FirstHeaderText
+					@Html.DisplayText("There's no title for this Post. Edit the post to add one.");
 				}
 			</h4>
 		</a>
-		@if (post.FirstParagraphHtml == null)
-		{
+		@if (!string.IsNullOrWhiteSpace(post.FirstParagraphHtml))
+				{
+			@post.FirstParagraphHtml
+				}
+				else if (!string.IsNullOrWhiteSpace(post.AlternativeTeaser))
+				{
 			@post.AlternativeTeaser
 		}
 		else
 		{
-			@Html.Raw(WebUtility.HtmlDecode((string)post.FirstParagraphHtml))
+			@Html.DisplayText("There's no teaser for this Post. Edit the post to add one.");
 		}
 		<hr>
 		<p class="mb-0">@post.Writer.Created.ToString("dddd, d MMMM, yyyy", CultureInfo.CurrentCulture) - written by @post.Writer?.Name</p>

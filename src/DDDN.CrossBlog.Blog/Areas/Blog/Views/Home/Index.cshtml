@@ -34,7 +34,7 @@
 				}
 				else
 				{
-					@Html.DisplayText("There's no title for this Post. Edit the post to add one.");
+					@:There's no title for this Post. Edit the post to add one.
 				}
 			</h4>
 		</a>
@@ -48,7 +48,7 @@
 		}
 		else
 		{
-			@Html.DisplayText("There's no teaser for this Post. Edit the post to add one.");
+			@:There's no teaser for this Post. Edit the post to add one."
 		}
 		<hr>
 		<p class="mb-0">@post.Writer.Created.ToString("dddd, d MMMM, yyyy", CultureInfo.CurrentCulture) - written by @post.Writer?.Name</p>

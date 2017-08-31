@@ -15,23 +15,28 @@
 */
 
 body {
-	background-color: #f1f1f1;
+    background-color: #f1f1f1;
 }
 
-#nav {
-	background-color: #fff;
-	border-right: 1px solid #e7e7e7;
+.jumbotron {
+    background-color: #8fb7ff;
 }
 
-@media (min-width:768px) {
-	#nav {
-		min-height: 100vh;
-	}
+.slogan {
+    margin: 0 0 0 10%;
+}
+
+aside {
+    margin: 30px 0px 0px 0px;
 }
 
 article {
-	/*width: 8.5in;*/
-	margin: 70px 0 30px 50px;
-	background-color: white;
-	border: 1px solid #e7e7e7;
+    margin: 30px 60px 60px 60px;
+    background-color: white;
+    -webkit-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
 }

@@ -1,0 +1,55 @@
+﻿@*
+    DDDN.CrossBlog.Blog.Areas.Blog.Views.Shared._Layout
+
+    Copyright(C) 2017 Lukasz Jaskiewicz
+    Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+
+    This program is free software; you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with this program; if not, write
+    to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentCulture.Name">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="~/images/favicon.ico">
+    <title>CrossBlog</title>
+    <link href="~/css/blog.bundle.min.css" rel="stylesheet">
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="slogan">
+            <h1 class="display-3">CrossBlog</h1>
+            <p class="lead">Write Your Blog with the Office Suite of Your choice!</p>
+            <p><strong>CrossBlog is a hackable .Net Core 2.0 blog engine</strong></p>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row justify-content-start">
+            <main>
+                @RenderBody()
+            </main>
+            <aside class="col-md-2" id="aside">
+                <h1><i class="fa fa-3x fa-book"></i>CrossBlog</h1>
+                <div>
+                    <a href="@Url.Content($"~/Blog/{CultureInfo.CurrentCulture.Name}/Home/Index")">Blog</a> |
+                    <a href="@Url.Content($"~/Dashboard/{CultureInfo.CurrentCulture.Name}/Posts/Index")">Dashboard</a> |
+                    <a href="@Url.Content($"~/Administration/{CultureInfo.CurrentCulture.Name}/BlogInfo/Details")">Administration</a>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <script src="~/js/blog.body.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

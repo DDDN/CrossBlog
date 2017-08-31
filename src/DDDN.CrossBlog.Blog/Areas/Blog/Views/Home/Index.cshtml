@@ -19,38 +19,42 @@
 
 @{ ViewData["Title"] = "Newest posts"; }
 
-@foreach (Post post in Model)
-{
-	<div class="alert alert-secondary">
-		<a asp-action="Show" asp-route-id="@post.PostId">
-			<h4 class="alert-heading">
-				@if (!string.IsNullOrWhiteSpace(post.FirstHeaderText))
+<div id="posts_newest">
+	@foreach (Post post in Model)
+	{
+		<div id="post_teasers">
+			<h1>
+				<a asp-action="Show" asp-route-id="@post.PostId">
+					@if (!string.IsNullOrWhiteSpace(post.FirstHeaderText))
 				{
-					@post.FirstHeaderText
+						@post.FirstHeaderText
 				}
 				else if (!string.IsNullOrWhiteSpace(post.AlternativeTitle))
 				{
-					@post.AlternativeTitle
+						@post.AlternativeTitle
 				}
 				else
 				{
-					@:There's no title for this Post. Edit the post to add one.
+						@:There's no title for this Post. Edit the post to add one.
 				}
-			</h4>
-		</a>
-		@if (!string.IsNullOrWhiteSpace(post.FirstParagraphHtml))
+				</a>
+			</h1>
+			<p id="post_teaser">
+				@if (!string.IsNullOrWhiteSpace(post.FirstParagraphHtml))
 				{
-			@post.FirstParagraphHtml
+					@Html.Raw(WebUtility.HtmlDecode((post.FirstParagraphHtml)))
 				}
 				else if (!string.IsNullOrWhiteSpace(post.AlternativeTeaser))
 				{
-			@post.AlternativeTeaser
-		}
-		else
-		{
-			@:There's no teaser for this Post. Edit the post to add one."
-		}
-		<hr>
-		<p class="mb-0">@post.Writer.Created.ToString("dddd, d MMMM, yyyy", CultureInfo.CurrentCulture) - written by @post.Writer?.Name</p>
-	</div>
-}
+					@post.AlternativeTeaser
+				}
+				else
+				{
+					@:There's no teaser for this Post. Edit the post to add one."
+
+				}
+			</p>
+			<p class="mb-0"><i class="fa fa-calendar"></i> <strong>@post.Writer.Created.ToString("d MMMM yyyy", CultureInfo.CurrentCulture), by @post.Writer?.Name</strong></p>
+		</div>
+	}
+</div>

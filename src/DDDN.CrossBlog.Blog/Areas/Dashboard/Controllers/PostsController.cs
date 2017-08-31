@@ -14,21 +14,20 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+using DDDN.CrossBlog.Blog.Areas.Dashboard.Models;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using DDDN.Office.Odf.Odt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DDDN.CrossBlog.Blog.Areas.Dashboard.Models;
 using Microsoft.Extensions.Localization;
-using DDDN.CrossBlog.Blog.Areas.Blog.Controllers;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 {
@@ -70,7 +69,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			return View(post);
 		}
 
-		public IActionResult Create()
+		public IActionResult Upload()
 		{
 			var uploadedPosts = _context.Posts
 				 .Where(p => p.State == Post.States.Published);
@@ -80,7 +79,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(IList<IFormFile> files)
+		public async Task<IActionResult> Upload(IList<IFormFile> files)
 		{
 			List<Post> posts = new List<Post>();
 

@@ -11,16 +11,16 @@ var gulp = require('gulp'),
 	rename = require('gulp-rename');
 
 gulp.task('_beforeBuild', [
-	'copyFromNodeFontawesomeFontfolderToAssets', 'copyFontsToWwwroot',
-	'scssBuildBootstrap', 'scssBuildFontawesome',
-	'copyLocalizationDocumentsFromAreasToWwwroot', 'copyLocalizationDocumentsFromModelsToWwwroot',
-	'copyAssetImageFiles',
-	'bundleCssBlog', 'bundleCssDashboard', 'bundleCssAdministration',
-	'copyNpmJsFilesToAssetsFolder', 'bundleBlogBodyJsFiles', 'bundleDashboardBodyJsFiles', 'bundleAdministrationBodyJsFiles',
-	'copyJqueryValidationLocalizationFolderFromNpmToAssets', 'copyJqueryValidationLocalizationFolderFromAssetsToWwwroot']);
+	'COPY_FOLDER_Fontawesome_Fonts_Npm_Assets', 'COPY_FOLDER_Fonts_Assets_Wwwroot',
+	'BUILD_SCSS_Bootstrap', 'BUILD_SCSS_Fontawesome',
+	'COPY_FOLDER_l10n_Areas_Wwwroot', 'COPY_FOLDER_l10n_Models_Wwwroot',
+	'COPY_FOLDER_Images_App_Wwwroot',
+	'BUNDLE_CSS_Blog_Header', 'BUNDLE_CSS_Dashboard_Header', 'BUNDLE_CSS_Administration_Header',
+	'COPY_JS_Npm_Assets', 'BUNDLE_JS_Blog_Body', 'BUNDLE_JS_Dashboard_Body', 'BUNDLE_JS_Administration_Body',
+	'COPY_FOLDER_JQueryValidation_Localization_Npm_Assets', 'COPY_FOLDER_Localization_Assets_Wwwroot']);
 
 /// compile Bootstrap scss
-gulp.task('scssBuildBootstrap', function () {
+gulp.task('BUILD_SCSS_Bootstrap', function () {
 	return gulp.src('node_modules/bootstrap/scss/bootstrap.scss')
 		.pipe(sass())
 		.pipe(autoprefixer())
@@ -28,7 +28,7 @@ gulp.task('scssBuildBootstrap', function () {
 });
 
 /// compile Font Awesome scss
-gulp.task('scssBuildFontawesome', function () {
+gulp.task('BUILD_SCSS_Fontawesome', function () {
 	return gulp.src('node_modules/font-awesome/scss/font-awesome.scss')
 		.pipe(sass())
 		.pipe(autoprefixer())
@@ -37,21 +37,21 @@ gulp.task('scssBuildFontawesome', function () {
 });
 
 /// copy resource files from Areas to wwwroot
-gulp.task('copyLocalizationDocumentsFromAreasToWwwroot', function () {
+gulp.task('COPY_FOLDER_l10n_Areas_Wwwroot', function () {
 	gulp
 		.src('Areas/**/l10n/*.*')
 		.pipe(gulp.dest('wwwroot/l10n/Areas'));
 });
 
 /// copy resource files from Model to wwwroot
-gulp.task('copyLocalizationDocumentsFromModelsToWwwroot', function () {
+gulp.task('COPY_FOLDER_l10n_Models_Wwwroot', function () {
 	gulp
 		.src('Models/**/l10n/*.*')
 		.pipe(gulp.dest('wwwroot/l10n/Models'));
 });
 
 /// copy image assets to wwwroot
-gulp.task('copyAssetImageFiles', function () {
+gulp.task('COPY_FOLDER_Images_App_Wwwroot', function () {
 	gulp
 		.src('assets/app/images/*.*')
 		.pipe(gulp.dest('wwwroot/images'));
@@ -64,7 +64,7 @@ var npmJsFiles = [
 	'node_modules/popper.js/dist/umd/popper.js',
 	'node_modules/bootstrap/dist/js/bootstrap.js'
 ];
-gulp.task('copyNpmJsFilesToAssetsFolder', function () {
+gulp.task('COPY_JS_Npm_Assets', function () {
 	gulp
 		.src(npmJsFiles)
 		.pipe(gulp.dest('assets/scripts'));
@@ -76,7 +76,7 @@ var assetsCssBlog = [
 	'assets/styles/bootstrap.css',
 	'assets/app/styles/blog.css'
 ];
-gulp.task('bundleCssBlog', function () {
+gulp.task('BUNDLE_CSS_Blog_Header', function () {
 	return gulp.src(assetsCssBlog)
 		.pipe(sourcemaps.init())
 		.pipe(concat('blog.bundle.min.css'))
@@ -91,7 +91,7 @@ var assetsCssDashboard = [
 	'assets/styles/bootstrap.css',
 	'assets/app/styles/dashboard.css'
 ];
-gulp.task('bundleCssDashboard', function () {
+gulp.task('BUNDLE_CSS_Dashboard_Header', function () {
 	return gulp.src(assetsCssDashboard)
 		.pipe(sourcemaps.init())
 		.pipe(concat('dashboard.bundle.min.css'))
@@ -106,7 +106,7 @@ var assetsCssAdministration = [
 	'assets/styles/bootstrap.css',
 	'assets/app/styles/administration.css'
 ];
-gulp.task('bundleCssAdministration', function () {
+gulp.task('BUNDLE_CSS_Administration_Header', function () {
 	return gulp.src(assetsCssAdministration)
 		.pipe(sourcemaps.init())
 		.pipe(concat('administration.bundle.min.css'))
@@ -122,7 +122,7 @@ var assetsJsBlogBody = [
 	'assets/scripts/bootstrap.js',
 	'assets/app/scripts/blog.js'
 ];
-gulp.task('bundleBlogBodyJsFiles', function () {
+gulp.task('BUNDLE_JS_Blog_Body', function () {
 	return gulp.src(assetsJsBlogBody)
 		.pipe(sourcemaps.init())
 		.pipe(concat('blog.body.bundle.min.js'))
@@ -138,7 +138,7 @@ var assetsJsBlogDashboard = [
 	'assets/scripts/bootstrap.js',
 	'assets/app/scripts/dashboard.js'
 ];
-gulp.task('bundleDashboardBodyJsFiles', function () {
+gulp.task('BUNDLE_JS_Dashboard_Body', function () {
 	return gulp.src(assetsJsBlogDashboard)
 		.pipe(sourcemaps.init())
 		.pipe(concat('dashboard.body.bundle.min.js'))
@@ -155,7 +155,7 @@ var assetsJsAdministrationBody = [
 	'assets/scripts/bootstrap.js',
 	'assets/app/scripts/administration.js'
 ];
-gulp.task('bundleAdministrationBodyJsFiles', function () {
+gulp.task('BUNDLE_JS_Administration_Body', function () {
 	return gulp.src(assetsJsAdministrationBody)
 		.pipe(sourcemaps.init())
 		.pipe(concat('administration.body.bundle.min.js'))
@@ -165,25 +165,25 @@ gulp.task('bundleAdministrationBodyJsFiles', function () {
 });
 
 /// copy fonts from font-awesome node package to assets folder
-gulp.task('copyFromNodeFontawesomeFontfolderToAssets', function () {
+gulp.task('COPY_FOLDER_Fontawesome_Fonts_Npm_Assets', function () {
 	return gulp.src('node_modules/font-awesome/fonts/*.*')
 		.pipe(gulp.dest('assets/fonts'));
 });
 
 /// copy fonts from assets to wwwroot
-gulp.task('copyFontsToWwwroot', function () {
+gulp.task('COPY_FOLDER_Fonts_Assets_Wwwroot', function () {
 	return gulp.src('assets/fonts/*.*')
 		.pipe(gulp.dest('wwwroot/fonts'));
 });
 
-/// copy jQuery validation localization folder
-gulp.task('copyJqueryValidationLocalizationFolderFromNpmToAssets', function () {
+/// copy jQuery validation localization folder to Asstes
+gulp.task('COPY_FOLDER_JQueryValidation_Localization_Npm_Assets', function () {
 	return gulp.src('node_modules/jquery-validation/dist/localization/**/*.*')
 		.pipe(gulp.dest('assets/scripts/localization'));
 });
 
-/// copy jQuery validation localization folder
-gulp.task('copyJqueryValidationLocalizationFolderFromAssetsToWwwroot', function () {
+/// copy localization folder to Wwwroot
+gulp.task('COPY_FOLDER_Localization_Assets_Wwwroot', function () {
 	return gulp.src('assets/scripts/localization/**/*.*')
 		.pipe(gulp.dest('wwwroot/js/localization'));
 });

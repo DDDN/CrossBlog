@@ -40,6 +40,9 @@
                <a href="@Url.Content($"~/Dashboard/{CultureInfo.CurrentCulture.Name}/Posts/Index")">Dashboard</a> |
                <a href="@Url.Content($"~/Administration/{CultureInfo.CurrentCulture.Name}/BlogInfo/Details")">Administration</a>
             </nav>
+            <div id="categories">
+               @await Component.InvokeAsync("Categories")
+            </div>
          </aside>
          <main class="col-lg-8" id="main">
             @RenderBody()

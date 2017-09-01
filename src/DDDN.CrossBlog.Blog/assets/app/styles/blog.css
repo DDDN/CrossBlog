@@ -16,7 +16,7 @@
 
 body {
    background-color: #efefef;
-   font-family: Roboto, Arial, Helvetica, Nimbus Sans L, sans-serif !important;
+   font-family: Roboto, Arial, Helvetica, Nimbus Sans L, sans-serif;
 }
 
 #aside {
@@ -37,14 +37,14 @@ body {
 }
 
 article, #posts_newest {
-   background-color: white;
-   border: 1px solid #e7e7e7;
-   -webkit-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-   -moz-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-   box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-   border-radius: 5px 5px 5px 5px;
-   -moz-border-radius: 5px 5px 5px 5px;
-   -webkit-border-radius: 5px 5px 5px 5px;
+	background-color: white;
+	border: 1px solid #e7e7e7;
+	-webkit-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
 }
 
 #posts_newest {

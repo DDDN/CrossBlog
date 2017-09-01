@@ -21,11 +21,11 @@ using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Areas.Blog.ViewComponents
 {
-   public class Categories : ViewComponent
+	public class CategoriesViewComponent : ViewComponent
    {
       private CrossBlogContext _cxt;
 
-      public Categories(CrossBlogContext cxt)
+      public CategoriesViewComponent(CrossBlogContext cxt)
       {
          _cxt = cxt ?? throw new ArgumentNullException(nameof(cxt));
       }

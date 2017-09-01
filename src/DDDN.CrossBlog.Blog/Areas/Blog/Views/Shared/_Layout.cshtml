@@ -29,13 +29,13 @@
 <body>
    <div class="container-fluid">
       <div class="row">
-         <aside class="col-lg-4" id="aside">
-            <div class="pull-right" id="slogan">
-               <img class="pull-left" src="~/images/Blogger_alt_367575.svg" alt="Logo" id="img_logo" />
+         <aside class="col-lg-4 pull-right text-right" id="aside">
+            <div id="logo">
+               <img src="~/images/Blogger_alt_367575.svg" alt="Logo" id="img_logo" />
                <h1><strong>CrossBlog</strong></h1>
                <p>Write Your Blog with the<br />Office Suite of Your choice!</p>
             </div>
-            <nav class="pull-right" id="nav">
+            <nav id="nav">
                <a href="@Url.Content($"~/Blog/{CultureInfo.CurrentCulture.Name}/Home/Index")">Blog</a> |
                <a href="@Url.Content($"~/Dashboard/{CultureInfo.CurrentCulture.Name}/Posts/Index")">Dashboard</a> |
                <a href="@Url.Content($"~/Administration/{CultureInfo.CurrentCulture.Name}/BlogInfo/Details")">Administration</a>

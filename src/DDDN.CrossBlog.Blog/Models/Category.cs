@@ -24,18 +24,8 @@ namespace DDDN.CrossBlog.Blog.Models
 	[Table("Category")]
 	public class Category
 	{
-		public enum States
-		{
-			Active,
-			Inactive
-		}
-
 		[Key]
 		public Guid CategoryId { get; set; }
-		[Required]
-		[StringLength(2)]
-		public States State { get; set; }
-		[StringLength(50)]
 		[Required]
 		public string Name { get; set; }
 

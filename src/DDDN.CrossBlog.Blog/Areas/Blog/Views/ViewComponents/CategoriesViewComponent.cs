@@ -16,23 +16,28 @@
 
 using DDDN.CrossBlog.Blog.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Areas.Blog.ViewComponents
 {
 	public class CategoriesViewComponent : ViewComponent
-   {
-      private CrossBlogContext _cxt;
+	{
+		private CrossBlogContext _cxt;
 
-      public CategoriesViewComponent(CrossBlogContext cxt)
-      {
-         _cxt = cxt ?? throw new ArgumentNullException(nameof(cxt));
-      }
+		public CategoriesViewComponent(CrossBlogContext cxt)
+		{
+			_cxt = cxt ?? throw new ArgumentNullException(nameof(cxt));
+		}
 
-      public async Task<IViewComponentResult> InvokeAsync()
-      {
-         return View();
-      }
-   }
+		public async Task<IViewComponentResult> InvokeAsync()
+		{
+			var categories = await _cxt.Categories
+				.Include(p => p.PostCategories).ToListAsync();
+
+			return View(categories);
+		}
+	}
 }

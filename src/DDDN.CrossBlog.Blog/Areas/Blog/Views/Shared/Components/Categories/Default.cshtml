@@ -1,4 +1,11 @@
-﻿
-   <p>ddddddddddddddddd</p>
+﻿@model IEnumerable<DDDN.CrossBlog.Blog.Models.Category>
 
-     
+<div>
+	@foreach (var category in Model)
+	{
+		@if (@category.PostCategories.Any())
+		{
+			<p>@category.Name (@category.PostCategories.Count())</p>
+		}
+	}
+</div>

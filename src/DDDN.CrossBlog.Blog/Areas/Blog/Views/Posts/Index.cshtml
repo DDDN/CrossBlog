@@ -1,5 +1,5 @@
 @*
-	DDDN.CrossBlog.Blog.Areas.Blog.Views.Home.Index
+	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Posts.Index
 
 	Copyright(C) 2017 Lukasz Jaskiewicz
 	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -17,7 +17,7 @@
 @inject IViewLocalizer Loc
 @model IEnumerable<Post>
 
-@{ ViewData["Title"] = "Newest posts"; }
+@{ ViewData["Title"] = Loc["Title"]; }
 
 <div id="posts_newest">
 	@foreach (Post post in Model)

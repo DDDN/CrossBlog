@@ -16,8 +16,11 @@
 
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Views.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Models
 {
@@ -26,11 +29,42 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Models
 		public PostView()
 			: base(typeof(Post.States), null)
 		{
+			Categories = new List<SelectListItem>();
 		}
 
 		public PostView(IStringLocalizer localizer)
 			: base(typeof(Post.States), localizer)
 		{
+		}
+
+		public PostView(IStringLocalizer localizer, Post post, IEnumerable<Category> categories)
+			: base(typeof(Post.States), localizer)
+		{
+			InitCategories(post, categories);
+		}
+
+		private void InitCategories(Post post, IEnumerable<Category> categories)
+		{
+			foreach (var c in categories)
+			{
+				var exists = post.PostCategories.Where(p => p.CategoryId.Equals(c.CategoryId)).FirstOrDefault();
+
+				var selected = false;
+
+				if (exists != default(PostCategoryMap))
+				{
+					selected = true;
+				}
+
+				var item = new SelectListItem
+				{
+					Value = c.CategoryId.ToString(),
+					Text = c.Name,
+					Selected = selected
+				};
+
+				Categories.Add(item);
+			}
 		}
 
 		public Guid PostId { get; set; }
@@ -42,5 +76,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Models
 		public string FirstParagraphHtml { get; set; }
 		public string AlternativeTitle { get; set; }
 		public string AlternativeTeaser { get; set; }
+		public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
 	}
 }

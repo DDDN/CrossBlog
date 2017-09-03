@@ -138,14 +138,17 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 			var post = await _context.Posts
 				.AsNoTracking()
+				.Include(p => p.PostCategories)
 				.SingleOrDefaultAsync(m => m.PostId == id);
+
+			var categories = await _context.Categories.ToListAsync();
 
 			if (post == default(Post))
 			{
 				return NotFound();
 			}
 
-			var postView = new PostView(_localizer)
+			var postView = new PostView(_localizer, post, categories)
 			{
 				PostId = post.PostId,
 				Created = post.Created,
@@ -153,7 +156,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 				FirstHeaderText = post.FirstHeaderText,
 				FirstParagraphHtml = post.FirstParagraphHtml,
 				AlternativeTitle = post.AlternativeTitle,
-				AlternativeTeaser = post.AlternativeTeaser
+				AlternativeTeaser = post.AlternativeTeaser,
 			};
 
 			return View(postView);
@@ -161,18 +164,58 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(Guid id, [Bind("PostId,State,Created,AlternativeTitle,AlternativeTeaser")] PostView postView)
+		public async Task<IActionResult> Edit(Guid id, [Bind("PostId,State,AlternativeTitle,AlternativeTeaser")] PostView postView)
 		{
 			if (id != postView.PostId)
 			{
 				return NotFound();
 			}
 
-			var post = await _context.Posts.SingleOrDefaultAsync(m => m.PostId == id);
+			var post = await _context.Posts
+				.Include(p => p.PostCategories)
+				.SingleOrDefaultAsync(m => m.PostId == id);
+
 			post.Created = postView.Created;
 			post.State = postView.State;
 			post.AlternativeTitle = postView.AlternativeTitle;
 			post.AlternativeTeaser = postView.AlternativeTeaser;
+
+			var catIdStrings = Request.Form[nameof(PostView.Categories)].ToList<string>();
+
+			for (int i = post.PostCategories.Count() - 1; i >= 0; i--)
+			{
+				var cat = post.PostCategories.ElementAt(i);
+
+				if (catIdStrings.Contains(cat.CategoryId.ToString()))
+				{
+					catIdStrings.Remove(cat.CategoryId.ToString());
+				}
+				else
+				{
+					post.PostCategories.Remove(cat);
+				}
+			}
+
+			var newCats = new List<PostCategoryMap>();
+
+			foreach (var catIdStr in catIdStrings)
+			{
+				var catId = Guid.Parse(catIdStr);
+
+				if (!post.PostCategories.Where(p => p.CategoryId.Equals(catId)).Any())
+				{
+					var pm = new PostCategoryMap
+					{
+						CategoryId = catId,
+						PostId = post.PostId
+					};
+
+					newCats.Add(pm);
+				}
+			}
+
+			post.PostCategories.AddRange(newCats);
+
 
 			if (ModelState.IsValid)
 			{
@@ -207,6 +250,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 			var post = await _context.Posts
 				  .SingleOrDefaultAsync(m => m.PostId == id);
+
 			if (post == null)
 			{
 				return NotFound();

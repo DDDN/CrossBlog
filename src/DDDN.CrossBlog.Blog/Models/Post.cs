@@ -63,8 +63,8 @@ namespace DDDN.CrossBlog.Blog.Models
 		public string AlternativeTeaserText { get; set; }
 		[Required]
 		public DateTimeOffset LastRenderd { get; set; }
-		[Required]
-		public DateTimeOffset Published { get; set; }
+		public DateTimeOffset FirstPublished { get; set; }
+		public DateTimeOffset LastPublished { get; set; }
 
 		public Writer Writer { get; set; }
 		public List<Content> Contents { get; set; }

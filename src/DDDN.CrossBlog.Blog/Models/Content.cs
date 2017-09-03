@@ -17,22 +17,34 @@
 namespace DDDN.CrossBlog.Blog.Models
 {
 	using System;
+	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	[Table("Content")]
 	public class Content
 	{
+		public enum States
+		{
+			Visible,
+			Unvisible
+		}
+
+		public static Dictionary<string, List<string>> StatesTree = new Dictionary<string, List<string>>
+		{
+			[nameof(States.Visible)] = new List<string> { nameof(States.Visible), nameof(States.Unvisible) },
+			[nameof(States.Unvisible)] = new List<string> { nameof(States.Unvisible), nameof(States.Visible) }
+		};
+
 		[Key]
 		public Guid ContentId { get; set; }
 		[Required]
-		[StringLength(2)]
-		public string State { get; set; }
+		public States State { get; set; }
 		[Required]
 		public DateTimeOffset Created { get; set; }
 		[Required]
 		public byte[] Binary { get; set; }
-		[StringLength(300)]
+		[Required]
 		public string Name { get; set; }
 
 		public Post Post { get; set; }

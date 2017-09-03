@@ -97,23 +97,42 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 							using (IODTFile odtFile = new ODTFile(fileContent))
 							{
-								var convertedData = new ODTConvert(odtFile).Convert();
+								var convertedData = new ODTConvert().Convert(odtFile);
+
+								var now = DateTimeOffset.Now;
 
 								var post = new Post
 								{
 									PostId = Guid.NewGuid(),
 									State = Post.States.Uploaded,
-									Created = DateTimeOffset.Now,
+									Created = now,
 									Binary = fileContentBytes,
 									Hash = sha1Hash,
 									FirstHeaderText = convertedData.FirstHeaderText,
 									FirstParagraphHtml = convertedData.FirstParagraphHtml,
 									Html = convertedData.Html,
 									Css = convertedData.Css,
-									Writer = _context.Writers.First()
+									Writer = _context.Writers.First(),
+									Contents = new List<Content>(),
+									LastRenderd = now
 								};
 
-								_context.AddRange(post);
+								foreach (var media in convertedData.EmbedMedia)
+								{
+									var content = new Content
+									{
+										Binary = media.Value,
+										Created = now,
+										Name = media.Key,
+										State = CrossBlog.Blog.Models.Content.States.Visible,
+										ContentId = Guid.NewGuid(),
+										Post = post
+									};
+
+									post.Contents.Add(content);
+								}
+
+								posts.Add(post);
 							}
 						}
 					}
@@ -151,7 +170,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 			var postView = new PostView(post, categories, _localizer)
 			{
 				PostId = post.PostId,
-				Published = post.Created,
 				State = post.State,
 				FirstHeaderText = post.FirstHeaderText,
 				FirstParagraphHtml = post.FirstParagraphHtml,
@@ -175,10 +193,19 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 				.Include(p => p.PostCategories)
 				.SingleOrDefaultAsync(m => m.PostId == id);
 
-			post.Created = postView.Published;
 			post.State = postView.State;
 			post.AlternativeTitleText = postView.AlternativeTitleText;
 			post.AlternativeTeaserText = postView.AlternativeTeaserText;
+
+			if (post.State == Post.States.Published)
+			{
+				if (post.FirstPublished == null)
+				{
+					post.FirstPublished = postView.Published;
+				}
+
+				post.LastPublished = postView.Published;
+			}
 
 			var catIdStrings = Request.Form[nameof(PostView.Categories)].ToList<string>();
 

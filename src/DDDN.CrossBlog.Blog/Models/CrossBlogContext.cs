@@ -24,6 +24,10 @@ namespace DDDN.CrossBlog.Blog.Models
 				  : base(options)
 		{ }
 
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+			optionsBuilder
+				.EnableSensitiveDataLogging();
+
 		public DbSet<BlogInfo> BlogInfo { get; set; }
 		public DbSet<Writer> Writers { get; set; }
 		public DbSet<Post> Posts { get; set; }

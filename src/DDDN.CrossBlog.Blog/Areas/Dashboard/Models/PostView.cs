@@ -27,18 +27,13 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Models
 	public class PostView : ViewModel
 	{
 		public PostView()
-			: base(typeof(Post.States), null)
+			: base(new List<string>(), null)
 		{
 			Categories = new List<SelectListItem>();
 		}
 
-		public PostView(IStringLocalizer localizer)
-			: base(typeof(Post.States), localizer)
-		{
-		}
-
-		public PostView(IStringLocalizer localizer, Post post, IEnumerable<Category> categories)
-			: base(typeof(Post.States), localizer)
+		public PostView(Post post, IEnumerable<Category> categories, IStringLocalizer localizer)
+			: base(Post.StatesTree[post.State.ToString()], localizer)
 		{
 			InitCategories(post, categories);
 		}
@@ -69,13 +64,13 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Models
 
 		public Guid PostId { get; set; }
 		public Post.States State { get; set; }
-		public DateTimeOffset Created { get; set; }
+		public DateTimeOffset Published { get; set; }
 		public string FileName { get; set; }
 		public string Title { get; set; }
 		public string FirstHeaderText { get; set; }
 		public string FirstParagraphHtml { get; set; }
-		public string AlternativeTitle { get; set; }
-		public string AlternativeTeaser { get; set; }
+		public string AlternativeTitleText { get; set; }
+		public string AlternativeTeaserText { get; set; }
 		public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
 	}
 }

@@ -18,13 +18,19 @@ using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Views.Models;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
 
 namespace DDDN.CrossBlog.Blog.Areas.Administration.Models
 {
 	public class WriterView : ViewModel
 	{
-		public WriterView(IStringLocalizer localizer)
-			: base(typeof(Writer.States), localizer)
+		public WriterView()
+			: base(new List<String>(), null)
+		{
+		}
+
+		public WriterView(Writer.States state, IStringLocalizer localizer)
+			: base(Writer.StatesTree[state.ToString()], localizer)
 		{
 		}
 

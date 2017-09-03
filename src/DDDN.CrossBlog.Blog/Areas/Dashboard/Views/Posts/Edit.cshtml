@@ -30,24 +30,24 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label asp-for="Created"></label>
-				<input asp-for="Created" class="form-control" />
+				<label asp-for="Published"></label>
+				<input asp-for="Published" class="form-control" />
 			</div>
 			<div class="alert alert-secondary">
 				<p class="alert-heading">@Loc["FirstHeaderText"]</p>
 				<p>@Model.FirstHeaderText</p>
 			</div>
 			<div class="form-group">
-				<label asp-for="AlternativeTitle"></label>
-				<textarea id="AlternativeTitle" name="AlternativeTitle" class="form-control disabled" rows="10">@Model.AlternativeTitle</textarea>
+				<label asp-for="AlternativeTitleText"></label>
+				<textarea id="AlternativeTitleText" name="AlternativeTitleText" class="form-control disabled" rows="10">@Model.AlternativeTitleText</textarea>
 			</div>
 			<div class="alert alert-secondary">
 				<p class="alert-heading">@Loc["FirstParagraphHtml"]</p>
 				@Html.Raw(WebUtility.HtmlDecode((string)Model.FirstParagraphHtml))
 			</div>
 			<div class="form-group">
-				<label asp-for="AlternativeTeaser"></label>
-				<textarea id="AlternativeTeaser" name="AlternativeTeaser" class="form-control disabled" rows="10">@Model.AlternativeTeaser</textarea>
+				<label asp-for="AlternativeTeaserText"></label>
+				<textarea id="AlternativeTeaserText" name="AlternativeTeaserText" class="form-control disabled" rows="10">@Model.AlternativeTeaserText</textarea>
 			</div>
 			<input type="submit" value="@Loc["SavePost"]" class="btn btn-default" />
 		</form>

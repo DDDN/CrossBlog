@@ -24,16 +24,8 @@ namespace DDDN.CrossBlog.Blog.Models
 	[Table("BlogInfo")]
 	public class BlogInfo
 	{
-		public enum States
-		{
-			Active,
-			Inactive
-		}
 		[Key]
 		public Guid BlogInfoId { get; set; }
-		[Required]
-		[StringLength(2)]
-		public States State { get; set; }
 		[Required]
 		public DateTimeOffset Created { get; set; }
 		[StringLength(15)]

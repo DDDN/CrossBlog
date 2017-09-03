@@ -104,7 +104,6 @@ namespace DDDN.CrossBlog.Blog.Areas.Administration.Controllers
 				Copyright = blogInfoView.BlogInfoCopyright,
 				Created = created,
 				BlogInfoId = Guid.NewGuid(),
-				State = BlogInfo.States.Active,
 				Version = version,
 				Writers = new List<Writer>()
 			};

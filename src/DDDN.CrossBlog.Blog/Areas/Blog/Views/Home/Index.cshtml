@@ -29,9 +29,9 @@
 				{
 						@post.FirstHeaderText
 				}
-				else if (!string.IsNullOrWhiteSpace(post.AlternativeTitle))
+				else if (!string.IsNullOrWhiteSpace(post.AlternativeTitleText))
 				{
-						@post.AlternativeTitle
+						@post.AlternativeTitleText
 				}
 				else
 				{
@@ -44,9 +44,9 @@
 				{
 					@Html.Raw(WebUtility.HtmlDecode((post.FirstParagraphHtml)))
 				}
-				else if (!string.IsNullOrWhiteSpace(post.AlternativeTeaser))
+				else if (!string.IsNullOrWhiteSpace(post.AlternativeTeaserText))
 				{
-					@post.AlternativeTeaser
+					@post.AlternativeTeaserText
 				}
 				else
 				{

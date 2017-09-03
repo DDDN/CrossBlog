@@ -16,7 +16,6 @@
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
-using System;
 using System.Collections.Generic;
 
 namespace DDDN.CrossBlog.Blog.Views.Models
@@ -25,29 +24,25 @@ namespace DDDN.CrossBlog.Blog.Views.Models
 	{
 		public List<SelectListItem> States { get; }
 
-		public ViewModel(Type enumType, IStringLocalizer localizer)
+		public ViewModel(IEnumerable<string> states, IStringLocalizer localizer)
 		{
-			States = new List<SelectListItem>();
-
-			if (localizer == null)
+			if (states == null)
 			{
-				return;
+				throw new System.ArgumentNullException(nameof(states));
 			}
 
-			var values = Enum.GetValues(enumType);
-			var names = Enum.GetNames(enumType);
+			States = new List<SelectListItem>();
 
-			for (int i = 0; i < values.Length; i++)
+			foreach (var state in states)
 			{
 				var item = new SelectListItem
 				{
-					Value = values.GetValue(i) as string,
-					Text = localizer[names.GetValue(i) as string]
+					Value = state,
+					Text = localizer == null ? state : localizer[state]
 				};
 
 				States.Add(item);
 			}
 		}
-
 	}
 }

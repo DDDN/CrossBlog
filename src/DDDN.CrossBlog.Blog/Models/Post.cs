@@ -16,49 +16,59 @@
 
 namespace DDDN.CrossBlog.Blog.Models
 {
-   using System;
-   using System.Collections.Generic;
-   using System.ComponentModel.DataAnnotations;
-   using System.ComponentModel.DataAnnotations.Schema;
+	using System;
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
 
-   [Table("Post")]
-   public class Post
-   {
-      public enum States
-      {
-         Uploaded,
-         Published,
-         Hidden,
-         Removed
-      }
+	[Table("Post")]
+	public class Post
+	{
+		public enum States
+		{
+			Uploaded,
+			Published,
+			Hidden,
+			Removed
+		}
 
-      [Key]
-      public Guid PostId { get; set; }
-      [Required]
-      public States State { get; set; }
-      [Required]
-      public DateTimeOffset Created { get; set; }
-      [Required]
-      public byte[] Binary { get; set; }
-      [Required]
-      public byte[] Hash { get; set; }
-      [Required]
-      public string Html { get; set; }
-      [Required]
-      public string Css { get; set; }
-      [StringLength(200)]
-      public string FirstHeaderText { get; set; }
-      public string FirstParagraphHtml { get; set; }
-      [StringLength(200)]
-      public string AlternativeTitle { get; set; }
-      [StringLength(500)]
-      public string AlternativeTeaser { get; set; }
-      [Required]
-      public DateTimeOffset LastRenderd { get; set; }
+		public static Dictionary<string, List<string>> StatesTree = new Dictionary<string, List<string>>
+		{
+			[nameof(States.Uploaded)] = new List<string> { nameof(States.Uploaded), nameof(States.Published), nameof(States.Hidden), nameof(States.Removed) },
+			[nameof(States.Published)] = new List<string> { nameof(States.Published), nameof(States.Hidden), nameof(States.Removed) },
+			[nameof(States.Hidden)] = new List<string> { nameof(States.Hidden), nameof(States.Published), nameof(States.Removed) },
+			[nameof(States.Removed)] = new List<string> { nameof(States.Removed) }
+		};
 
-      public Writer Writer { get; set; }
-      public List<Content> Contents { get; set; }
-      public List<Comment> Comments { get; set; }
-      public List<PostCategoryMap> PostCategories { get; set; }
-   }
+		[Key]
+		public Guid PostId { get; set; }
+		[Required]
+		public States State { get; set; }
+		[Required]
+		public DateTimeOffset Created { get; set; }
+		[Required]
+		public byte[] Binary { get; set; }
+		[Required]
+		public byte[] Hash { get; set; }
+		[Required]
+		public string Html { get; set; }
+		[Required]
+		public string Css { get; set; }
+		[StringLength(200)]
+		public string FirstHeaderText { get; set; }
+		public string FirstParagraphHtml { get; set; }
+		[StringLength(200)]
+		public string AlternativeTitleText { get; set; }
+		[StringLength(500)]
+		public string AlternativeTeaserText { get; set; }
+		[Required]
+		public DateTimeOffset LastRenderd { get; set; }
+		[Required]
+		public DateTimeOffset Published { get; set; }
+
+		public Writer Writer { get; set; }
+		public List<Content> Contents { get; set; }
+		public List<Comment> Comments { get; set; }
+		public List<PostCategoryMap> PostCategories { get; set; }
+	}
 }

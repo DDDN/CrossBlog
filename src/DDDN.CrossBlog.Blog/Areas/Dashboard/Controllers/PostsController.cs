@@ -148,15 +148,15 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 				return NotFound();
 			}
 
-			var postView = new PostView(_localizer, post, categories)
+			var postView = new PostView(post, categories, _localizer)
 			{
 				PostId = post.PostId,
-				Created = post.Created,
+				Published = post.Created,
 				State = post.State,
 				FirstHeaderText = post.FirstHeaderText,
 				FirstParagraphHtml = post.FirstParagraphHtml,
-				AlternativeTitle = post.AlternativeTitle,
-				AlternativeTeaser = post.AlternativeTeaser,
+				AlternativeTitleText = post.AlternativeTitleText,
+				AlternativeTeaserText = post.AlternativeTeaserText,
 			};
 
 			return View(postView);
@@ -164,7 +164,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(Guid id, [Bind("PostId,State,AlternativeTitle,AlternativeTeaser")] PostView postView)
+		public async Task<IActionResult> Edit(Guid id, [Bind("PostId,State,AlternativeTitleText,AlternativeTeaserText")] PostView postView)
 		{
 			if (id != postView.PostId)
 			{
@@ -175,10 +175,10 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 				.Include(p => p.PostCategories)
 				.SingleOrDefaultAsync(m => m.PostId == id);
 
-			post.Created = postView.Created;
+			post.Created = postView.Published;
 			post.State = postView.State;
-			post.AlternativeTitle = postView.AlternativeTitle;
-			post.AlternativeTeaser = postView.AlternativeTeaser;
+			post.AlternativeTitleText = postView.AlternativeTitleText;
+			post.AlternativeTeaserText = postView.AlternativeTeaserText;
 
 			var catIdStrings = Request.Form[nameof(PostView.Categories)].ToList<string>();
 

@@ -14,29 +14,17 @@
 * to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System;
-using System.Collections.Generic;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Views.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
+using System;
+using System.Collections.Generic;
 
 namespace DDDN.CrossBlog.Blog.Areas.Administration.Models
 {
-    public class BlogInfoView : ViewModel
+	public class BlogInfoView
     {
-        public BlogInfoView()
-            : base(typeof(BlogInfo.States), null)
-        {
-        }
-
-        public BlogInfoView(IStringLocalizer localizer)
-            : base(typeof(BlogInfo.States), localizer)
-        {
-        }
-
         public Guid BlogInfoId { get; set; }
-        public BlogInfo.States State { get; set; }
         public string BlogInfoName { get; set; }
         public string BlogInfoCopyright { get; set; }
         public string WriterName { get; set; }

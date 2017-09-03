@@ -30,6 +30,12 @@ namespace DDDN.CrossBlog.Blog.Models
 			Inactive
 		}
 
+		public static Dictionary<string, List<string>> StatesTree = new Dictionary<string, List<string>>
+		{
+			[nameof(States.Active)] = new List<string> { nameof(States.Active), nameof(States.Inactive) },
+			[nameof(States.Inactive)] = new List<string> { nameof(States.Inactive), nameof(States.Active) }
+		};
+
 		[Key]
 		public Guid WriterId { get; set; }
 		[Required]

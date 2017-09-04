@@ -13,7 +13,7 @@ var gulp = require('gulp'),
 gulp.task('_beforeBuild', [
 	'COPY_FOLDER_Fontawesome_Fonts_Npm_Assets', 'COPY_FOLDER_Fonts_Assets_Wwwroot',
 	'BUILD_SCSS_Bootstrap', 'BUILD_SCSS_Fontawesome',
-	'COPY_FOLDER_l10n_Areas_Wwwroot', 'COPY_FOLDER_l10n_Models_Wwwroot',
+   'COPY_FOLDER_l10n_Areas_Wwwroot', 'COPY_FOLDER_l10n_Models_Wwwroot', 'COPY_FOLDER_l10n_Views_Wwwroot',
 	'COPY_FOLDER_Images_App_Wwwroot',
 	'BUNDLE_CSS_Blog_Header', 'BUNDLE_CSS_Dashboard_Header', 'BUNDLE_CSS_Administration_Header',
 	'COPY_JS_Npm_Assets', 'BUNDLE_JS_Blog_Body', 'BUNDLE_JS_Dashboard_Body', 'BUNDLE_JS_Administration_Body',
@@ -55,6 +55,13 @@ gulp.task('COPY_FOLDER_Images_App_Wwwroot', function () {
 	gulp
 		.src('assets/app/images/*.*')
 		.pipe(gulp.dest('wwwroot/images'));
+});
+
+/// copy resource files from Views to wwwroot
+gulp.task('COPY_FOLDER_l10n_Views_Wwwroot', function () {
+   gulp
+      .src('Views/**/l10n/*.*')
+      .pipe(gulp.dest('wwwroot/l10n/Views'));
 });
 
 /// copy JavaScript files from node_modules to the JavaScript assets folder

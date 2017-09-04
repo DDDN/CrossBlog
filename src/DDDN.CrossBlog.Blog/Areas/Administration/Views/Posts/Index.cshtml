@@ -47,18 +47,7 @@
                @item.Created
             </td>
             <td>
-               @if (!string.IsNullOrWhiteSpace(item.FirstHeaderText))
-               {
-                  @item.FirstHeaderText;
-               }
-               else if (!string.IsNullOrWhiteSpace(item.AlternativeTitleText))
-               {
-                  @item.AlternativeTitleText
-               }
-               else
-               {
-                  @Loc["NoTitle"]
-               }
+               @{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
             </td>
             <td>
                <a asp-action="Delete" asp-route-id="@item.PostId">@Loc["Delete"]</a>

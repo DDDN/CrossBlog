@@ -20,7 +20,7 @@
 @{ ViewData["Title"] = Loc["SiteTitle"]; }
 
 <div>
-   <a asp-action="Upload" class="btn btn-primary btn-lg" role="button">@Loc["UploadNew"]</a>
+   <a asp-action="Upload" class="btn btn-success" role="button">@Loc["UploadNew"]</a>
    <hr />
    <h2>@Loc["TableTitle"]</h2>
    <table class="table table-striped">
@@ -52,8 +52,8 @@
                   @{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
                </td>
                <td>
-                  <a asp-action="Details" asp-route-id="@item.PostId" class="badge badge-info">@Loc["DetailsLink"]</a> |
-                  <a asp-action="Edit" asp-route-id="@item.PostId" class="badge badge-danger">@Loc["EditLink"]</a>
+                  <a asp-action="Details" asp-route-id="@item.PostId" class="btn btn-primary" role="button">@Loc["DetailsLink"]</a>
+                  <a asp-action="Edit" asp-route-id="@item.PostId" class="btn btn-primary" role="button">@Loc["EditLink"]</a>
                </td>
             </tr>
                      }

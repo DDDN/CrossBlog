@@ -1,75 +1,62 @@
 ﻿@*
-	DDDN.CrossBlog.Blog.Areas.Administration.Views.Shared._Layout
+   DDDN.CrossBlog.Blog.Areas.Administration.Views.Shared._Layout
 
-	Copyright(C) 2017 Lukasz Jaskiewicz
-	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+   Copyright(C) 2017 Lukasz Jaskiewicz
+   Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
 
-	This program is free software; you can redistribute it and/or modify it under the terms of the
-	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+   This program is free software; you can redistribute it and/or modify it under the terms of the
+   GNU General Public License as published by the Free Software Foundation; version 2 of the License.
 
-	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License along with this program; if not, write
-	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write
+   to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
-@inject IViewLocalizer Localizer
+@inject IViewLocalizer Loc
 
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="icon" href="~/images/favicon.ico">
-	<title>CrossBlog Administration - @ViewData["Title"]</title>
-	<link href="~/css/administration.bundle.min.css" rel="stylesheet">
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="icon" href="~/images/favicon.ico">
+   <title>ADMINISTRATION - @ViewData["Title"]</title>
+   <link href="~/css/administration.bundle.min.css" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-dark bg-dark">
-		<a class="navbar-brand pl-1" href="#">CrossBlog Administration</a>
-		<a href="#sidebar" data-toggle="collapse" class="pull-right"><i class="fa fa-navicon fa-2x"></i></a>
-	</nav>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-2 col-1 pl-0 pr-0" id="sidebar">
-				<a asp-controller="BlogInfo" asp-action="Details" class="list-group-item" data-parent="#sidebar">
-					<i class="fa fa-desktop"></i>
-					<span class="hidden-sm-down-fix">@Localizer["Blog"]</span>
-				</a>
-				<a asp-controller="Writers" asp-action="Index" class="list-group-item" data-parent="#sidebar">
-					<i class="fa fa-users"></i>
-					<span class="hidden-sm-down-fix">@Localizer["Writers"]</span>
-				</a>
-				<a asp-controller="Posts" asp-action="Index" class="list-group-item" data-parent="#sidebar">
-					<i class="fa fa-file-text"></i>
-					<span class="hidden-sm-down-fix">@Localizer["Posts"]</span>
-				</a>
-				<a asp-controller="Comments" asp-action="Index" class="list-group-item" data-parent="#sidebar">
-					<i class="fa fa-clone"></i>
-					<span class="hidden-sm-down-fix">@Localizer["Comments"]</span>
-				</a>
-				<a asp-controller="Categories" asp-action="Index" class="list-group-item" data-parent="#sidebar">
-					<i class="fa fa-list"></i>
-					<span class="hidden-sm-down-fix">@Localizer["Categories"]</span>
-				</a>
-			</div>
-			<main class="col-md-10 col" id="main">
-				<div class="p-5">
-					@RenderBody()
-				</div>
-			</main>
-		</div>
-	</div>
-	<script src="~/js/administration.body.bundle.min.js"></script>
+   <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#"><i class="fa fa-cog"></i> ADMINISTRATION</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div class="navbar-nav">
+            <a class="nav-item nav-link" href="@Url.Content($"~/Blog/{CultureInfo.CurrentCulture.Name}/Posts/Index")"><i class="fa fa-desktop"></i> @Loc["Blog"]</a>
+            <a asp-controller="BlogInfo" asp-action="Details" class="nav-item nav-link"><i class="fa fa-info"></i> @Loc["BlogInfo"]</a>
+            <a asp-controller="Writers" asp-action="Index" class="nav-item nav-link"><i class="fa fa-users"></i> @Loc["Writers"]</a>
+            <a asp-controller="Posts" asp-action="Index" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Posts"]</a>
+            <a asp-controller="Comments" asp-action="Index" class="nav-item nav-link"><i class="fa fa-clone"></i> @Loc["Comments"]</a>
+            <a asp-controller="Categories" asp-action="Index" class="nav-item nav-link"><i class="fa fa-list"></i> @Loc["Categories"]</a>
+         </div>
+      </div>
+   </nav>
+   <div class="container-fluid">
+      <main class="col-md-12 col" id="main">
+         <div class="p-5">
+            @RenderBody()
+         </div>
+      </main>
+   </div>
+   <script src="~/js/administration.body.bundle.min.js"></script>
 
-	@if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName != "en")
-	{
-		<script src="@Url.Content($"~/js/localization/messages_{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}.js")"></script>
-	}
-	@RenderSection("Scripts", required: false)
-
+   @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName != "en")
+   {
+      <script src="@Url.Content($"~/js/localization/messages_{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}.js")"></script>
+   }
+   @RenderSection("Scripts", required: false)
 </body>
 </html>

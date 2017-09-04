@@ -24,31 +24,26 @@
    <meta name="description" content="">
    <meta name="author" content="">
    <link rel="icon" href="~/images/favicon.ico">
-   <title>Blog Dashboard - @ViewData["Title"]</title>
-   <link href="~/css/administration.bundle.min.css" rel="stylesheet">
+   <title>DASHBOARD - @ViewData["Title"]</title>
+   <link href="~/css/dashboard.bundle.min.css" rel="stylesheet">
 </head>
 <body>
-   <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand pl-1" href="#">Blog Dashboard</a>
-      <a href="#sidebar" data-toggle="collapse" class="pull-right"><i class="fa fa-navicon fa-2x"></i></a>
+   <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#"><i class="fa fa-dashboard"></i> DASHBOARD</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div class="navbar-nav">
+            <a class="nav-item nav-link" href="@Url.Content($"~/Blog/{CultureInfo.CurrentCulture.Name}/Posts/Index")"><i class="fa fa-desktop"></i> @Loc["Blog"]</a>
+            <a asp-controller="Writers" asp-action="Details" class="nav-item nav-link"><i class="fa fa-user"></i> @Loc["Writers"]</a>
+            <a asp-controller="Posts" asp-action="Index" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Posts"]</a>
+         </div>
+      </div>
    </nav>
    <div class="container-fluid">
       <div class="row">
-         <div class="col-md-2 col-1 pl-0 pr-0" id="sidebar">
-            <a class="list-group-item" data-parent="#sidebar" href="@Url.Content($"~/Blog/{CultureInfo.CurrentCulture.Name}/Posts/Index")">
-               <i class="fa fa-desktop"></i>
-               <span class="hidden-sm-down-fix">@Loc["Blog"]</span>
-            </a>
-            <a asp-controller="Writers" asp-action="Details" class="list-group-item" data-parent="#sidebar">
-               <i class="fa fa-users"></i>
-               <span class="hidden-sm-down-fix">@Loc["Writers"]</span>
-            </a>
-            <a asp-controller="Posts" asp-action="Index" class="list-group-item" data-parent="#sidebar">
-               <i class="fa fa-file-text"></i>
-               <span class="hidden-sm-down-fix">@Loc["Posts"]</span>
-            </a>
-         </div>
-         <main class="col-md-10 col" id="main">
+         <main class="col-md-12 col" id="main">
             <div class="p-5">
                @RenderBody()
             </div>
@@ -62,6 +57,5 @@
       <script src="@Url.Content($"~/js/localization/messages_{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}.js")"></script>
    }
    @RenderSection("Scripts", required: false)
-
 </body>
 </html>

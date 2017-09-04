@@ -126,7 +126,8 @@ gulp.task('BUNDLE_CSS_Administration_Header', function () {
 var assetsJsBlogBody = [
 	'assets/scripts/jquery.js',
 	'assets/scripts/popper.js',
-	'assets/scripts/bootstrap.js',
+   'assets/scripts/bootstrap.js',
+   'assets/app/scripts/common.js',
 	'assets/app/scripts/blog.js'
 ];
 gulp.task('BUNDLE_JS_Blog_Body', function () {
@@ -142,7 +143,8 @@ gulp.task('BUNDLE_JS_Blog_Body', function () {
 var assetsJsBlogDashboard = [
 	'assets/scripts/jquery.js',
 	'assets/scripts/popper.js',
-	'assets/scripts/bootstrap.js',
+   'assets/scripts/bootstrap.js',
+   'assets/app/scripts/common.js',
 	'assets/app/scripts/dashboard.js'
 ];
 gulp.task('BUNDLE_JS_Dashboard_Body', function () {
@@ -159,7 +161,8 @@ var assetsJsAdministrationBody = [
 	'assets/scripts/jquery.js',
 	'assets/scripts/jquery.validate.js',
 	'assets/scripts/popper.js',
-	'assets/scripts/bootstrap.js',
+   'assets/scripts/bootstrap.js',
+   'assets/app/scripts/common.js',
 	'assets/app/scripts/administration.js'
 ];
 gulp.task('BUNDLE_JS_Administration_Body', function () {

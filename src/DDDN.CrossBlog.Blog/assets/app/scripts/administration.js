@@ -1,3 +1,5 @@
 ﻿$(document).ready(function () {
-    $('#formValidation').validate();
+   $('#formValidation').validate();
+   HighlightActiveLink();
 });
+

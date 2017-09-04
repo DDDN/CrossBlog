@@ -16,41 +16,59 @@
 
 namespace DDDN.CrossBlog.Blog.Models
 {
-	using Microsoft.EntityFrameworkCore;
+   using Microsoft.EntityFrameworkCore;
 
-	public class CrossBlogContext : DbContext
-	{
-		public CrossBlogContext(DbContextOptions<CrossBlogContext> options)
-				  : base(options)
-		{ }
+   public class CrossBlogContext : DbContext
+   {
+      public CrossBlogContext(DbContextOptions<CrossBlogContext> options)
+              : base(options)
+      { }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-			optionsBuilder
-				.EnableSensitiveDataLogging();
+      protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+         optionsBuilder
+            .EnableSensitiveDataLogging();
 
-		public DbSet<BlogInfo> BlogInfo { get; set; }
-		public DbSet<Writer> Writers { get; set; }
-		public DbSet<Post> Posts { get; set; }
-		public DbSet<PostCategoryMap> PostCategories { get; set; }
-		public DbSet<Category> Categories { get; set; }
-		public DbSet<Comment> Comments { get; set; }
-		public DbSet<Content> Contents { get; set; }
+      public DbSet<BlogInfo> BlogInfo { get; set; }
+      public DbSet<Writer> Writers { get; set; }
+      public DbSet<Post> Posts { get; set; }
+      public DbSet<PostCategoryMap> PostCategories { get; set; }
+      public DbSet<Category> Categories { get; set; }
+      public DbSet<Comment> Comments { get; set; }
+      public DbSet<Content> Contents { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			// PostKeyword
-			modelBuilder.Entity<PostCategoryMap>()
-				 .HasKey(t => new { t.PostId, t.CategoryId });
+      protected override void OnModelCreating(ModelBuilder modelBuilder)
+      {
+         // Post to Categories many to many
+         modelBuilder.Entity<PostCategoryMap>()
+             .HasKey(t => new { t.PostId, t.CategoryId });
 
-			modelBuilder.Entity<PostCategoryMap>()
-				 .HasOne(pt => pt.Post)
-				 .WithMany(p => p.PostCategories)
-				 .HasForeignKey(pt => pt.PostId);
+         modelBuilder.Entity<PostCategoryMap>()
+             .HasOne(pt => pt.Post)
+             .WithMany(p => p.PostCategories)
+             .HasForeignKey(pt => pt.PostId);
 
-			modelBuilder.Entity<PostCategoryMap>()
-				 .HasOne(pt => pt.Category)
-				 .WithMany(t => t.PostCategories)
-				 .HasForeignKey(pt => pt.CategoryId);
-		}
-	}
+         modelBuilder.Entity<PostCategoryMap>()
+             .HasOne(pt => pt.Category)
+             .WithMany(t => t.PostCategories)
+             .HasForeignKey(pt => pt.CategoryId);
+
+         // Post-Content cascade delete
+         modelBuilder.Entity<Post>()
+            .HasMany(co => co.Contents)
+            .WithOne(p => p.Post)
+            .OnDelete(DeleteBehavior.Cascade);
+
+         // Post-Comments cascade delete
+         modelBuilder.Entity<Post>()
+            .HasMany(co => co.Comments)
+            .WithOne(p => p.Post)
+            .OnDelete(DeleteBehavior.Cascade);
+
+         // Post-Categories cascade delete
+         modelBuilder.Entity<Post>()
+            .HasMany(co => co.PostCategories)
+            .WithOne(p => p.Post)
+            .OnDelete(DeleteBehavior.Cascade);
+      }
+   }
 }

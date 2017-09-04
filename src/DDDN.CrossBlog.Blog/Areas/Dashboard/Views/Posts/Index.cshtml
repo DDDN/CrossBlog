@@ -26,20 +26,17 @@
 <p>
    <a asp-action="Upload">Upload new Post document</a>
 </p>
-<table class="table">
+<table class="table table-striped">
    <thead>
       <tr>
          <th>
-            @Html.DisplayNameFor(model => model.State)
+            @Loc["State"]
          </th>
          <th>
-            @Html.DisplayNameFor(model => model.Created)
+            @Loc["Created"]
          </th>
          <th>
-            @Html.DisplayNameFor(model => model.FirstHeaderText)
-         </th>
-         <th>
-            @Html.DisplayNameFor(model => model.AlternativeTitleText)
+            @Loc["PostTitle"]
          </th>
          <th></th>
       </tr>
@@ -55,16 +52,13 @@
                @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
-               @Html.DisplayFor(modelItem => item.FirstHeaderText)
-            </td>
-            <td>
-               @Html.DisplayFor(modelItem => item.AlternativeTitleText)
+               @{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
             </td>
             <td>
                <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
                <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
             </td>
          </tr>
-      }
+                  }
    </tbody>
 </table>

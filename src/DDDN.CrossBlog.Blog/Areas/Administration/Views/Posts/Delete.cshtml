@@ -39,18 +39,7 @@
       @Loc["Title"]
    </dt>
    <dd>
-      @if (!string.IsNullOrWhiteSpace(Model.FirstHeaderText))
-      {
-         @Model.FirstHeaderText;
-      }
-      else if (!string.IsNullOrWhiteSpace(Model.AlternativeTitleText))
-      {
-         @Model.AlternativeTitleText
-      }
-      else
-      {
-         @Loc["NoTitle"]
-      }
+      @{ await Html.RenderPartialAsync("PostTitlePartialView", Model); }
    </dd>
 </dl>
 <form asp-action="Delete">

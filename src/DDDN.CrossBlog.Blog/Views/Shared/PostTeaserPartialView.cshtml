@@ -1,5 +1,5 @@
 ﻿@*
-   DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Posts.Details
+   DDDN.CrossBlog.Blog.Areas.PostTeaserPartialView
 
    Copyright(C) 2017 Lukasz Jaskiewicz
    Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
@@ -14,38 +14,19 @@
    to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
+@using System.Net
 @model DDDN.CrossBlog.Blog.Models.Post
-@inject IViewLocalizer Loc
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Loc
 
-@{ ViewData["Title"] = "Details"; }
-
-<h2>Details</h2>
-
-<div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Loc["State"]
-        </dt>
-        <dd>
-            @Model.State
-        </dd>
-        <dt>
-            @Loc["Created"]
-        </dt>
-        <dd>
-            @Model.Created
-        </dd>
-        <dt>
-            @Loc["PostTitle"]
-        </dt>
-        <dd>
-            @{ await Html.RenderPartialAsync("PostTitlePartialView", Model); }
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.PostId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (!string.IsNullOrWhiteSpace(Model.FirstParagraphHtml))
+{
+   @Html.Raw(WebUtility.HtmlDecode(Model.FirstParagraphHtml))
+}
+else if (!string.IsNullOrWhiteSpace(Model.AlternativeTeaserText))
+{
+   @Model.AlternativeTeaserText
+}
+else
+{
+   @Loc["NoPostTeaser"]
+}

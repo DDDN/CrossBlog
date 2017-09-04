@@ -15,6 +15,7 @@
 */
 
 using DDDN.CrossBlog.Blog.Areas.Dashboard.Models;
+using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using DDDN.Office.Odf.Odt;
@@ -22,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,14 +37,17 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 	[MiddlewareFilter(typeof(BlogCulturesMiddlewareFilter))]
 	public class PostsController : Controller
 	{
+		private readonly IOptions<RoutingConfigSection> _routingConfigSection;
 		private readonly CrossBlogContext _context;
-		IStringLocalizer<PostsController> _localizer;
+		private readonly IStringLocalizer<PostsController> _localizer;
 
 
 		public PostsController(
+			IOptions<RoutingConfigSection> routingConfigSection,
 			CrossBlogContext context,
 			IStringLocalizer<PostsController> localizer)
 		{
+			_routingConfigSection = routingConfigSection ?? throw new ArgumentNullException(nameof(routingConfigSection));
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 			_localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
 		}
@@ -97,7 +102,7 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 
 							using (IODTFile odtFile = new ODTFile(fileContent))
 							{
-								var convertedData = new ODTConvert().Convert(odtFile);
+								var convertedData = new ODTConvert(odtFile, _routingConfigSection.Value.BlogPostHtmlUrlPrefix).Convert();
 
 								var now = DateTimeOffset.Now;
 
@@ -117,15 +122,15 @@ namespace DDDN.CrossBlog.Blog.Areas.Dashboard.Controllers
 									LastRenderd = now
 								};
 
-								foreach (var media in convertedData.EmbedMedia)
+								foreach (var ec in convertedData.EmbedContent)
 								{
 									var content = new Content
 									{
-										Binary = media.Value,
+										Binary = ec.Content,
 										Created = now,
-										Name = media.Key,
+										Name = ec.Name,
 										State = CrossBlog.Blog.Models.Content.States.Visible,
-										ContentId = Guid.NewGuid(),
+										ContentId = ec.Id,
 										Post = post
 									};
 

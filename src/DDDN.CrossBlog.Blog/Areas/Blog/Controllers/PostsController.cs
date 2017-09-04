@@ -18,11 +18,14 @@ using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 {
@@ -67,6 +70,22 @@ namespace DDDN.CrossBlog.Blog.Areas.Blog.Controllers
 			else
 			{
 				return NotFound();
+			}
+		}
+
+		public IActionResult PostContent(Guid id, string filename)
+		{
+			var content = _cxt.Contents.Where(p => p.ContentId.Equals(id)).FirstOrDefault();
+
+			if (content == default(Content))
+			{
+				return NotFound();
+			}
+			else
+			{
+				var contentType = new FileExtensionContentTypeProvider().Mappings[Path.GetExtension(content.Name)];
+				var result = new FileContentResult(content.Binary, contentType ?? "application/octet-stream");
+				return result;
 			}
 		}
 	}

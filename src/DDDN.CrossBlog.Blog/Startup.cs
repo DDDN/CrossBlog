@@ -99,38 +99,56 @@ namespace DDDN.CrossBlog.Blog
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute
-						 (
-								name: RouteNames.Default,
-								template: routingSection.Value.DefaultRouteTemplate,
-								defaults: new { },
-								constraints: new
-								{
-									area = $@"^{routingSection.Value.BlogAreas}",
-									culture = $@"^{blogCultures.SupportedCulturesDelimitedString}",
-									//id = @"\d+"
-								},
-								dataTokens: new
-								{
-									RouteName = RouteNames.Default
-								}
-						 );
+				(
+					name: RouteNames.Default,
+					template: routingSection.Value.DefaultRouteTemplate,
+					defaults: new { },
+					constraints: new
+					{
+						area = $@"^{routingSection.Value.BlogAreas}",
+						culture = $@"^{blogCultures.SupportedCulturesDelimitedString}",
+					},
+					dataTokens: new
+					{
+						RouteName = RouteNames.Default
+					}
+				 );
 
 				routes.MapRoute
-						 (
-								name: RouteNames.Redirect,
-								template: routingSection.Value.RedirectRouteTemplate,
-								defaults: new
-								{
-									area = RouteNames.Redirect,
-									controller = RouteNames.Redirect,
-									action = RouteNames.Redirect
-								},
-								constraints: new { },
-								dataTokens: new
-								{
-									RouteName = RouteNames.Redirect
-								}
-						 );
+				(
+					name: RouteNames.PostContent,
+					template: routingSection.Value.PostContentTemplate,
+					defaults: new
+					{
+						area = routingSection.Value.DefaultArea,
+						controller = routingSection.Value.DefaultController,
+						action = RouteNames.PostContent
+					},
+					constraints: new
+					{
+					},
+					dataTokens: new
+					{
+						RouteName = RouteNames.Default
+					}
+				 );
+
+				routes.MapRoute
+				(
+					name: RouteNames.Redirect,
+					template: routingSection.Value.RedirectRouteTemplate,
+					defaults: new
+					{
+						area = RouteNames.Redirect,
+						controller = RouteNames.Redirect,
+						action = RouteNames.Redirect
+					},
+					constraints: new { },
+					dataTokens: new
+					{
+						RouteName = RouteNames.Redirect
+					}
+				);
 			});
 
 			using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())

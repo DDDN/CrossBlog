@@ -1,70 +1,70 @@
 ﻿@*
-	DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Posts.Index
+   DDDN.CrossBlog.Blog.Areas.Dashboard.Views.Posts.Index
 
-	Copyright(C) 2017 Lukasz Jaskiewicz
-	Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+   Copyright(C) 2017 Lukasz Jaskiewicz
+   Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
 
-	This program is free software; you can redistribute it and/or modify it under the terms of the
-	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+   This program is free software; you can redistribute it and/or modify it under the terms of the
+   GNU General Public License as published by the Free Software Foundation; version 2 of the License.
 
-	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License along with this program; if not, write
-	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write
+   to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
-@model IEnumerable<DDDN.CrossBlog.Blog.Models.Post>
+@model IEnumerable<Post>
+@inject IViewLocalizer Loc
 
 @{
-	ViewData["Title"] = "Index";
+   ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
 <p>
-	<a asp-action="Upload">Upload new Post document</a>
+   <a asp-action="Upload">Upload new Post document</a>
 </p>
 <table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.State)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Created)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.FirstHeaderText)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.AlternativeTitleText)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.State)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Created)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.FirstHeaderText)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.AlternativeTitleText)
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
-				</td>
-			</tr>
-		}
-	</tbody>
+   <thead>
+      <tr>
+         <th>
+            @Html.DisplayNameFor(model => model.State)
+         </th>
+         <th>
+            @Html.DisplayNameFor(model => model.Created)
+         </th>
+         <th>
+            @Html.DisplayNameFor(model => model.FirstHeaderText)
+         </th>
+         <th>
+            @Html.DisplayNameFor(model => model.AlternativeTitleText)
+         </th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      @foreach (var item in Model)
+      {
+         <tr>
+            <td>
+               @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.FirstHeaderText)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.AlternativeTitleText)
+            </td>
+            <td>
+               <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
+               <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
+            </td>
+         </tr>
+      }
+   </tbody>
 </table>

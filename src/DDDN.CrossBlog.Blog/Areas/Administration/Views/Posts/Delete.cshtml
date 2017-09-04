@@ -1,0 +1,63 @@
+﻿@*
+   DDDN.CrossBlog.Blog.Areas.Administration.Views.Posts.Delete
+
+   Copyright(C) 2017 Lukasz Jaskiewicz
+   Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
+
+   This program is free software; you can redistribute it and/or modify it under the terms of the
+   GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write
+   to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+@inject IViewLocalizer Loc
+@model Post
+
+@{  ViewData["Title"] = Loc["Title"]; }
+
+<h2 class="pb-2">@Loc["Title"]</h2>
+<h3>@Loc["SureToDelete"]</h3>
+<hr />
+<dl class="dl-horizontal">
+   <dt>
+      @Loc["State"]
+   </dt>
+   <dd>
+      @Model.State
+   </dd>
+   <dt>
+      @Loc["Created"]
+   </dt>
+   <dd>
+      @Model.Created
+   </dd>
+   <dt>
+      @Loc["Title"]
+   </dt>
+   <dd>
+      @if (!string.IsNullOrWhiteSpace(Model.FirstHeaderText))
+      {
+         @Model.FirstHeaderText;
+      }
+      else if (!string.IsNullOrWhiteSpace(Model.AlternativeTitleText))
+      {
+         @Model.AlternativeTitleText
+      }
+      else
+      {
+         @Loc["NoTitle"]
+      }
+   </dd>
+</dl>
+<form asp-action="Delete">
+   <div class="form-actions no-color">
+      <input type="hidden" asp-for="PostId" />
+      <input type="submit" value="@Loc["DeletePost"]" class="btn btn-primary" />
+   </div>
+</form>
+<hr />
+<a asp-action="Index">@Loc["BackToList"]</a>

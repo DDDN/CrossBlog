@@ -1,0 +1,40 @@
+﻿@*
+	DDDN.CrossBlog.Blog.Views.Dashboard.WriterCreate
+	Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+	- This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+	- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+	- You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+@model WriterViewModel
+@inject IViewLocalizer Loc
+
+@{ ViewData["Title"] = Loc["Title"]; }
+
+<div>
+	<h2>@Loc["Header"]</h2>
+	<hr />
+	<form id="formValidation" asp-action="WriterCreate">
+		<div class="form-group">
+			<label for="Name">@Loc[nameof(Model.Name)]</label>
+			<input type="text" asp-for="@Model.Name" class="form-control" required maxlength="200">
+		</div>
+		<div class="form-group">
+			<label for="Mail">@Loc[nameof(Model.Mail)]</label>
+			<input type="email" asp-for="@Model.Mail" class="form-control" required maxlength="100">
+		</div>
+		<div class="form-group">
+			<label for="Password">@Loc[nameof(Model.Password)]</label>
+			<input type="password" asp-for="@Model.Password" class="form-control" required>
+		</div>
+		<div class="form-group">
+			<label for="PasswordCompare">@Loc[nameof(Model.PasswordCompare)]</label>
+			<input type="password" asp-for="@Model.PasswordCompare" class="form-control" required>
+		</div>
+		<button type="submit" class="btn btn-success">@Loc["Create"]</button>
+		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-warning">@Loc["Cancel"]</a>
+	</form>
+</div>

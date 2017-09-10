@@ -1,0 +1,28 @@
+﻿@*
+	DDDN.CrossBlog.Blog.Views.Dashboard.Login
+	Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+	- This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+	- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+	- You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+@model LoginViewModel
+@inject IViewLocalizer Loc
+
+@{ ViewData["Title"] = Loc["PageTitle"]; }
+
+<div>
+	<form id="formValidation" class="form-signin" asp-action="Login">
+		<h2 class="form-signin-heading">@Loc["Header"]</h2>
+		<hr />
+		<input hidden asp-for="@Model.ReturnUrl" />
+		<label asp-for="@Model.Password" class="sr-only">@Loc[nameof(Model.Mail)]</label>
+		<input type="email" asp-for="@Model.Mail" class="form-control" required autofocus>
+		<label asp-for="@Model.Password" class="sr-only">@Loc[nameof(Model.Password)]</label>
+		<input type="password" asp-for="@Model.Password" class="form-control" required>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">@Loc["ButtonLogin"]</button>
+	</form>
+</div>

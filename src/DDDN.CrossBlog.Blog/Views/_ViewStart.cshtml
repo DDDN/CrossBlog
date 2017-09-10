@@ -1,0 +1,10 @@
+﻿@{
+	@if ((new[] { "Blog" }).Contains(ViewContext.RouteData.Values["controller"]))
+	{
+		Layout = "_LayoutBlog";
+	}
+	else if ((new[] { "Dashboard" }).Contains(ViewContext.RouteData.Values["controller"]))
+	{
+		Layout = "_LayoutDashboard";
+	}
+}

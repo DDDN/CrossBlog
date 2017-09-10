@@ -1,0 +1,49 @@
+﻿@*
+	DDDN.CrossBlog.Blog.Views.Shared._LayoutBlog
+	Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+	- This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+	- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+	- You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentCulture.Name">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="icon" href="~/images/favicon.ico">
+   <title>CrossBlog</title>
+   <link href="~/css/blog.bundle.min.css" rel="stylesheet">
+   @RenderSection("Styles", required: false)
+</head>
+<body>
+   <div class="container-fluid">
+      <div class="row">
+         <aside class="col-lg-4 pull-right text-right" id="aside">
+            <div id="logo">
+               <img src="~/images/Blogger_alt_367575.svg" alt="Logo" id="img_logo" />
+               <h1><strong>CrossBlog</strong></h1>
+               <p>Write Your Blog with the<br />Office Suite of Your choice!</p>
+            </div>
+            <nav id="nav">
+               <a asp-controller="Blog" asp-action="Newest">Blog</a> |
+               <a asp-controller="Dashboard" asp-action="Posts">Dashboard</a>
+            </nav>
+            <div class="pt-5" id="categories">
+               @await Component.InvokeAsync("Categories")
+            </div>
+         </aside>
+         <main class="col-lg-8" id="main">
+            @RenderBody()
+         </main>
+      </div>
+   </div>
+   <script src="~/js/blog.body.bundle.min.js"></script>
+   @RenderSection("Scripts", required: false)
+</body>
+</html>

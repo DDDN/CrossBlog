@@ -33,4 +33,8 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Models\LoginViewModel.cs" />
+  </ItemGroup>
+
 </Project>

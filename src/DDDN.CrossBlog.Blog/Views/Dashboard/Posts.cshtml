@@ -1,0 +1,57 @@
+﻿@*
+	DDDN.CrossBlog.Blog.Views.Dashboard.Posts
+	Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+	- This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+	- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+	- You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+@model IEnumerable<PostModel>
+@inject IViewLocalizer Loc
+
+@{ ViewData["Title"] = Loc["Title"]; }
+
+<div>
+	<a asp-action="PostUpload" class="btn btn-success">@Loc["Upload"]</a>
+	<hr />
+	<h2>@Loc["Header"]</h2>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>
+					@Loc["State"]
+				</th>
+				<th>
+					@Loc["Created"]
+				</th>
+				<th>
+					@Loc["PostTitle"]
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.State)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Created)
+					</td>
+					<td>
+						@{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
+					</td>
+					<td>
+						<a asp-action="@nameof(DashboardController.PostDetails)" asp-route-id="@item.PostId" class="btn btn-primary">@Loc["Details"]</a>
+						<a asp-action="@nameof(DashboardController.PostEdit)" asp-route-id="@item.PostId" class="btn btn-primary">@Loc["Edit"]</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

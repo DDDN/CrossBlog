@@ -1,24 +1,21 @@
 ﻿/*
-* DDDN.CrossBlog.Blog.Startup
-* 
-* Copyright(C) 2017 Lukasz Jaskiewicz
-* Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
-*
-* This program is free software; you can redistribute it and/or modify it under the terms of the
-* GNU General Public License as published by the Free Software Foundation; version 2 of the License.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License along with this program; if not, write
-* to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+DDDN.CrossBlog.Blog.Startup
+Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+- This program is free software; you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+- You should have received a copy of the GNU General Public License along with this program; if not, write
+to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DDDN.CrossBlog.Blog.BusinessLayer;
 using DDDN.CrossBlog.Blog.Configuration;
+using DDDN.CrossBlog.Blog.Data;
 using DDDN.CrossBlog.Blog.Localization;
-using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -60,6 +57,9 @@ namespace DDDN.CrossBlog.Blog
 			var localizationConfigSection = Config.GetSection(ConfigSectionNames.Localization);
 			var wwwrootL10nFolder = localizationConfigSection.Get<LocalizationConfigSection>().WwwrootL10nFolder;
 
+			var authenticationConfigSection = Config.GetSection(ConfigSectionNames.Authentication);
+			var sessionDurationInMinutes = authenticationConfigSection.Get<AuthenticationConfigSection>().SessionDurationInMinutes;
+
 			services.AddOptions();
 			services.Configure<LocalizationConfigSection>(localizationConfigSection);
 			services.AddScoped(cfg => cfg.GetService<IOptions<LocalizationConfigSection>>().Value);
@@ -67,32 +67,53 @@ namespace DDDN.CrossBlog.Blog
 			services.Configure<RoutingConfigSection>(Config.GetSection(ConfigSectionNames.Routing));
 			services.AddScoped(cfg => cfg.GetService<IOptions<RoutingConfigSection>>().Value);
 
-			services.Configure<BlogConfigSection>(Config.GetSection(ConfigSectionNames.Blog));
-			services.AddScoped(cfg => cfg.GetService<IOptions<BlogConfigSection>>().Value);
+			services.Configure<AuthenticationConfigSection>(authenticationConfigSection);
+			services.AddScoped(cfg => cfg.GetService<IOptions<AuthenticationConfigSection>>().Value);
+
+			services.Configure<SeedConfigSection>(Config.GetSection(ConfigSectionNames.Seed));
+			services.AddScoped(cfg => cfg.GetService<IOptions<SeedConfigSection>>().Value);
 
 			services.TryAddSingleton<IStringLocalizerFactory, BlogStringLocalizerFactory>();
 			services.TryAddSingleton<IStringLocalizer, BlogStringLocalizer>();
 			services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.TryAddSingleton<IBlogCultures, BlogCultures>();
+			services.TryAddScoped<IBlogBusinessLayer, BlogBusinessLayer>();
+			services.TryAddScoped<IPostBusinessLayer, PostBusinessLayer>();
+			services.TryAddScoped<IWriterBusinessLayer, WriterBusinessLayer>();
 			services.AddLocalization(options => options.ResourcesPath = wwwrootL10nFolder);
 			services.AddRouting(options => options.LowercaseUrls = false);
+
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options =>
+				{
+					//options.AccessDeniedPath = "/Writers/Forbidden/";
+					options.LoginPath = "/Dashboard/Login/";
+					options.LogoutPath = "/Dashboard/Logout/";
+					options.ExpireTimeSpan = new System.TimeSpan(0, sessionDurationInMinutes, 0);
+				});
+
 			services.AddMvc()
 				 .AddViewLocalization();
 
 			services.AddDbContext<CrossBlogContext>(options =>
 				options.UseSqlServer(Config.GetConnectionString("CrossBlogLocalDBConnection")));
+
+			services.AddTransient<CrossBlogContextInitializer>();
 		}
 
 		public void Configure(
 			  IApplicationBuilder app,
 			  IHostingEnvironment env,
 			  IBlogCultures blogCultures,
+			  CrossBlogContextInitializer crossBlogContextInitializer,
 			  IOptions<RoutingConfigSection> routingSection)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			app.UseAuthentication();
 
 			app.UseStaticFiles();
 
@@ -105,7 +126,6 @@ namespace DDDN.CrossBlog.Blog
 					defaults: new { },
 					constraints: new
 					{
-						area = $@"^{routingSection.Value.BlogAreas}",
 						culture = $@"^{blogCultures.SupportedCulturesDelimitedString}",
 					},
 					dataTokens: new
@@ -120,7 +140,6 @@ namespace DDDN.CrossBlog.Blog
 					template: routingSection.Value.PostContentTemplate,
 					defaults: new
 					{
-						area = routingSection.Value.DefaultArea,
 						controller = routingSection.Value.DefaultController,
 						action = RouteNames.PostContent
 					},
@@ -151,12 +170,7 @@ namespace DDDN.CrossBlog.Blog
 				);
 			});
 
-			using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-			{
-				var cxt = serviceScope.ServiceProvider.GetService<CrossBlogContext>();
-				//.Database.Migrate();
-				CrossBlogContextInitializer.Initialize(cxt);
-			}
+			crossBlogContextInitializer.Initialize();
 		}
 	}
 }

@@ -15,7 +15,7 @@
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<link rel="icon" href="~/images/favicon.ico">
@@ -45,7 +45,7 @@
 					{
 						var userName = User.Claims.Where(p => p.Type.Equals(ClaimTypes.Name)).FirstOrDefault().Value;
 						var userId = User.Claims.Where(p => p.Type.Equals(ClaimTypes.NameIdentifier)).FirstOrDefault().Value;
-						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@userId" class="nav-item nav-link"><i class="fa fa-user-o"></i> @userName</a>
+						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@userId" class="nav-item nav-link"><i class="fa fa-user-circle"></i> @userName</a>
 						<a asp-controller="Dashboard" asp-action="Logout" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Logout"]</a>
 					}
 				</div>

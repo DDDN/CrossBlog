@@ -27,6 +27,7 @@
 			<label for="BlogCopyright">@Loc[nameof(Model.BlogCopyright)]</label>
 			<input type="text" asp-for="@Model.BlogCopyright" class="form-control" required maxlength="200">
 		</div>
+		<hr />
 		<button type="submit" class="btn btn-success">@Loc["Edit"]</button>
 		<a asp-action="@nameof(DashboardController.BlogEdit)" class="btn btn-warning">@Loc["Cancel"]</a>
 	</form>

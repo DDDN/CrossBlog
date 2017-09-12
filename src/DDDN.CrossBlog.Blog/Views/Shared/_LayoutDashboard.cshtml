@@ -23,23 +23,31 @@
 	<link href="~/css/dashboard.bundle.min.css" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" asp-action="@nameof(DashboardController.Posts)"><i class="fa fa-dashboard"></i> CROSSBLOG</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-			<div class="navbar-nav">
-				<a asp-controller="Blog" asp-action="Newest" class="nav-item nav-link"><i class="fa fa-user"></i> @Loc["Blog"]</a>
-				<a asp-controller="Dashboard" asp-action="BlogDetails" class="nav-item nav-link"><i class="fa fa-info-circle"></i> @Loc["Info"]</a>
-				<a asp-controller="Dashboard" asp-action="Writers" class="nav-item nav-link"><i class="fa fa-user"></i> @Loc["Writers"]</a>
-				<a asp-controller="Dashboard" asp-action="Posts" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Posts"]</a>
-				<a asp-controller="Dashboard" asp-action="Categories" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Categories"]</a>
-				<a asp-controller="Dashboard" asp-action="Logout" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Logout"]</a>
-			</div>
-		</div>
-	</nav>
 	<div class="container-fluid">
+		<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" asp-action="@nameof(DashboardController.Posts)"><i class="fa fa-dashboard"></i> CROSSBLOG</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+					<a asp-controller="Blog" asp-action="Newest" class="nav-item nav-link"><i class="fa fa-user"></i> @Loc["Blog"]</a>
+					@if (Context.User.Identity.IsAuthenticated)
+					{
+						<a asp-controller="Dashboard" asp-action="BlogDetails" class="nav-item nav-link"><i class="fa fa-info-circle"></i> @Loc["Info"]</a>
+						<a asp-controller="Dashboard" asp-action="Writers" class="nav-item nav-link"><i class="fa fa-user"></i> @Loc["Writers"]</a>
+						<a asp-controller="Dashboard" asp-action="Posts" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Posts"]</a>
+						<a asp-controller="Dashboard" asp-action="Categories" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Categories"]</a>
+					}
+				</div>
+				<div class="navbar-nav cb-pull-nav-link">
+					@if (Context.User.Identity.IsAuthenticated)
+					{
+						<a asp-controller="Dashboard" asp-action="Logout" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Logout"]</a>
+					}
+				</div>
+			</div>
+		</nav>
 		<div class="row">
 			<main class="col-md-12 col" id="main">
 				<div class="p-5">

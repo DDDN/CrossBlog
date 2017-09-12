@@ -1,27 +1,22 @@
 ﻿/*!
-* DDDN.CrossBlog.Blog.assets.styles.administration.css
-* 
-* Copyright(C) 2017 Lukasz Jaskiewicz
-* Author: Lukasz Jaskiewicz (lukasz@jaskiewicz.de, devdone@outlook.com)
-*
-* This program is free software; you can redistribute it and/or modify it under the terms of the
-* GNU General Public License as published by the Free Software Foundation; version 2 of the License.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License along with this program; if not, write
-* to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+DDDN.CrossBlog.Blog.assets.styles.dashboard.css
+Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+- This program is free software; you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+- You should have received a copy of the GNU General Public License along with this program; if not, write
+to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 body {
-   background-color: #efefef;
-   min-height: 75rem;
-   padding-top: 3rem;
+	background-color: #efefef;
+	min-height: 75rem;
+	padding-top: 3rem;
 }
 
 .error {
-   color: red;
+	color: red;
 }
 
 .form-signin {
@@ -30,6 +25,18 @@ body {
 	margin: 0 auto;
 }
 
-.form-signin * {
-	margin: 5px;
+	.form-signin * {
+		margin: 5px;
+	}
+
+.cb-pull-nav-link {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+@media (min-width: 992px) {
+	.cb-pull-nav-link {
+		margin-left: auto;
+		margin-right: 0;
+	}
 }

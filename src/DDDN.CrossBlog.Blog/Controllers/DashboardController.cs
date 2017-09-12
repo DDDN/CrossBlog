@@ -14,21 +14,17 @@ using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Data;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Security;
-using DDDN.Office.Odf.Odt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.Controllers
@@ -36,6 +32,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 	public class DashboardController : CrossBlogController
 	{
 		private readonly RoutingConfigSection _routingConfig;
+		private readonly AuthenticationConfigSection _authenticationConfig;
 		private readonly CrossBlogContext _context;
 		private readonly IStringLocalizer<DashboardController> _loc;
 		private readonly IWriterBusinessLayer _writerBl;
@@ -44,6 +41,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 		public DashboardController(
 			IOptions<RoutingConfigSection> routingConfigSectionOptions,
+			IOptions<AuthenticationConfigSection> authenticationConfigSection,
 			CrossBlogContext context,
 			IStringLocalizer<DashboardController> localizer,
 			IWriterBusinessLayer writerBusinessLayer,
@@ -55,6 +53,13 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				throw new ArgumentNullException(nameof(routingConfigSectionOptions));
 			}
 			_routingConfig = routingConfigSectionOptions.Value ?? throw new ArgumentNullException("routingConfigSectionOptions.Value");
+
+			if (authenticationConfigSection == null)
+			{
+				throw new ArgumentNullException(nameof(authenticationConfigSection));
+			}
+			_authenticationConfig = authenticationConfigSection.Value ?? throw new ArgumentNullException("authenticationConfigSection.Value");
+
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 			_loc = localizer ?? throw new ArgumentNullException(nameof(localizer));
 			_writerBl = writerBusinessLayer ?? throw new ArgumentNullException(nameof(writerBusinessLayer));
@@ -373,7 +378,13 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			if (authentication.authenticationResult == AuthenticationResult.Authenticated)
 			{
-				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, authentication.principal);
+				var props = new AuthenticationProperties
+				{
+					AllowRefresh = true,
+					IsPersistent = true
+				};
+
+				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, authentication.principal, props);
 				return base.RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
 			}
 			else if (authentication.authenticationResult == AuthenticationResult.WrongPassword)

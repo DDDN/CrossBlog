@@ -26,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace DDDN.CrossBlog.Blog
 {
@@ -83,14 +84,25 @@ namespace DDDN.CrossBlog.Blog
 			services.AddLocalization(options => options.ResourcesPath = wwwrootL10nFolder);
 			services.AddRouting(options => options.LowercaseUrls = false);
 
-			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-				.AddCookie(options =>
+			services.AddAuthentication(options =>
+			{
+				options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+				options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+				options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+			}).AddCookie(options =>
+			{
+				//options.AccessDeniedPath = "/Writers/Forbidden/";
+				options.LoginPath = "/Dashboard/Login/";
+				options.LogoutPath = "/Dashboard/Logout/";
+				options.ExpireTimeSpan = new TimeSpan(0, sessionDurationInMinutes, 0);
+				options.Cookie = new CookieBuilder
 				{
-					//options.AccessDeniedPath = "/Writers/Forbidden/";
-					options.LoginPath = "/Dashboard/Login/";
-					options.LogoutPath = "/Dashboard/Logout/";
-					options.ExpireTimeSpan = new System.TimeSpan(0, sessionDurationInMinutes, 0);
-				});
+					SameSite = SameSiteMode.Lax,
+					Expiration = new TimeSpan(0, sessionDurationInMinutes, 0)
+				};
+			}); ;
 
 			services.AddMvc()
 				 .AddViewLocalization();

@@ -13,6 +13,7 @@ using DDDN.CrossBlog.Blog.Data;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Security;
 using DDDN.Logging.Messages;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 		private static ClaimsPrincipal CreateClaimsPrincipal(WriterModel writer)
 		{
-			var identity = new ClaimsIdentity();
+			var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
 
 			foreach (var role in writer.Roles)
 			{
@@ -77,11 +78,6 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			identity.AddClaim(new Claim(ClaimTypes.Name, writer.WriterId.ToString()));
 			var principal = new ClaimsPrincipal(identity);
 			return principal;
-		}
-
-		private static bool ValidateLastChanged(ClaimsPrincipal userPrincipal, string lastChanged)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

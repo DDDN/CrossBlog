@@ -18,6 +18,12 @@
 	<hr />
 	<dl class="dl-horizontal">
 		<dt>
+			@Html.DisplayNameFor(model => model.Name)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Name)
+		</dd>
+		<dt>
 			@Html.DisplayNameFor(model => model.State)
 		</dt>
 		<dd>
@@ -30,12 +36,6 @@
 			@Html.DisplayFor(model => model.Created)
 		</dd>
 		<dt>
-			@Html.DisplayNameFor(model => model.Name)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Name)
-		</dd>
-		<dt>
 			@Html.DisplayNameFor(model => model.Mail)
 		</dt>
 		<dd>
@@ -43,7 +43,7 @@
 		</dd>
 	</dl>
 	<hr />
-	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["Edit"]</a> |
+	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["Edit"]</a>
 	<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["Back"]</a>
 </div>
 

@@ -43,6 +43,9 @@
 				<div class="navbar-nav cb-pull-nav-link">
 					@if (Context.User.Identity.IsAuthenticated)
 					{
+						var userName = User.Claims.Where(p => p.Type.Equals(ClaimTypes.Name)).FirstOrDefault().Value;
+						var userId = User.Claims.Where(p => p.Type.Equals(ClaimTypes.NameIdentifier)).FirstOrDefault().Value;
+						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@userId" class="nav-item nav-link"><i class="fa fa-user-o"></i> @userName</a>
 						<a asp-controller="Dashboard" asp-action="Logout" class="nav-item nav-link"><i class="fa fa-file-text"></i> @Loc["Logout"]</a>
 					}
 				</div>

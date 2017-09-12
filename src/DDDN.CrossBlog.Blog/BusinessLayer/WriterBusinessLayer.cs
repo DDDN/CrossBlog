@@ -75,7 +75,9 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				identity.AddClaim(new Claim(ClaimTypes.Role, role.Role.ToString()));
 			}
 
-			identity.AddClaim(new Claim(ClaimTypes.Name, writer.WriterId.ToString()));
+			identity.AddClaim(new Claim(ClaimTypes.Name, writer.Name));
+			identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, writer.WriterId.ToString()));
+
 			var principal = new ClaimsPrincipal(identity);
 			return principal;
 		}

@@ -34,4 +34,15 @@ namespace DDDN.CrossBlog.Blog.Exceptions
 		public BlogNotFoundException(string message) : base(message) { }
 		public BlogNotFoundException(string message, Exception innerException) : base(message, innerException) { }
 	}
+
+	public class PostNotFoundException : Exception
+	{
+		public Guid PostId { get; private set; }
+		public PostNotFoundException(string message, Guid postId) : base(message) { PostId = postId; }
+		public PostNotFoundException(string message, Guid postId, Exception innerException) : base(message, innerException) { PostId = postId; }
+		public PostNotFoundException(Guid postId) { PostId = postId; }
+		public PostNotFoundException() { }
+		public PostNotFoundException(string message) : base(message) { }
+		public PostNotFoundException(string message, Exception innerException) : base(message, innerException) { }
+	}
 }

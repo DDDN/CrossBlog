@@ -288,7 +288,6 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			post.PostCategories.AddRange(newCats);
 
-
 			if (ModelState.IsValid)
 			{
 				try

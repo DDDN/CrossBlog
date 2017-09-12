@@ -41,7 +41,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 		public async Task<IActionResult> Show(Guid id)
 		{
-			var post = await _postBusinessLayer.GetPostOrDefault(id);
+			var post = await _postBusinessLayer.GetPostWithCommentsOrDefault(id);
 
 			if (post != default(PostModel))
 			{
@@ -51,6 +51,14 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			{
 				return NotFound();
 			}
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> CommentAdd(Guid PostId, string personName, string commentTitle, string commentText)
+		{
+			await _postBusinessLayer.CommentSave(PostId, personName, commentTitle, commentText);
+			return RedirectToAction(nameof(Show));
 		}
 
 		public async Task<IActionResult> PostContent(Guid id, string filename)

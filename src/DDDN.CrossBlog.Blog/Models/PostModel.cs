@@ -51,6 +51,7 @@ namespace DDDN.CrossBlog.Blog.Models
 		[Required]
 		public string Css { get; set; }
 		[StringLength(200)]
+		public string PageCssClassName { get; set; }
 		public string FirstHeaderText { get; set; }
 		public string FirstParagraphHtml { get; set; }
 		[StringLength(200)]

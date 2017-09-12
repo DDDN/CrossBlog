@@ -12,6 +12,7 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 namespace DDDN.CrossBlog.Blog.Models
 {
 	using System;
+	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
 	using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,15 +21,15 @@ namespace DDDN.CrossBlog.Blog.Models
 	{
 		public enum States
 		{
-         None,
+			None,
 			Visible,
 			Invisible
 		}
 
 		[Key]
 		public Guid CommentId { get; set; }
+		public Guid? ParentId { get; set; }
 		[Required]
-		[StringLength(2)]
 		public States State { get; set; }
 		[Required]
 		public DateTimeOffset Created { get; set; }
@@ -36,10 +37,12 @@ namespace DDDN.CrossBlog.Blog.Models
 		[Required]
 		public string Name { get; set; }
 		[StringLength(100)]
-		public string Mail { get; set; }
+		public string Title { get; set; }
 		[Required]
 		public string Text { get; set; }
 
 		public PostModel Post { get; set; }
+		public CommentModel Parent { get; set; }
+		public List<CommentModel> Children { get; set; }
 	}
 }

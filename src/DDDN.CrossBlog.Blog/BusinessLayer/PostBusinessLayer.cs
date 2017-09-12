@@ -57,6 +57,46 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				.FirstOrDefaultAsync();
 		}
 
+		public async Task<PostModel> GetPostWithCommentsOrDefault(Guid postId)
+		{
+			return await _context.Posts
+				.AsNoTracking()
+				.Include(p => p.Comments)
+				.AsNoTracking()
+				.Where(p => p.PostId == postId)
+				.FirstOrDefaultAsync();
+		}
+
+		public async Task CommentSave(Guid postId, string personName, string commentTitle, string commentText)
+		{
+			var post = await _context.Posts
+				.Where(p => p.PostId.Equals(postId))
+				.Include(p => p.Comments)
+				.FirstOrDefaultAsync();
+
+			if (post == default(PostModel))
+			{
+				throw new PostNotFoundException(postId);
+			}
+
+			var comment = new CommentModel
+			{
+				CommentId = Guid.NewGuid(),
+				Created = DateTimeOffset.Now,
+				State = CommentModel.States.Visible,
+				Parent = null,
+				ParentId = null,
+				Post = post,
+				Name = personName,
+				Title = commentTitle,
+				Text = commentText
+			};
+
+			post.Comments.Add(comment);
+			await _context.SaveChangesAsync();
+
+		}
+
 		public async Task Upload(IList<IFormFile> files)
 		{
 			List<PostModel> posts = new List<PostModel>();
@@ -88,6 +128,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 								FirstParagraphHtml = convertedData.FirstParagraphHtml,
 								Html = convertedData.Html,
 								Css = convertedData.Css,
+								PageCssClassName = convertedData.PageCssClassName,
 								Writer = _context.Writers.First(),
 								Contents = new List<ContentModel>(),
 								LastRenderd = now

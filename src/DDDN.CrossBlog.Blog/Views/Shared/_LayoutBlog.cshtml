@@ -12,38 +12,40 @@
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
-   <meta charset="utf-8">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-   <meta name="description" content="">
-   <meta name="author" content="">
-   <link rel="icon" href="~/images/favicon.ico">
-   <title>CrossBlog</title>
-   <link href="~/css/blog.bundle.min.css" rel="stylesheet">
-   @RenderSection("Styles", required: false)
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="~/images/favicon.ico">
+	<title>CrossBlog</title>
+	<link href="~/css/blog.bundle.min.css" rel="stylesheet">
+	@RenderSection("Styles", required: false)
 </head>
 <body>
-   <div class="container-fluid">
-      <div class="row">
-         <aside class="col-lg-4 pull-right text-right" id="aside">
-            <div id="logo">
-               <img src="~/images/Blogger_alt_367575.svg" alt="Logo" id="img_logo" />
-               <h1><strong>CrossBlog</strong></h1>
-               <p>Write Your Blog with the<br />Office Suite of Your choice!</p>
-            </div>
-            <nav id="nav">
-               <a asp-controller="Blog" asp-action="Newest">Blog</a> |
-               <a asp-controller="Dashboard" asp-action="Posts">Dashboard</a>
-            </nav>
-            <div class="pt-5" id="categories">
-               @await Component.InvokeAsync("Categories")
-            </div>
-         </aside>
-         <main class="col-lg-8" id="main">
-            @RenderBody()
-         </main>
-      </div>
-   </div>
-   <script src="~/js/blog.body.bundle.min.js"></script>
-   @RenderSection("Scripts", required: false)
+	<div class="container-fluid">
+		<div class="row">
+			<aside class="col-lg-4 pull-right text-right" id="aside">
+				<div id="logo">
+					<img src="~/images/Blogger_alt_367575.svg" alt="Logo" id="img_logo" />
+					<h1><strong>CrossBlog</strong></h1>
+					<p>Write Your Blog with the<br />Office Suite of Your choice!</p>
+				</div>
+				<div class="pt-5" id="categories">
+					<h3>Cetegories</h3>
+					<hr />
+					@await Component.InvokeAsync("Categories")
+				</div>
+				<nav id="nav" class="align-bottom">
+					<hr />
+					<small><a asp-controller="Dashboard" asp-action="Posts">Login</a></small>
+				</nav>
+			</aside>
+			<main class="col-lg-8" id="main">
+				@RenderBody()
+			</main>
+		</div>
+	</div>
+	<script src="~/js/blog.body.bundle.min.js"></script>
+	@RenderSection("Scripts", required: false)
 </body>
 </html>

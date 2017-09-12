@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.ViewComponents
 {
-   public class CategoriesViewComponent : ViewComponent
+	public class CategoriesViewComponent : ViewComponent
 	{
 		private CrossBlogContext _cxt;
 

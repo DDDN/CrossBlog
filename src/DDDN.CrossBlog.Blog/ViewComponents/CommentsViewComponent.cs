@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.BusinessLayer.IPostBusinessLayer
+DDDN.CrossBlog.Blog.ViewComponents.CommentsViewComponent
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -10,20 +10,16 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Models;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace DDDN.CrossBlog.Blog.BusinessLayer
+namespace DDDN.CrossBlog.Blog.ViewComponents
 {
-	public interface IPostBusinessLayer
+	public class CommentsViewComponent : ViewComponent
 	{
-		Task<IEnumerable<PostModel>> GetNewest(int skip, int take);
-		Task<PostModel> GetPostOrDefault(Guid postId);
-		Task<PostModel> GetPostWithCommentsOrDefault(Guid postId);
-		Task Upload(IList<IFormFile> files);
-		Task CommentSave(Guid postId, string personName, string commentTitle, string commentText);
-		Task<(byte[] binary, string name)> GetContent(Guid contentId);
+		public async Task<IViewComponentResult> InvokeAsync(PostModel postModel)
+		{
+			return View(postModel);
+		}
 	}
 }

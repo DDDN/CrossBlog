@@ -31,7 +31,7 @@ body {
 	padding: 5rem;
 }
 
-article, #posts_newest {
+article, #posts_newest, #comments {
 	background-color: white;
 	border: 1px solid #e7e7e7;
 	-webkit-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
@@ -40,6 +40,10 @@ article, #posts_newest {
 	-moz-border-radius: 5px 5px 5px 5px;
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
+}
+
+#comments {
+	margin-top: 40px;
 }
 
 #posts_newest {

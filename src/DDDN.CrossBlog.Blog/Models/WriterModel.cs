@@ -46,6 +46,9 @@ namespace DDDN.CrossBlog.Blog.Models
 		public string Mail { get; set; }
 		[Required]
 		public bool EmailConfirmed { get; set; }
+		[StringLength(2048)]
+		public string AboutMe { get; set; }
+		public byte[] Photo { get; set; }
 		[Required]
 		public byte[] PasswordHash { get; set; }
 		[Required]

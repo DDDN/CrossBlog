@@ -17,8 +17,15 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<link rel="icon" href="~/images/favicon.ico">
-	<title>CrossBlog</title>
-	<link href="~/css/blog.bundle.min.css" rel="stylesheet">
+	<title>CrossBlog - @ViewData["Title"]</title>
+	<environment include="Development">
+		<link href="~/styles/font-awesome.css" rel="stylesheet">
+		<link href="~/styles/bootstrap.css" rel="stylesheet">
+		<link href="~/styles/blog.css" rel="stylesheet">
+	</environment>
+	<environment exclude="Development">
+		<link href="~/css/blog.bundle.min.css" rel="stylesheet">
+	</environment>
 	@RenderSection("Styles", required: false)
 </head>
 <body>
@@ -45,7 +52,16 @@
 			</main>
 		</div>
 	</div>
-	<script src="~/js/blog.body.bundle.min.js"></script>
+	<environment include="Development">
+		<script src="~/scripts/jquery.js"></script>
+		<script src="~/scripts/popper.js"></script>
+		<script src="~/scripts/bootstrap.js"></script>
+		<script src="~/scripts/common.js"></script>
+		<script src="~/scripts/blog.js"></script>
+	</environment>
+	<environment exclude="Development">
+		<script src="~/js/blog.body.bundle.min.js"></script>
+	</environment>
 	@RenderSection("Scripts", required: false)
 </body>
 </html>

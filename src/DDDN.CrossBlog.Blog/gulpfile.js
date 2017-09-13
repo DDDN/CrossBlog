@@ -10,14 +10,22 @@ var gulp = require('gulp'),
 	plumber = require('gulp-plumber'),
 	rename = require('gulp-rename');
 
-gulp.task('_beforeBuild', [
+gulp.task('___PUBLISH', [
 	'COPY_FOLDER_Fontawesome_Fonts_Npm_Assets', 'COPY_FOLDER_Fonts_Assets_Wwwroot',
 	'BUILD_SCSS_Bootstrap', 'BUILD_SCSS_Fontawesome',
 	'COPY_FOLDER_l10n_Controllers_Wwwroot', 'COPY_FOLDER_l10n_Models_Wwwroot', 'COPY_FOLDER_l10n_Views_Wwwroot',
 	'COPY_FOLDER_Images_App_Wwwroot',
 	'BUNDLE_CSS_Blog_Header', 'BUNDLE_CSS_Dashboard_Header',
 	'COPY_JS_Npm_Assets', 'BUNDLE_JS_Blog_Body', 'BUNDLE_JS_Dashboard_Body',
-   'COPY_FOLDER_JQueryValidation_Localization_Npm_Assets', 'COPY_FOLDER_Localization_Assets_Wwwroot']);
+	'COPY_FOLDER_JQueryValidation_Localization_Npm_Assets', 'COPY_FOLDER_Localization_Assets_Wwwroot']);
+
+gulp.task('___DEV', [
+	'COPY_FOLDER_Fontawesome_Fonts_Npm_Assets',
+	'COPY_FOLDER_l10n_Controllers_Wwwroot', 'COPY_FOLDER_l10n_Models_Wwwroot', 'COPY_FOLDER_l10n_Views_Wwwroot',
+	'COPY_JS_Npm_Assets',
+	'COPY_FOLDER_JQueryValidation_Localization_Npm_Assets',
+	'COPY_FOLDER_Assets_Wwwroot', 'COPY_FOLDER_AssetsApp_Wwwroot']
+);
 
 /// compile Bootstrap scss
 gulp.task('BUILD_SCSS_Bootstrap', function () {
@@ -164,4 +172,16 @@ gulp.task('COPY_FOLDER_JQueryValidation_Localization_Npm_Assets', function () {
 gulp.task('COPY_FOLDER_Localization_Assets_Wwwroot', function () {
 	return gulp.src('assets/scripts/localization/**/*.*')
 		.pipe(gulp.dest('wwwroot/js/localization'));
+});
+
+/// copy Assets folder to Wwwroot
+gulp.task('COPY_FOLDER_Assets_Wwwroot', function () {
+	return gulp.src(['assets/**/*.*', '!assets/app/**/*.*'])
+		.pipe(gulp.dest('wwwroot'));
+});
+
+/// copy Assets/App folder to Wwwroot
+gulp.task('COPY_FOLDER_AssetsApp_Wwwroot', function () {
+	return gulp.src('assets/app/**/*.*')
+		.pipe(gulp.dest('wwwroot'));
 });

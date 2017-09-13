@@ -20,10 +20,9 @@ gulp.task('___PUBLISH', [
 	'COPY_FOLDER_JQueryValidation_Localization_Npm_Assets', 'COPY_FOLDER_Localization_Assets_Wwwroot']);
 
 gulp.task('___DEV', [
-	'COPY_FOLDER_Fontawesome_Fonts_Npm_Assets',
+	'COPY_JS_Npm_Assets', 'COPY_CSS_Npm_Assets',
+	'COPY_FOLDER_Fontawesome_Fonts_Npm_Assets', 'COPY_FOLDER_JQueryValidation_Localization_Npm_Assets',
 	'COPY_FOLDER_l10n_Controllers_Wwwroot', 'COPY_FOLDER_l10n_Models_Wwwroot', 'COPY_FOLDER_l10n_Views_Wwwroot',
-	'COPY_JS_Npm_Assets',
-	'COPY_FOLDER_JQueryValidation_Localization_Npm_Assets',
 	'COPY_FOLDER_Assets_Wwwroot', 'COPY_FOLDER_AssetsApp_Wwwroot']
 );
 
@@ -83,6 +82,17 @@ gulp.task('COPY_JS_Npm_Assets', function () {
 	gulp
 		.src(npmJsFiles)
 		.pipe(gulp.dest('assets/scripts'));
+});
+
+/// copy Css files from node_modules to the styles assets folder
+var npmCssFiles = [
+	'node_modules/bootstrap/dist/css/bootstrap.css',
+	'node_modules/font-awesome/css/font-awesome.css'
+];
+gulp.task('COPY_CSS_Npm_Assets', function () {
+	gulp
+		.src(npmCssFiles)
+		.pipe(gulp.dest('assets/styles'));
 });
 
 /// copy Blog CSS assets to wwwroot

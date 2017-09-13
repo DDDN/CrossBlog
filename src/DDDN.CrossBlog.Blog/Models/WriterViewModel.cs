@@ -32,6 +32,8 @@ namespace DDDN.CrossBlog.Blog.Models
 		public WriterModel.States State { get; set; }
 		public string Name { get; set; }
 		public string Mail { get; set; }
+		public string AboutMe { get; set; }
+		public bool Administrator { get; set; }
 		public string Password { get; set; }
 		public string PasswordCompare { get; set; }
 	}

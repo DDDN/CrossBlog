@@ -17,7 +17,7 @@
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
-	<p><a asp-action="@nameof(DashboardController.WriterCreate)">@Loc["LinkWriterCreate"]</a></p>
+	<p><a asp-action="@nameof(DashboardController.WriterCreate)" class="btn btn-success">@Loc["WriterCreate"]</a></p>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -32,6 +32,9 @@
 				</th>
 				<th>
 					@Loc[nameof(WriterModel.Mail)]
+				</th>
+				<th>
+					@Loc[nameof(RoleModel.Role)]
 				</th>
 				<th></th>
 			</tr>
@@ -53,12 +56,24 @@
 						@Html.DisplayFor(modelItem => item.Mail)
 					</td>
 					<td>
-						<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@item.WriterId">@Loc[nameof(DashboardController.WriterEdit)]</a> |
-						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@item.WriterId">@Loc[nameof(DashboardController.WriterDetails)]</a> |
-						<a asp-action="@nameof(DashboardController.WriterDelete)" asp-route-id="@item.WriterId">@Loc[nameof(DashboardController.WriterDelete)]</a>
+						@if (item.Roles.Where(p => p.Role.Equals(RoleModel.Roles.Administrator)).Any())
+						{
+							<input type="checkbox" checked disabled>
+						}
+						else
+						{
+							<input type="checkbox" disabled>
+						}
+					</td>
+					<td>
+						<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterEdit)]</a>
+						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterDetails)]</a>
+						<a asp-action="@nameof(DashboardController.WriterDelete)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterDelete)]</a>
+						<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterPassword)]</a>
 					</td>
 				</tr>
 			}
 		</tbody>
 	</table>
+	<hr />
 </div>

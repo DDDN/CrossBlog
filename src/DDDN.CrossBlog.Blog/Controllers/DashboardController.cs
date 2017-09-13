@@ -67,7 +67,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			_postBl = postBusinessLayer ?? throw new ArgumentNullException(nameof(postBusinessLayer));
 		}
 
-		[Authorize(Roles = "Administrator,Writer")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> BlogDetails()
 		{
 			var blog = await _blogBl.DetailsGet();
@@ -90,7 +90,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			return RedirectToAction(nameof(BlogDetails));
 		}
 
-		[Authorize(Roles = "Administrator,Writer")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> PostDetails(Guid? id)
 		{
 			if (id == null)
@@ -111,7 +111,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		/// Shows a table with posts infromations.
 		/// </summary>
 		/// <returns>List of post models.</returns>
-		[Authorize(Roles = "Administrator,Writer")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Posts()
 		{
 			var posts = await _context.Posts.AsNoTracking().ToListAsync();
@@ -161,7 +161,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		/// Shows the ODT upload dialog.
 		/// </summary>
 		/// <returns></returns>
-		[Authorize(Roles = "Administrator,Writer")]
+		[Authorize(Roles = "Writer")]
 		public IActionResult PostUpload()
 		{
 			var uploadedPosts = _context.Posts
@@ -175,7 +175,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		/// </summary>
 		/// <param name="files">List of ODT files tat will be converted into posts.</param>
 		/// <returns></returns>
-		[Authorize(Roles = "Administrator,Writer")]
+		[Authorize(Roles = "Writer")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> PostUpload(IList<IFormFile> files)
@@ -191,7 +191,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			}
 		}
 
-		[Authorize(Roles = "Administrator,Writer")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> PostEdit(Guid? id)
 		{
 			if (id == null)
@@ -226,7 +226,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = "Administrator,Writer")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> PostEdit(Guid id, [Bind("PostId,State,AlternativeTitleText,AlternativeTeaserText")] PostViewModel postViewModel)
 		{
 			if (id != postViewModel.PostId)
@@ -317,7 +317,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			return _context.Posts.Any(e => e.PostId == id);
 		}
 
-		[Authorize(Roles = "User, Administrator")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Categories()
 		{
 			var categoryNames = await _context.Categories.AsNoTracking().ToListAsync();
@@ -325,7 +325,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = "User, Administrator")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> CategoriesCreate(string name)
 		{
 			if (!string.IsNullOrWhiteSpace(name))
@@ -400,7 +400,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			}
 		}
 
-		[Authorize(Roles = "User, Administrator")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Logout()
 		{
 			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -409,7 +409,8 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 		public async Task<IActionResult> Writers()
 		{
-			return View(await _context.Writers.ToListAsync());
+			var writers = await _writerBl.GetWritersWithRoles();
+			return View(writers);
 		}
 
 		public async Task<IActionResult> WriterDetails(Guid? id)
@@ -429,41 +430,22 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			return View(writer);
 		}
 
+		[Authorize(Roles = "Administrator")]
 		public IActionResult WriterCreate()
 		{
-			var writerView = new WriterViewModel
-			{
-			};
-
-			return View(writerView);
+			return View(new WriterViewModel());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = "Administrator")]
-		public async Task<IActionResult> WriterCreate([Bind("Name, Mail Password, PasswordCompare")] WriterViewModel writerView)
+		public async Task<IActionResult> WriterCreate([Bind("Name, Mail, AboutMe, Administrator, Password, PasswordCompare")] WriterViewModel writerView)
 		{
-			var hashed = Crypto.HashWithSHA256(writerView.Password);
-
-			var writer = new WriterModel
-			{
-				Name = writerView.Name,
-				Mail = writerView.Mail,
-				WriterId = Guid.NewGuid(),
-				PasswordHash = hashed.hashedPassword,
-				Salt = hashed.salt,
-				State = WriterModel.States.Active,
-				Created = DateTimeOffset.Now,
-				EmailConfirmed = false,
-				Roles = new List<RoleModel> { { RoleModel.Get(RoleModel.Roles.Writer) } }
-			};
-
-			_context.Add(writer);
-			await _context.SaveChangesAsync();
+			await _writerBl.WriterCreate(writerView);
 			return RedirectToAction(nameof(Writers));
 		}
 
-		[Authorize(Roles = "User, Administrator")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> WriterEdit(Guid? id)
 		{
 			if (id == null)
@@ -471,8 +453,13 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				return NotFound();
 			}
 
-			var writer = await _context.Writers.SingleOrDefaultAsync(m => m.WriterId == id);
-			if (writer == null)
+			var writer = await _context.Writers
+				.AsNoTracking()
+				.Where(p => p.WriterId.Equals(id))
+				.Include(p => p.Roles)
+				.SingleOrDefaultAsync();
+
+			if (writer == default(WriterModel))
 			{
 				return NotFound();
 			}
@@ -482,7 +469,9 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				WriterId = writer.WriterId,
 				State = writer.State,
 				Mail = writer.Mail,
-				Name = writer.Name
+				Name = writer.Name,
+				AboutMe = writer.AboutMe,
+				Administrator = writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator))
 			};
 
 			return View(writerView);
@@ -490,8 +479,8 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = "User, Administrator")]
-		public async Task<IActionResult> WriterEdit(Guid id, [Bind("WriterId, State, Name, Mail")]WriterViewModel writerView)
+		[Authorize(Roles = "Writer")]
+		public async Task<IActionResult> WriterEdit(Guid id, [Bind("WriterId, State, Name, Mail, AboutMe, Administrator")]WriterViewModel writerView)
 		{
 			if (id != writerView.WriterId)
 			{
@@ -500,33 +489,10 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var writer = new WriterModel
-				{
-					Name = writerView.Name,
-					Mail = writerView.Mail,
-					WriterId = writerView.WriterId,
-					State = writerView.State,
-				};
-
-				try
-				{
-					_context.Update(writer);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!WriterExists(writer.WriterId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Writers));
+				await _writerBl.WriterEdit(writerView);
 			}
-			return View(writerView);
+
+			return RedirectToAction(nameof(Writers));
 		}
 
 		[Authorize(Roles = "Administrator")]
@@ -561,6 +527,24 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		private bool WriterExists(Guid id)
 		{
 			return _context.Writers.Any(e => e.WriterId == id);
+		}
+
+		[Authorize(Roles = "Writer")]
+		public async Task<IActionResult> WriterPassword(Guid? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var writer = await _context.Writers
+				 .SingleOrDefaultAsync(m => m.WriterId == id);
+			if (writer == null)
+			{
+				return NotFound();
+			}
+
+			return View(writer);
 		}
 	}
 }

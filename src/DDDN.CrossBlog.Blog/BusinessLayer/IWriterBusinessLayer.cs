@@ -9,6 +9,8 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DDDN.CrossBlog.Blog.Models;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -16,6 +18,9 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 {
 	public interface IWriterBusinessLayer
 	{
+		Task<IEnumerable<WriterModel>> GetWritersWithRoles();
 		Task<(AuthenticationResult authenticationResult, ClaimsPrincipal principal)> TryToAuthenticateAndGetPrincipal(string loginMail, string loginPassword);
+		Task WriterEdit(WriterViewModel writerView);
+		Task WriterCreate(WriterViewModel writerView);
 	}
 }

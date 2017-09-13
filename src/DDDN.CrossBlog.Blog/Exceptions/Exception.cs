@@ -45,4 +45,15 @@ namespace DDDN.CrossBlog.Blog.Exceptions
 		public PostNotFoundException(string message) : base(message) { }
 		public PostNotFoundException(string message, Exception innerException) : base(message, innerException) { }
 	}
+
+	public class WriterNotFoundException : Exception
+	{
+		public Guid WriterId { get; private set; }
+		public WriterNotFoundException(string message, Guid writerId) : base(message) { WriterId = writerId; }
+		public WriterNotFoundException(string message, Guid writerId, Exception innerException) : base(message, innerException) { WriterId = writerId; }
+		public WriterNotFoundException(Guid writerId) { WriterId = writerId; }
+		public WriterNotFoundException() { }
+		public WriterNotFoundException(string message) : base(message) { }
+		public WriterNotFoundException(string message, Exception innerException) : base(message, innerException) { }
+	}
 }

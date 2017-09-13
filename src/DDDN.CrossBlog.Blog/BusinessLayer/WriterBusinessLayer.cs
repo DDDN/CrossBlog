@@ -10,12 +10,14 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Data;
+using DDDN.CrossBlog.Blog.Exceptions;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Security;
 using DDDN.Logging.Messages;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -29,6 +31,15 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		public WriterBusinessLayer(CrossBlogContext context)
 		{
 			_context = context ?? throw new System.ArgumentNullException(nameof(context));
+		}
+
+		public async Task<IEnumerable<WriterModel>> GetWritersWithRoles()
+		{
+			return await _context.Writers
+				.AsNoTracking()
+				.Include(p => p.Roles)
+				.AsNoTracking()
+				.ToListAsync();
 		}
 
 		public async Task<(AuthenticationResult authenticationResult, ClaimsPrincipal principal)>
@@ -80,6 +91,73 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 			var principal = new ClaimsPrincipal(identity);
 			return principal;
+		}
+
+		public async Task WriterEdit(WriterViewModel writerView)
+		{
+			if (writerView == null)
+			{
+				throw new ArgumentNullException(nameof(writerView));
+			}
+
+			var writer = await _context.Writers
+				.Where(p => p.WriterId.Equals(writerView.WriterId))
+				.Include(p => p.Roles)
+				.FirstOrDefaultAsync();
+
+			if (writer == default(WriterModel))
+			{
+				throw new WriterNotFoundException(writerView.WriterId);
+			}
+			else
+			{
+				writer.Name = writerView.Name;
+				writer.Mail = writerView.Mail;
+				writer.State = writerView.State;
+				writer.AboutMe = writerView.AboutMe;
+				writer.AboutMe = writerView.AboutMe;
+				HandleAdministratorRole(writerView.Administrator, writer);
+				await _context.SaveChangesAsync();
+			}
+		}
+
+		private static void HandleAdministratorRole(bool isAdministrator, WriterModel writer)
+		{
+			var adminRole = writer.Roles
+								.Where(p => p.Role.Equals(RoleModel.Roles.Administrator))
+								.FirstOrDefault();
+
+			if (isAdministrator && adminRole == default(RoleModel))
+			{
+				writer.Roles.Add(RoleModel.Get(RoleModel.Roles.Administrator));
+			}
+			else if (!isAdministrator && adminRole != default(RoleModel))
+			{
+				writer.Roles.Remove(adminRole);
+			}
+		}
+
+		public async Task WriterCreate(WriterViewModel writerView)
+		{
+			var hashed = Crypto.HashWithSHA256(writerView.Password);
+
+			var writer = new WriterModel
+			{
+				Name = writerView.Name,
+				Mail = writerView.Mail,
+				AboutMe = writerView.AboutMe,
+				WriterId = Guid.NewGuid(),
+				PasswordHash = hashed.hashedPassword,
+				Salt = hashed.salt,
+				State = WriterModel.States.Active,
+				Created = DateTimeOffset.Now,
+				EmailConfirmed = false,
+				Roles = new List<RoleModel> { { RoleModel.Get(RoleModel.Roles.Writer) } }
+			};
+
+			HandleAdministratorRole(writerView.Administrator, writer);
+			_context.Add(writer);
+			await _context.SaveChangesAsync();
 		}
 	}
 }

@@ -43,6 +43,7 @@
 			@Html.DisplayFor(model => model.Mail)
 		</dd>
 	</dl>
+	<hr />
 	<form asp-action="WriterDelete">
 		<input type="hidden" asp-for="WriterId" />
 		<input type="submit" value="@Loc["Delete"]" class="btn btn-danger" />

@@ -57,6 +57,7 @@
 			<label for="AlternativeTeaserText">@Loc["AlternativeTeaserText"]</label>
 			<textarea id="AlternativeTeaserText" name="AlternativeTeaserText" class="form-control disabled" rows="10">@Model.AlternativeTeaserText</textarea>
 		</div>
+		<hr />
 		<input type="submit" value="@Loc["Edit"]" cla class="btn btn-success" />
 		<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-warning">@Loc["Cancel"]</a>
 	</form>

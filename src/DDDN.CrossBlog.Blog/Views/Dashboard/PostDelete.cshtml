@@ -38,6 +38,7 @@
 			@{ await Html.RenderPartialAsync("PostTitlePartialView", Model); }
 		</dd>
 	</dl>
+	<hr />
 	<form asp-action="PostDelete">
 		<input type="hidden" asp-for="PostId" />
 		<input type="submit" value="@Loc["Delete"]" class="btn btn-success" />

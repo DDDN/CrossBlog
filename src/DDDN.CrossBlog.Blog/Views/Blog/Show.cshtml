@@ -12,9 +12,23 @@
 @model PostModel
 @inject IViewLocalizer Loc
 
-@{ ViewData["Title"] = Loc["Title"]; }
+@{
+	if (!string.IsNullOrWhiteSpace(Model.FirstHeaderText))
+	{
+		ViewData["Title"] = Model.FirstHeaderText;
+	}
+	else if (!string.IsNullOrWhiteSpace(Model.AlternativeTitleText))
+	{
+		ViewData["Title"] = Model.AlternativeTitleText;
+	}
+	else
+	{
+		ViewData["Title"] = Loc["NoPostTitle"];
+	}
+}
 
-@section Styles {	<style>@Html.Raw(WebUtility.HtmlDecode(Model.Css))</style> }
+@section Styles {
+	<style>@Html.Raw(WebUtility.HtmlDecode(Model.Css))</style> }
 
 @Html.Raw(WebUtility.HtmlDecode((string)Model.Html))
 @await Component.InvokeAsync("Comments", Model)

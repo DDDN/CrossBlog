@@ -14,52 +14,61 @@ using DDDN.CrossBlog.Blog.Localization;
 using DDDN.CrossBlog.Blog.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace DDDN.CrossBlog.Blog.Controllers
 {
 	public class RedirectController : Controller
 	{
 		private readonly RoutingConfigSection _routingSection;
+		private readonly LocalizationConfigSection _localizationSection;
 		private readonly IBlogCultures _blogCultures;
 
 		public RedirectController(
 			 IOptions<RoutingConfigSection> routingSectionOptions,
+			 IOptions<LocalizationConfigSection> localizationSectionOptions,
 			 IBlogCultures blogCultures)
 		{
 			if (routingSectionOptions == null)
 			{
 				throw new System.ArgumentNullException(nameof(routingSectionOptions));
 			}
-			_routingSection = routingSectionOptions.Value ?? throw new System.ArgumentNullException("routingSectionOptions.Value");
+			_routingSection = routingSectionOptions.Value ?? throw new ArgumentNullException("routingSectionOptions.Value");
 
-			_blogCultures = blogCultures ?? throw new System.ArgumentNullException(nameof(blogCultures));
+			if (localizationSectionOptions == null)
+			{
+				throw new System.ArgumentNullException(nameof(localizationSectionOptions));
+			}
+			_localizationSection = localizationSectionOptions.Value ?? throw new ArgumentNullException("localizationSectionOptions.Value");
+
+			_blogCultures = blogCultures ?? throw new ArgumentNullException(nameof(blogCultures));
 		}
 
 		public IActionResult Redirect()
 		{
 			var controller = _routingSection.DefaultController;
 			var action = _routingSection.DefaultAction;
+			var blogCultureName = _localizationSection.DefaultCulture;
 			var returnUrl = HttpContext.Request.Query[_routingSection.ReturnUrl];
 
-			var blogCultureName = BlogRequestCultureProvider.GetCultureNameFromDefaultRoute(
-				 HttpContext.Request.Path,
-				 _routingSection.DefaultRouteTemplate,
-				 _routingSection.CultureRouteDataStringKey);
-
-			if (string.IsNullOrWhiteSpace(blogCultureName) && !string.IsNullOrEmpty(returnUrl))
+			if (!controller.Equals(_routingSection.DefaultController, StringComparison.InvariantCultureIgnoreCase))
 			{
-				if (HttpContext.Request.Query.ContainsKey(_routingSection.ReturnUrl))
+				blogCultureName = BlogRequestCultureProvider.GetCultureNameFromRoute(
+					HttpContext.Request.Path,
+					_routingSection.DefaultRouteTemplate,
+					_routingSection.CultureRouteDataStringKey);
+
+				if (string.IsNullOrWhiteSpace(blogCultureName) && !string.IsNullOrEmpty(returnUrl))
 				{
-					blogCultureName = BlogRequestCultureProvider.GetCultureNameFromDefaultRoute(
+					blogCultureName = BlogRequestCultureProvider.GetCultureNameFromRoute(
 						returnUrl,
 						_routingSection.DefaultRouteTemplate,
 						_routingSection.CultureRouteDataStringKey);
-
-					var defaultRoute = new RouteMatcher().Match(
-						_routingSection.DefaultRouteTemplate,
-						$"/{blogCultureName}{HttpContext.Request.Path}");
-					controller = defaultRoute["controller"]?.ToString();
-					action = defaultRoute["action"]?.ToString();
+					var returnUrlRouteWithCulture = new RouteMatcher().Match(
+							_routingSection.DefaultRouteTemplate,
+							$"/{blogCultureName}{HttpContext.Request.Path}");
+					controller = returnUrlRouteWithCulture["controller"]?.ToString();
+					action = returnUrlRouteWithCulture["action"]?.ToString();
 				}
 			}
 

@@ -49,7 +49,7 @@ namespace DDDN.CrossBlog.Blog.Routing
 				throw new NullReferenceException(nameof(blogCultures));
 			}
 
-			string cultureName = GetCultureNameFromDefaultRoute(
+			string cultureName = GetCultureNameFromRoute(
 				 httpContext.Request.Path,
 				 routingConfigSection.Value.DefaultRouteTemplate,
 				 routingConfigSection.Value.CultureRouteDataStringKey);
@@ -59,16 +59,16 @@ namespace DDDN.CrossBlog.Blog.Routing
 			return Task.FromResult(providerResultCulture);
 		}
 
-		public static string GetCultureNameFromDefaultRoute(string requestPath, string defaultRouteTemplate, string routeDataStringKey)
+		public static string GetCultureNameFromRoute(string requestPath, string routeTemplate, string routeDataStringKey)
 		{
 			if (string.IsNullOrWhiteSpace(requestPath))
 			{
 				throw new ArgumentException(nameof(requestPath));
 			}
 
-			if (string.IsNullOrWhiteSpace(defaultRouteTemplate))
+			if (string.IsNullOrWhiteSpace(routeTemplate))
 			{
-				throw new ArgumentException(nameof(defaultRouteTemplate));
+				throw new ArgumentException(nameof(routeTemplate));
 			}
 
 			if (string.IsNullOrWhiteSpace(routeDataStringKey))
@@ -76,7 +76,7 @@ namespace DDDN.CrossBlog.Blog.Routing
 				throw new ArgumentException(nameof(routeDataStringKey));
 			}
 
-			var defaultRoute = new RouteMatcher().Match(defaultRouteTemplate, requestPath);
+			var defaultRoute = new RouteMatcher().Match(routeTemplate, requestPath);
 			var cultureName = defaultRoute[routeDataStringKey] as string;
 			return cultureName;
 		}

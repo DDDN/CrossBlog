@@ -28,7 +28,16 @@
 }
 
 @section Styles {
-	<style>@Html.Raw(WebUtility.HtmlDecode(Model.Css))</style> }
+	<style>@Html.Raw(WebUtility.HtmlDecode(Model.Css))</style>
+}
 
-@Html.Raw(WebUtility.HtmlDecode((string)Model.Html))
-@await Component.InvokeAsync("Comments", Model)
+<div class="row">
+	<div class="col col-12">
+		@Html.Raw(WebUtility.HtmlDecode((string)Model.Html))
+	</div>
+</div>
+<div class="row">
+	<div class="col col col-12">
+		@await Component.InvokeAsync("Comments", Model)
+	</div>
+</div>

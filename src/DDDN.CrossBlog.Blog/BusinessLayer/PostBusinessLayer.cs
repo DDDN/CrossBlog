@@ -116,7 +116,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 							var odtConvert = new ODTConvert(odtFile, _routingConfig.BlogPostHtmlUrlPrefix);
 							var convertedData = odtConvert.Convert(new ODTConvertSettings
 							{
-								FluidWidth = true
+								FluidWidth = false
 							});
 
 							var now = DateTimeOffset.Now;
@@ -161,7 +161,6 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 			_context.AddRange(posts);
 			await _context.SaveChangesAsync();
-
 		}
 
 		public async Task<(byte[] binary, string name)> GetContent(Guid contentId)

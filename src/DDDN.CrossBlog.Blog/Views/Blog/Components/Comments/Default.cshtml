@@ -12,7 +12,7 @@
 @model PostModel
 @inject IViewLocalizer Loc
 
-<div id="comments" class="@Model.PageCssClassName">
+<div class="@Model.PageCssClassName comments">
 	<h3>@Loc["Title"]</h3>
 	<hr />
 	<form asp-action="CommentAdd">

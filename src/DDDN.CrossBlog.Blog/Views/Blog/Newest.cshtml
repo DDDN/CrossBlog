@@ -14,19 +14,23 @@
 
 @{ ViewData["Title"] = Loc["Title"]; }
 
-<div id="posts_newest">
-	@foreach (PostModel item in Model)
-	{
-		<div id="post_teasers">
-			<h2>
-				<a asp-action="Show" asp-route-id="@item.PostId">
-					@{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
-				</a>
-			</h2>
-			<p id="post_teaser">
-				@{ await Html.RenderPartialAsync("PostTeaserPartialView", item); }
-			</p>
-			<p class="mb-0"><i class="fa fa-calendar"></i> <strong>@item.Writer.Created.ToString("d MMMM yyyy", CultureInfo.CurrentCulture), by @item.Writer?.Name</strong></p>
+<div class="row">
+	<div class="col">
+		<div class="newest">
+			@foreach (PostModel item in Model)
+			{
+				<div id="teasers">
+					<h2>
+						<a asp-action="Show" asp-route-id="@item.PostId">
+							@{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
+						</a>
+					</h2>
+					<p id="post_teaser">
+						@{ await Html.RenderPartialAsync("PostTeaserPartialView", item); }
+					</p>
+					<p class="mb-0"><i class="fa fa-calendar"></i> <strong>@item.Writer.Created.ToString("d MMMM yyyy", CultureInfo.CurrentCulture), by @item.Writer?.Name</strong></p>
+				</div>
+							}
 		</div>
-					}
+	</div>
 </div>

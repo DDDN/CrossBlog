@@ -75,5 +75,20 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				return NotFound();
 			}
 		}
+
+		public async Task<IActionResult> Archive()
+		{
+			return View();
+		}
+
+		public async Task<IActionResult> Categories()
+		{
+			return View();
+		}
+
+		public async Task<IActionResult> About()
+		{
+			return View();
+		}
 	}
 }

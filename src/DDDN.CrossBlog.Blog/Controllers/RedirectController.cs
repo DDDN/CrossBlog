@@ -12,16 +12,18 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Localization;
 using DDDN.CrossBlog.Blog.Routing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 
 namespace DDDN.CrossBlog.Blog.Controllers
 {
 	public class RedirectController : Controller
 	{
-		private readonly RoutingConfigSection _routingSection;
-		private readonly LocalizationConfigSection _localizationSection;
+		private readonly RoutingConfigSection _routingConfig;
+		private readonly LocalizationConfigSection _localizationConfig;
 		private readonly IBlogCultures _blogCultures;
 
 		public RedirectController(
@@ -33,48 +35,62 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			{
 				throw new System.ArgumentNullException(nameof(routingSectionOptions));
 			}
-			_routingSection = routingSectionOptions.Value ?? throw new ArgumentNullException("routingSectionOptions.Value");
+			_routingConfig = routingSectionOptions.Value ?? throw new ArgumentNullException("routingSectionOptions.Value");
 
 			if (localizationSectionOptions == null)
 			{
 				throw new System.ArgumentNullException(nameof(localizationSectionOptions));
 			}
-			_localizationSection = localizationSectionOptions.Value ?? throw new ArgumentNullException("localizationSectionOptions.Value");
+			_localizationConfig = localizationSectionOptions.Value ?? throw new ArgumentNullException("localizationSectionOptions.Value");
 
 			_blogCultures = blogCultures ?? throw new ArgumentNullException(nameof(blogCultures));
 		}
 
 		public IActionResult Redirect()
 		{
-			var controller = _routingSection.DefaultController;
-			var action = _routingSection.DefaultAction;
-			var blogCultureName = _localizationSection.DefaultCulture;
-			var returnUrl = HttpContext.Request.Query[_routingSection.ReturnUrl];
+			var culture = _localizationConfig.DefaultCulture;
+			var controller = _routingConfig.DefaultController;
+			var action = _routingConfig.DefaultAction;
+			var returnUrl = HttpContext.Request.Query[_routingConfig.ReturnUrl].FirstOrDefault();
 
-			if (!controller.Equals(_routingSection.DefaultController, StringComparison.InvariantCultureIgnoreCase))
+			if (returnUrl != default(string))
 			{
-				blogCultureName = BlogRequestCultureProvider.GetCultureNameFromRoute(
-					HttpContext.Request.Path,
-					_routingSection.DefaultRouteTemplate,
-					_routingSection.CultureRouteDataStringKey);
+				var route = new RouteMatcher().Match(_routingConfig.DefaultRouteTemplate, HttpContext.Request.Path);
 
-				if (string.IsNullOrWhiteSpace(blogCultureName) && !string.IsNullOrEmpty(returnUrl))
+				if (!route.Any())
 				{
-					blogCultureName = BlogRequestCultureProvider.GetCultureNameFromRoute(
+					var cultureNameFromReturnUrl = BlogRequestCultureProvider.GetCultureNameFromRoute(
 						returnUrl,
-						_routingSection.DefaultRouteTemplate,
-						_routingSection.CultureRouteDataStringKey);
-					var returnUrlRouteWithCulture = new RouteMatcher().Match(
-							_routingSection.DefaultRouteTemplate,
-							$"/{blogCultureName}{HttpContext.Request.Path}");
-					controller = returnUrlRouteWithCulture["controller"]?.ToString();
-					action = returnUrlRouteWithCulture["action"]?.ToString();
+						_routingConfig.DefaultRouteTemplate,
+						_routingConfig.CultureRouteDataStringKey);
+
+					route = new RouteMatcher().Match(
+						_routingConfig.DefaultRouteTemplate,
+						$"/{cultureNameFromReturnUrl}{HttpContext.Request.Path}");
+
+					if (route.Any())
+					{
+						culture = route[_routingConfig.CultureRouteDataStringKey]?.ToString();
+						controller = route["controller"]?.ToString();
+						action = route["action"]?.ToString();
+					}
+				}
+			}
+			else
+			{
+				var route = new RouteMatcher().Match(_routingConfig.DefaultRouteTemplate, HttpContext.Request.Path);
+
+				if (route.Any())
+				{
+					culture = route[_routingConfig.CultureRouteDataStringKey]?.ToString();
+					controller = route["controller"]?.ToString();
+					action = route["action"]?.ToString();
 				}
 			}
 
-			var blogCulture = BlogRequestCultureProvider.GetCulture(blogCultureName, HttpContext, _blogCultures);
+			var blogCulture = BlogRequestCultureProvider.GetCulture(culture, HttpContext, _blogCultures);
 
-			return RedirectToRoute(
+			var redirect = RedirectToRoute(
 				 routeName: RouteNames.Default,
 				 routeValues: new
 				 {
@@ -83,6 +99,8 @@ namespace DDDN.CrossBlog.Blog.Controllers
 					 action = action,
 					 ReturnUrl = returnUrl
 				 });
+
+			return redirect;
 		}
 	}
 }

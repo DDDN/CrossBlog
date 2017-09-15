@@ -31,13 +31,7 @@
 	<style>@Html.Raw(WebUtility.HtmlDecode(Model.Css))</style>
 }
 
-<div class="row">
-	<div class="col col-12">
-		@Html.Raw(WebUtility.HtmlDecode((string)Model.Html))
-	</div>
-</div>
-<div class="row">
-	<div class="col col col-12">
-		@await Component.InvokeAsync("Comments", Model)
-	</div>
+<div class="show">
+	@Html.Raw(WebUtility.HtmlDecode((string)Model.Html))
+	@await Component.InvokeAsync("Comments", Model)
 </div>

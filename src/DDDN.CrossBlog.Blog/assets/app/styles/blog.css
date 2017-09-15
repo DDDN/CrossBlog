@@ -18,11 +18,6 @@ body {
 	color: #000;
 }
 
-footer {
-	margin: 3rem 0 0 0;
-	text-align: center;
-}
-
 article, .newest, .comments {
 	background-color: white;
 	border: 1px solid #e7e7e7;
@@ -34,13 +29,23 @@ article, .newest, .comments {
 	border-radius: 5px 5px 5px 5px;
 }
 
+article, .comments {
+	background: #fff;
+	margin: 0 auto;
+}
+
+.comments {
+	margin-top: 2rem;
+}
+
 .newest {
 	margin: 1rem 0 0 0;
 	padding: 2rem;
 }
 
-.comments {
-	margin: 2rem 0 0 0;
+footer {
+	margin: 3rem 0 0 0;
+	text-align: center;
 }
 
 @media (min-width: 58em) {

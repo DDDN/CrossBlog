@@ -50,12 +50,22 @@
 					<li class="nav-item">
 						<a asp-action="@nameof(BlogController.About)" class="nav-item nav-link">About</a>
 					</li>
+					@if (Context.User.Identity.IsAuthenticated)
+					{
+						<li class="nav-item">
+							<a asp-controller="Dashboard" asp-action="@nameof(DashboardController.Posts)" class="nav-item nav-link"><i class="fa fa-dashboard"></i></a>
+						</li>
+					}
 				</ul>
 			</div>
 		</nav>
-		<main>
-			@RenderBody()
-		</main>
+		<div class="row">
+			<div class="col col-12">
+				<main class="main">
+					@RenderBody()
+				</main>
+			</div>
+		</div>
 		<footer>
 			<p>@ViewData["Copyright"] <a asp-controller="Dashboard" asp-action="Posts"><i class="fa fa-dashboard"></i></a></p>
 		</footer>

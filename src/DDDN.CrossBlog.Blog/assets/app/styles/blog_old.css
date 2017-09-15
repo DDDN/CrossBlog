@@ -1,0 +1,97 @@
+﻿/*!
+DDDN.CrossBlog.Blog.assets.styles.blog.css
+Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+- This program is free software; you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+- You should have received a copy of the GNU General Public License along with this program; if not, write
+to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+body {
+	background-color: #efefef;
+	font-family: Roboto, Arial, Helvetica, Nimbus Sans L, sans-serif;
+}
+
+#aside {
+	min-height: 100vh;
+	padding-top: 5rem;
+	padding-right: 5rem;
+	background-color: #fff;
+	border-right: 1px solid #cbcbcb;
+}
+
+#img_logo {
+	width: 7rem;
+	height: 7rem;
+}
+
+#main {
+	padding: 5rem;
+}
+
+article, #posts_newest, #comments {
+	background-color: white;
+	border: 1px solid #e7e7e7;
+	-webkit-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+}
+
+#comments {
+	margin-top: 40px;
+}
+
+#posts_newest {
+	padding: 5rem;
+}
+
+#post_teasers {
+	margin-bottom: 3rem;
+}
+
+	#post_teasers a {
+		color: #111111;
+	}
+
+	#post_teasers p {
+		margin-left: 1rem;
+	}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	#aside {
+		min-height: 100vh;
+		padding-top: 3rem;
+		padding-right: 1.5rem;
+		border-right: none;
+	}
+
+	#main {
+		padding: 1.5rem;
+	}
+
+	article {
+		margin: auto;
+	}
+}
+
+@media (max-width:992px) {
+	#aside {
+		min-height: 0;
+		padding-top: 1rem;
+		padding-right: 1rem;
+		border-right: none;
+	}
+
+	#main {
+		padding: 1rem;
+	}
+
+	article {
+		margin: auto;
+	}
+}

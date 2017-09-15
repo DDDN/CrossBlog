@@ -113,7 +113,11 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 						using (IODTFile odtFile = new ODTFile(fileContent))
 						{
-							var convertedData = new ODTConvert(odtFile, _routingConfig.BlogPostHtmlUrlPrefix).Convert();
+							var odtConvert = new ODTConvert(odtFile, _routingConfig.BlogPostHtmlUrlPrefix);
+							var convertedData = odtConvert.Convert(new ODTConvertSettings
+							{
+								FluidWidth = true
+							});
 
 							var now = DateTimeOffset.Now;
 

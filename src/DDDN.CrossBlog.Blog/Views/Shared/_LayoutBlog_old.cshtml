@@ -29,41 +29,28 @@
 	@RenderSection("Styles", required: false)
 </head>
 <body>
-	<div class="container">
-		<header>
-			<nav class="navbar navbar-expand-md navbar-light">
-				<a asp-action="Newest" class="navbar-brand"><h2>CrossBlog</h2></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog" aria-controls="navbarBlog" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarBlog">
-					<ul class="navbar-nav mr-auto">
-					</ul>
-					<ul class="navbar-nav">
-						<li class="nav-item active">
-							<a asp-action="@nameof(BlogController.Newest)" class="nav-item nav-link">Newest</a>
-						</li>
-						<li class="nav-item">
-							<a asp-action="@nameof(BlogController.Categories)" class="nav-item nav-link">Tags</a>
-						</li>
-						<li class="nav-item">
-							<a asp-action="@nameof(BlogController.Archive)" class="nav-item nav-link">Archive</a>
-						</li>
-						<li class="nav-item">
-							<a asp-action="@nameof(BlogController.About)" class="nav-item nav-link">About</a>
-						</li>
-					</ul>
+	<div class="container-fluid">
+		<div class="row">
+			<aside class="col-lg-4 pull-right text-right" id="aside">
+				<div id="logo">
+					<img src="~/images/Blogger_alt_367575.svg" alt="Logo" id="img_logo" />
+					<h1><strong>CrossBlog</strong></h1>
+					<p>Write Your Blog with the<br />Office Suite of Your choice!</p>
 				</div>
-			</nav>
-		</header>
-		<main class="row">
-			<div class="col">
+				<div class="pt-5" id="categories">
+					<h3>Cetegories</h3>
+					<hr />
+					@await Component.InvokeAsync("Categories")
+				</div>
+				<nav id="nav" class="align-bottom">
+					<hr />
+					<small><a asp-controller="Dashboard" asp-action="Posts">Login</a></small>
+				</nav>
+			</aside>
+			<main class="col-lg-8" id="main">
 				@RenderBody()
-			</div>
-		</main>
-		<footer class="fixed-bottom">
-			<p>@ViewData["Copyright"] <a asp-controller="Dashboard" asp-action="Posts"><i class="fa fa-dashboard"></i></a></p>
-		</footer>
+			</main>
+		</div>
 	</div>
 	<environment include="Development">
 		<script src="~/scripts/jquery.js"></script>

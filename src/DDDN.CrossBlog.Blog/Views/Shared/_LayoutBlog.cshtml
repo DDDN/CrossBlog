@@ -9,6 +9,8 @@
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
+@using DDDN.CrossBlog.Blog.Data
+@inject BlogInfo blogInfo
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
@@ -64,7 +66,7 @@
 			@RenderBody()
 		</main>
 		<footer>
-			<p>@ViewData["Copyright"] <a asp-controller="Dashboard" asp-action="Posts"><i class="fa fa-dashboard"></i></a></p>
+			<p><small>@blogInfo.Copyright</small><a asp-controller="Dashboard" asp-action="Posts"> <i class="fa fa-dashboard"></i></a></p>
 		</footer>
 	</div>
 	<environment include="Development">

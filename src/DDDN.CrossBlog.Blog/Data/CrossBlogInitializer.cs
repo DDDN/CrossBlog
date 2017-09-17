@@ -47,6 +47,7 @@ namespace DDDN.CrossBlog.Blog.Data
 
 			_blogInfo.BlogName = blog.Name;
 			_blogInfo.Version = blog.Version;
+			_blogInfo.Copyright = blog.Copyright;
 			_blogInfo.OwnerId = owner.WriterId;
 			_blogInfo.OwnerName = owner.Name;
 			_blogInfo.OwnerMail = owner.Mail;

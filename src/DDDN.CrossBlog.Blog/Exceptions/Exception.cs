@@ -56,4 +56,11 @@ namespace DDDN.CrossBlog.Blog.Exceptions
 		public WriterNotFoundException(string message) : base(message) { }
 		public WriterNotFoundException(string message, Exception innerException) : base(message, innerException) { }
 	}
+
+	public class CrossBlogException : Exception
+	{
+		public CrossBlogException() { }
+		public CrossBlogException(string message) : base(message) { }
+		public CrossBlogException(string message, Exception innerException) : base(message, innerException) { }
+	}
 }

@@ -16,6 +16,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
 	<link rel="icon" href="~/images/favicon.ico">
 	<title>CrossBlog - @ViewData["Title"]</title>
 	<environment include="Development">
@@ -59,13 +60,9 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="row">
-			<div class="col col-12">
-				<main class="main">
-					@RenderBody()
-				</main>
-			</div>
-		</div>
+		<main class="main">
+			@RenderBody()
+		</main>
 		<footer>
 			<p>@ViewData["Copyright"] <a asp-controller="Dashboard" asp-action="Posts"><i class="fa fa-dashboard"></i></a></p>
 		</footer>

@@ -40,22 +40,22 @@
 			</select>
 		</div>
 		<div class="alert alert-secondary">
-			<p class="alert-heading">@Loc["FirstHeaderText"]</p>
+			<p class="alert-heading">@Loc["FirstHeader"]</p>
 			<hr />
-			<p>@Model.FirstHeaderText</p>
+			<p>@Model.FirstHeader</p>
 		</div>
 		<div class="form-group">
-			<label for="AlternativeTitleText">@Loc["AlternativeTitleText"]</label>
-			<textarea id="AlternativeTitleText" name="AlternativeTitleText" class="form-control disabled" rows="10">@Model.AlternativeTitleText</textarea>
+			<label for="AlternativeTitle">@Loc["AlternativeTitle"]</label>
+			<textarea id="AlternativeTitle" name="AlternativeTitle" class="form-control disabled" rows="10">@Model.AlternativeTitle</textarea>
 		</div>
 		<div class="alert alert-secondary">
-			<p class="alert-heading">@Loc["FirstParagraphHtml"]</p>
+			<p class="alert-heading">@Loc["FirstParagraph"]</p>
 			<hr />
-			@Html.Raw(WebUtility.HtmlDecode((string)Model.FirstParagraphHtml))
+			@Html.Raw(WebUtility.HtmlDecode((string)Model.FirstParagraph))
 		</div>
 		<div class="form-group">
-			<label for="AlternativeTeaserText">@Loc["AlternativeTeaserText"]</label>
-			<textarea id="AlternativeTeaserText" name="AlternativeTeaserText" class="form-control disabled" rows="10">@Model.AlternativeTeaserText</textarea>
+			<label for="AlternativeTeaser">@Loc["AlternativeTeaser"]</label>
+			<textarea id="AlternativeTeaser" name="AlternativeTeaser" class="form-control disabled" rows="10">@Model.AlternativeTeaser</textarea>
 		</div>
 		<hr />
 		<input type="submit" value="@Loc["Edit"]" cla class="btn btn-success" />

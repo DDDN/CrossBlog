@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Data.BusinessLayer.AuthenticationResult
+DDDN.CrossBlog.Blog.Data.BlogInfo
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -9,15 +9,17 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-namespace DDDN.CrossBlog.Blog.BusinessLayer
+using System;
+
+namespace DDDN.CrossBlog.Blog.Data
 {
-	public enum AuthenticationResult
+	public class BlogInfo
 	{
-		None,
-		Authenticated,
-		WrongPassword,
-		UserNotFound,
-		PasswordNotMatch,
-		PasswordChanged
+		public string BlogName { get; set; }
+		public string Version { get; set; }
+		public string Copyright { get; set; }
+		public Guid OwnerId { get; set; }
+		public String OwnerName { get; set; }
+		public String OwnerMail { get; set; }
 	}
 }

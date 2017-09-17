@@ -55,54 +55,35 @@ namespace DDDN.CrossBlog.Blog
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			var localizationConfigSection = Config.GetSection(ConfigSectionNames.Localization);
-			var wwwrootL10nFolder = localizationConfigSection.Get<LocalizationConfigSection>().WwwrootL10nFolder;
-
-			var authenticationConfigSection = Config.GetSection(ConfigSectionNames.Authentication);
-			var sessionDurationInMinutes = authenticationConfigSection.Get<AuthenticationConfigSection>().SessionDurationInMinutes;
-
-			services.AddOptions();
-			services.Configure<LocalizationConfigSection>(localizationConfigSection);
-			services.AddScoped(cfg => cfg.GetService<IOptions<LocalizationConfigSection>>().Value);
-
-			services.Configure<RoutingConfigSection>(Config.GetSection(ConfigSectionNames.Routing));
-			services.AddScoped(cfg => cfg.GetService<IOptions<RoutingConfigSection>>().Value);
-
-			services.Configure<AuthenticationConfigSection>(authenticationConfigSection);
-			services.AddScoped(cfg => cfg.GetService<IOptions<AuthenticationConfigSection>>().Value);
-
-			services.Configure<SeedConfigSection>(Config.GetSection(ConfigSectionNames.Seed));
-			services.AddScoped(cfg => cfg.GetService<IOptions<SeedConfigSection>>().Value);
+			var configVals = AddConfiguration(services);
 
 			services.TryAddSingleton<IStringLocalizerFactory, BlogStringLocalizerFactory>();
 			services.TryAddSingleton<IStringLocalizer, BlogStringLocalizer>();
+
 			services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.TryAddSingleton<IBlogCultures, BlogCultures>();
-			services.TryAddScoped<IBlogBusinessLayer, BlogBusinessLayer>();
-			services.TryAddScoped<IPostBusinessLayer, PostBusinessLayer>();
-			services.TryAddScoped<IWriterBusinessLayer, WriterBusinessLayer>();
-			services.AddLocalization(options => options.ResourcesPath = wwwrootL10nFolder);
+
+			AddBusinessLayer(services);
+
+			services.AddLocalization(options => options.ResourcesPath = configVals.wwwrootL10nFolder);
 			services.AddRouting(options => options.LowercaseUrls = false);
 
 			services.AddAuthentication(options =>
 			{
 				options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
 				options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
 				options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 			}).AddCookie(options =>
 			{
 				//options.AccessDeniedPath = "/Writers/Forbidden/";
 				options.LoginPath = "/Dashboard/Login/";
 				options.LogoutPath = "/Dashboard/Logout/";
-				options.ExpireTimeSpan = new TimeSpan(0, sessionDurationInMinutes, 0);
+				options.ExpireTimeSpan = new TimeSpan(0, configVals.sessionDurationInMinutes, 0);
 				options.Cookie = new CookieBuilder
 				{
 					SameSite = SameSiteMode.Lax,
-					Expiration = new TimeSpan(0, sessionDurationInMinutes, 0)
 				};
-			}); ;
+			});
 
 			services.AddMvc()
 				 .AddViewLocalization();
@@ -111,6 +92,8 @@ namespace DDDN.CrossBlog.Blog
 				options.UseSqlServer(Config.GetConnectionString("CrossBlogLocalDBConnection")));
 
 			services.AddTransient<CrossBlogContextInitializer>();
+			services.AddTransient<CrossBlogInitializer>();
+			services.TryAddSingleton(new BlogInfo());
 		}
 
 		public void Configure(
@@ -118,6 +101,7 @@ namespace DDDN.CrossBlog.Blog
 			  IHostingEnvironment env,
 			  IBlogCultures blogCultures,
 			  CrossBlogContextInitializer crossBlogContextInitializer,
+			  CrossBlogInitializer crossBlogInitializer,
 			  IOptions<RoutingConfigSection> routingSection)
 		{
 			if (env.IsDevelopment())
@@ -183,6 +167,38 @@ namespace DDDN.CrossBlog.Blog
 			});
 
 			crossBlogContextInitializer.Initialize();
+			crossBlogInitializer.Initialize();
+		}
+
+		private (string wwwrootL10nFolder, int sessionDurationInMinutes) AddConfiguration(IServiceCollection services)
+		{
+			var localizationConfigSection = Config.GetSection(ConfigSectionNames.Localization);
+			var wwwrootL10nFolder = localizationConfigSection.Get<LocalizationConfigSection>().WwwrootL10nFolder;
+
+			var authenticationConfigSection = Config.GetSection(ConfigSectionNames.Authentication);
+			var sessionDurationInMinutes = authenticationConfigSection.Get<AuthenticationConfigSection>().SessionDurationInMinutes;
+
+			services.AddOptions();
+			services.Configure<LocalizationConfigSection>(localizationConfigSection);
+			services.AddScoped(cfg => cfg.GetService<IOptions<LocalizationConfigSection>>().Value);
+
+			services.Configure<RoutingConfigSection>(Config.GetSection(ConfigSectionNames.Routing));
+			services.AddScoped(cfg => cfg.GetService<IOptions<RoutingConfigSection>>().Value);
+
+			services.Configure<AuthenticationConfigSection>(authenticationConfigSection);
+			services.AddScoped(cfg => cfg.GetService<IOptions<AuthenticationConfigSection>>().Value);
+
+			services.Configure<SeedConfigSection>(Config.GetSection(ConfigSectionNames.Seed));
+			services.AddScoped(cfg => cfg.GetService<IOptions<SeedConfigSection>>().Value);
+
+			return (wwwrootL10nFolder, sessionDurationInMinutes);
+		}
+
+		private static void AddBusinessLayer(IServiceCollection services)
+		{
+			services.TryAddScoped<IBlogBusinessLayer, BlogBusinessLayer>();
+			services.TryAddScoped<IPostBusinessLayer, PostBusinessLayer>();
+			services.TryAddScoped<IWriterBusinessLayer, WriterBusinessLayer>();
 		}
 	}
 }

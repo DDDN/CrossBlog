@@ -26,14 +26,36 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 {
 	public class WriterBusinessLayer : IWriterBusinessLayer
 	{
-		private CrossBlogContext _context;
+		private readonly CrossBlogContext _context;
+		private readonly BlogInfo _blogInfo;
 
-		public WriterBusinessLayer(CrossBlogContext context)
+		public WriterBusinessLayer(
+			CrossBlogContext context,
+			BlogInfo blogInfo)
 		{
 			_context = context ?? throw new System.ArgumentNullException(nameof(context));
+			_blogInfo = blogInfo ?? throw new ArgumentNullException(nameof(blogInfo));
 		}
 
-		public async Task<IEnumerable<WriterModel>> GetWritersWithRoles()
+		public async Task<bool> Exists(Guid writerId)
+		{
+			return await _context.Writers.AnyAsync(e => e.WriterId.Equals(writerId));
+		}
+
+		public async Task<WriterModel> Get(Guid writerId)
+		{
+			var writer = await _context.Writers
+				.AsNoTracking()
+				.FirstOrDefaultAsync(p => p.WriterId.Equals(writerId));
+
+			if (writer == default(WriterModel))
+			{
+				throw new WriterNotFoundException(writerId);
+			}
+
+			return writer;
+		}
+		public async Task<IEnumerable<WriterModel>> GetWithRoles()
 		{
 			return await _context.Writers
 				.AsNoTracking()
@@ -56,7 +78,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			}
 
 			var writer = await _context.Writers
-				.Where(p => p.Mail.Equals(loginMail, StringComparison.CurrentCultureIgnoreCase))
+				.Where(p => p.Mail.Equals(loginMail, StringComparison.InvariantCultureIgnoreCase))
 				.Include(p => p.Roles).FirstOrDefaultAsync();
 
 			if (writer == default(WriterModel))
@@ -93,7 +115,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			return principal;
 		}
 
-		public async Task WriterEdit(WriterViewModel writerView)
+		public async Task Edit(WriterViewModel writerView)
 		{
 			if (writerView == null)
 			{
@@ -137,7 +159,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			}
 		}
 
-		public async Task WriterCreate(WriterViewModel writerView)
+		public async Task Create(WriterViewModel writerView)
 		{
 			var hashed = Crypto.HashWithSHA256(writerView.Password);
 
@@ -158,6 +180,54 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			HandleAdministratorRole(writerView.Administrator, writer);
 			_context.Add(writer);
 			await _context.SaveChangesAsync();
+		}
+
+		public async Task Delete(Guid writerId)
+		{
+			if (writerId.Equals(_blogInfo.OwnerId))
+			{
+				throw new CrossBlogException("Owner of the Blog cannot be deleted.");
+			}
+
+			var writer = await _context.Writers.FirstOrDefaultAsync(p => p.WriterId.Equals(writerId));
+
+			_context.Writers.Remove(writer);
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task<AuthenticationResult> PasswordChange(PasswordViewModel writerPassword)
+		{
+			if (writerPassword == null)
+			{
+				throw new ArgumentNullException(nameof(writerPassword));
+			}
+
+			if (!writerPassword.New.Equals(writerPassword.Compare, StringComparison.InvariantCultureIgnoreCase))
+			{
+				return AuthenticationResult.PasswordNotMatch;
+			}
+
+			var writer = await _context.Writers
+				.Where(p => p.WriterId.Equals(writerPassword.WriterId))
+				.FirstOrDefaultAsync();
+
+			if (writer == default(WriterModel))
+			{
+				return AuthenticationResult.UserNotFound;
+			}
+
+			var hashedOld = Crypto.HashWithSHA256(writerPassword.Old, writer.Salt);
+
+			if (!hashedOld.hashedPassword.SequenceEqual(writer.PasswordHash))
+			{
+				return AuthenticationResult.WrongPassword;
+			}
+
+			var hashedNew = Crypto.HashWithSHA256(writerPassword.New);
+			writer.PasswordHash = hashedNew.hashedPassword;
+			writer.Salt = hashedNew.salt;
+			await _context.SaveChangesAsync();
+			return AuthenticationResult.PasswordChanged;
 		}
 	}
 }

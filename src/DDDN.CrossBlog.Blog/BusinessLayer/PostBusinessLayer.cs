@@ -44,7 +44,26 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				 .OrderByDescending(p => p.Created)
 				 .Skip(skip)
 				 .Take(take)
+				 .Include(pc => pc.PostCategories)
+				 .ThenInclude(c => c.Category)
 				 .ToListAsync();
+
+			return newestPosts;
+		}
+
+		public async Task<IEnumerable<PostModel>> GetNewestByCategory(int skip, int take, Guid categoryId)
+		{
+			var newestPosts = await _context.Posts
+				.AsNoTracking()
+				.Where(post => _context.PostCategories.Any(pt => pt.PostId == post.PostId && pt.CategoryId == categoryId))
+				.Skip(skip)
+				.Take(take)
+				.OrderByDescending(po => po.Created)
+				.Select(post => post)
+				.Include(w => w.Writer)
+				.Include(pc => pc.PostCategories)
+				.ThenInclude(c => c.Category)
+				.ToListAsync();
 
 			return newestPosts;
 		}
@@ -128,8 +147,8 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 								Created = now,
 								Binary = fileContentBytes,
 								Hash = sha1Hash,
-								FirstHeaderText = convertedData.FirstHeaderText,
-								FirstParagraphHtml = convertedData.FirstParagraphHtml,
+								FirstHeader = convertedData.FirstHeader,
+								FirstParagraph = convertedData.FirstParagraph,
 								Html = convertedData.Html,
 								Css = convertedData.Css,
 								PageCssClassName = convertedData.PageCssClassName,

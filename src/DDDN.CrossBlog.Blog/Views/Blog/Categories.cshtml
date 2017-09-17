@@ -14,7 +14,10 @@
 
 @{ ViewData["Title"] = Loc["Title"]; }
 
-
-<div id="categories">
-	Categories
+<div class="row">
+	<div class="col col-12">
+		<div class="categories">
+			@await Component.InvokeAsync("Categories")
+		</div>
+	</div>
 </div>

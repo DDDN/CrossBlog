@@ -12,13 +12,13 @@
 @model PostModel
 @inject IViewLocalizer Loc
 
-@if (!string.IsNullOrWhiteSpace(Model.FirstHeaderText))
+@if (!string.IsNullOrWhiteSpace(Model.FirstHeader))
 {
-	@Model.FirstHeaderText;
+	@Model.FirstHeader;
 }
-else if (!string.IsNullOrWhiteSpace(Model.AlternativeTitleText))
+else if (!string.IsNullOrWhiteSpace(Model.AlternativeTitle))
 {
-	@Model.AlternativeTitleText
+	@Model.AlternativeTitle
 }
 else
 {

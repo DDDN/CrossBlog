@@ -44,6 +44,7 @@
 	</dl>
 	<hr />
 	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["Edit"]</a>
+	<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["Password"]</a>
 	<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["Back"]</a>
 </div>
 

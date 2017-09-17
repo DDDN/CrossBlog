@@ -61,10 +61,10 @@ namespace DDDN.CrossBlog.Blog.Models
 		public DateTimeOffset Published { get; set; }
 		public string FileName { get; set; }
 		public string Title { get; set; }
-		public string FirstHeaderText { get; set; }
-		public string FirstParagraphHtml { get; set; }
-		public string AlternativeTitleText { get; set; }
-		public string AlternativeTeaserText { get; set; }
+		public string FirstHeader { get; set; }
+		public string FirstParagraph { get; set; }
+		public string AlternativeTitle { get; set; }
+		public string AlternativeTeaser { get; set; }
 		public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
 	}
 }

@@ -20,6 +20,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 	public interface IPostBusinessLayer
 	{
 		Task<IEnumerable<PostModel>> GetNewest(int skip, int take);
+		Task<IEnumerable<PostModel>> GetNewestByCategory(int skip, int take, Guid categoryId);
 		Task<PostModel> GetPostOrDefault(Guid postId);
 		Task<PostModel> GetPostWithCommentsOrDefault(Guid postId);
 		Task Upload(IList<IFormFile> files);

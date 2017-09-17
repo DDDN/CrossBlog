@@ -10,27 +10,29 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 a, a:focus, a:hover {
-	color: #000;
+	color: #fff !important;
 }
 
 body {
+	font-family: 'Playfair Display', serif;
 	padding-top: 3rem;
-	color: #000;
+	background-color: #34468e;
+	color: #fff;
 }
 
-article, .newest, .comments {
+main {
 	background-color: white;
-	border: 1px solid #e7e7e7;
-	-webkit-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-	box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-	-moz-border-radius: 5px 5px 5px 5px;
-	-webkit-border-radius: 5px 5px 5px 5px;
-	border-radius: 5px 5px 5px 5px;
+	color: #868e96;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
+
+	main a, main a:focus, main a:hover {
+		color: #868e96 !important;
+	}
 
 article, .comments {
-	background: #fff;
 	margin: 0 auto;
 }
 
@@ -39,22 +41,39 @@ article, .comments {
 }
 
 .newest {
-	margin: 1rem 0 0 0;
-	padding: 2rem;
+	margin: 1.5rem 0 0 1.5rem;
 }
 
+.categories {
+	margin: 1.5rem 0 0 0;
+}
+
+.teaser {
+	padding: 0.5rem;
+	margin-bottom: 1.5rem;
+	border-bottom: 3px #ccc solid;
+}
+
+	.teaser p {
+		margin-bottom: 0.3rem;
+	}
+
+	.teaser p a {
+		color: #fff !important;
+	}
+
 footer {
-	margin: 3rem 0 0 0;
+	margin: 2rem 0 0 0;
 	text-align: center;
 }
 
-@media (min-width: 58em) {
+@media (min-width: 57em) {
 	.container {
-		max-width: 57rem;
+		max-width: 55rem;
 	}
 }
 
-@media (max-width: 58em) {
+@media (max-width: 57em) {
 	.container {
 		max-width: 100%;
 	}

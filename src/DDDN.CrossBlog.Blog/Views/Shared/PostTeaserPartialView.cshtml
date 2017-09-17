@@ -12,13 +12,13 @@
 @model PostModel
 @inject IViewLocalizer Loc
 
-@if (!string.IsNullOrWhiteSpace(Model.FirstParagraphHtml))
+@if (!string.IsNullOrWhiteSpace(Model.FirstParagraph))
 {
-	@Html.Raw(WebUtility.HtmlDecode(Model.FirstParagraphHtml))
+	@Html.Raw(WebUtility.HtmlDecode(Model.FirstParagraph))
 }
-else if (!string.IsNullOrWhiteSpace(Model.AlternativeTeaserText))
+else if (!string.IsNullOrWhiteSpace(Model.AlternativeTeaser))
 {
-	@Model.AlternativeTeaserText
+	@Model.AlternativeTeaser
 }
 else
 {

@@ -52,12 +52,12 @@ namespace DDDN.CrossBlog.Blog.Models
 		public string Css { get; set; }
 		[StringLength(200)]
 		public string PageCssClassName { get; set; }
-		public string FirstHeaderText { get; set; }
-		public string FirstParagraphHtml { get; set; }
+		public string FirstHeader { get; set; }
+		public string FirstParagraph { get; set; }
 		[StringLength(200)]
-		public string AlternativeTitleText { get; set; }
+		public string AlternativeTitle { get; set; }
 		[StringLength(500)]
-		public string AlternativeTeaserText { get; set; }
+		public string AlternativeTeaser { get; set; }
 		[Required]
 		public DateTimeOffset LastRenderd { get; set; }
 		public DateTimeOffset FirstPublished { get; set; }

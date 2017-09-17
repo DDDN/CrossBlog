@@ -13,13 +13,13 @@
 @inject IViewLocalizer Loc
 
 @{
-	if (!string.IsNullOrWhiteSpace(Model.FirstHeaderText))
+	if (!string.IsNullOrWhiteSpace(Model.FirstHeader))
 	{
-		ViewData["Title"] = Model.FirstHeaderText;
+		ViewData["Title"] = Model.FirstHeader;
 	}
-	else if (!string.IsNullOrWhiteSpace(Model.AlternativeTitleText))
+	else if (!string.IsNullOrWhiteSpace(Model.AlternativeTitle))
 	{
-		ViewData["Title"] = Model.AlternativeTitleText;
+		ViewData["Title"] = Model.AlternativeTitle;
 	}
 	else
 	{
@@ -31,7 +31,11 @@
 	<style>@Html.Raw(WebUtility.HtmlDecode(Model.Css))</style>
 }
 
-<div class="show">
-	@Html.Raw(WebUtility.HtmlDecode((string)Model.Html))
-	@await Component.InvokeAsync("Comments", Model)
+<div class="row">
+	<div class="col col-12">
+		<div class="show">
+			@Html.Raw(WebUtility.HtmlDecode((string)Model.Html))
+			@await Component.InvokeAsync("Comments", Model)
+		</div>
+	</div>
 </div>

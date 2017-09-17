@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Models.SigninViewModel
+DDDN.CrossBlog.Blog.Models.PasswordViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -13,10 +13,11 @@ using System;
 
 namespace DDDN.CrossBlog.Blog.Models
 {
-   public class SigninViewModel
-   {
-      public Guid SigninId { get; set; }
-      public string Name { get; set; }
-      public string Password { get; set; }
-   }
+	public class PasswordViewModel
+	{
+		public Guid WriterId { get; set; }
+		public string Old { get; set; }
+		public string New { get; set; }
+		public string Compare { get; set; }
+	}
 }

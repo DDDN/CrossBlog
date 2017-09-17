@@ -10,6 +10,7 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Models;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,9 +19,13 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 {
 	public interface IWriterBusinessLayer
 	{
-		Task<IEnumerable<WriterModel>> GetWritersWithRoles();
+		Task<bool> Exists(Guid writerId);
+		Task<WriterModel> Get(Guid writerId);
+		Task<IEnumerable<WriterModel>> GetWithRoles();
 		Task<(AuthenticationResult authenticationResult, ClaimsPrincipal principal)> TryToAuthenticateAndGetPrincipal(string loginMail, string loginPassword);
-		Task WriterEdit(WriterViewModel writerView);
-		Task WriterCreate(WriterViewModel writerView);
+		Task Edit(WriterViewModel writerView);
+		Task Create(WriterViewModel writerView);
+		Task Delete(Guid writerId);
+		Task<AuthenticationResult> PasswordChange(PasswordViewModel writerPassword);
 	}
 }

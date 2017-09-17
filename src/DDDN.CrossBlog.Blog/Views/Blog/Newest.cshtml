@@ -14,20 +14,28 @@
 
 @{ ViewData["Title"] = Loc["Title"]; }
 
-
-<div class="newest">
-	@foreach (PostModel item in Model)
+<div class="row">
+	<div class="col col-md-8">
+		<div class="newest">
+			@foreach (PostModel item in Model)
 			{
-		<div id="teasers">
-			<h2>
-				<a asp-action="Show" asp-route-id="@item.PostId">
-					@{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
-				</a>
-			</h2>
-			<p id="post_teaser">
-				@{ await Html.RenderPartialAsync("PostTeaserPartialView", item); }
-			</p>
-			<p class="mb-0"><i class="fa fa-calendar"></i> <strong>@item.Writer.Created.ToString("d MMMM yyyy", CultureInfo.CurrentCulture), by @item.Writer?.Name</strong></p>
+				<div class="teaser">
+					<h3><a asp-action="@nameof(BlogController.Show)" asp-route-id="@item.PostId">@{ await Html.RenderPartialAsync("PostTitlePartialView", item); }</a></h3>
+					<p>@{ await Html.RenderPartialAsync("PostTeaserPartialView", item); }</p>
+					<p class="mb-0">
+						<small><i class="fa fa-calendar"></i> @item.Writer.Created.ToString("d MMMM yyyy", CultureInfo.CurrentCulture), by @item.Writer?.Name</small>
+						@foreach (var pa in item.PostCategories.OrderBy(p =>p.Category.Name))
+						{
+							<a asp-action="@nameof(BlogController.Newest)" asp-route-id="@pa.CategoryId" class="badge badge-secondary">@pa.Category.Name</a>
+						}
+					</p>
+				</div>
+			}
 		</div>
-					}
+	</div>
+	<div class="col col-md-4">
+		<div class="categories">
+			@await Component.InvokeAsync("Categories")
+		</div>
+	</div>
 </div>

@@ -33,10 +33,18 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			_blogBusinessLayer = blogBusinessLayer ?? throw new System.ArgumentNullException(nameof(blogBusinessLayer));
 		}
 
-		public async Task<IActionResult> Newest()
+		public async Task<IActionResult> Newest(Guid id)
 		{
-			var posts = await _postBusinessLayer.GetNewest(0, 10);
-			return View(posts);
+			if(id.Equals(Guid.Empty))
+			{
+				var posts = await _postBusinessLayer.GetNewest(0, 10);
+				return View(posts);
+			}
+			else
+			{
+				var posts = await _postBusinessLayer.GetNewestByCategory(0, 10, id);
+				return View(posts);
+			}
 		}
 
 		public async Task<IActionResult> Show(Guid id)

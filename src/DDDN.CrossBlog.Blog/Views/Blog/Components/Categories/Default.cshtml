@@ -12,11 +12,11 @@
 @model IEnumerable<CategoryModel>
 
 <div>
-   @foreach (var category in Model)
-   {
-      @if (@category.PostCategories.Any())
-      {
-         <p>@category.Name (@category.PostCategories.Count())</p>
-      }
-   }
+	@foreach (var category in Model.OrderBy(p=>p.Name))
+	{
+		@if (@category.PostCategories.Any())
+		{
+			<p><a asp-action="@nameof(BlogController.Newest)" asp-route-id="@category.CategoryId">@category.Name (@category.PostCategories.Count())</a></p>
+		}
+	}
 </div>

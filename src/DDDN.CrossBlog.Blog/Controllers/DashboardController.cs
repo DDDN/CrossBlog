@@ -12,8 +12,8 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 using DDDN.CrossBlog.Blog.BusinessLayer;
 using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Data;
+using DDDN.CrossBlog.Blog.Exceptions;
 using DDDN.CrossBlog.Blog.Models;
-using DDDN.CrossBlog.Blog.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +34,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		private readonly RoutingConfigSection _routingConfig;
 		private readonly AuthenticationConfigSection _authenticationConfig;
 		private readonly CrossBlogContext _context;
+		private readonly BlogInfo _blogInfo;
 		private readonly IStringLocalizer<DashboardController> _loc;
 		private readonly IWriterBusinessLayer _writerBl;
 		private readonly IBlogBusinessLayer _blogBl;
@@ -43,6 +44,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			IOptions<RoutingConfigSection> routingConfigSectionOptions,
 			IOptions<AuthenticationConfigSection> authenticationConfigSection,
 			CrossBlogContext context,
+			BlogInfo blogInfo,
 			IStringLocalizer<DashboardController> localizer,
 			IWriterBusinessLayer writerBusinessLayer,
 			IBlogBusinessLayer blogBusinessLayer,
@@ -61,6 +63,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			_authenticationConfig = authenticationConfigSection.Value ?? throw new ArgumentNullException("authenticationConfigSection.Value");
 
 			_context = context ?? throw new ArgumentNullException(nameof(context));
+			_blogInfo = blogInfo ?? throw new ArgumentNullException(nameof(blogInfo));
 			_loc = localizer ?? throw new ArgumentNullException(nameof(localizer));
 			_writerBl = writerBusinessLayer ?? throw new ArgumentNullException(nameof(writerBusinessLayer));
 			_blogBl = blogBusinessLayer ?? throw new ArgumentNullException(nameof(blogBusinessLayer));
@@ -114,7 +117,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Posts()
 		{
-			var posts = await _context.Posts.AsNoTracking().ToListAsync();
+			var posts = await _context.Posts.AsNoTracking().OrderByDescending(p=>p.Created).ToListAsync();
 			return View(posts);
 		}
 		/// <summary>
@@ -215,10 +218,10 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			{
 				PostId = post.PostId,
 				State = post.State,
-				FirstHeaderText = post.FirstHeaderText,
-				FirstParagraphHtml = post.FirstParagraphHtml,
-				AlternativeTitleText = post.AlternativeTitleText,
-				AlternativeTeaserText = post.AlternativeTeaserText,
+				FirstHeader = post.FirstHeader,
+				FirstParagraph = post.FirstParagraph,
+				AlternativeTitle = post.AlternativeTitle,
+				AlternativeTeaser = post.AlternativeTeaser,
 			};
 
 			return View(postView);
@@ -227,7 +230,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> PostEdit(Guid id, [Bind("PostId,State,AlternativeTitleText,AlternativeTeaserText")] PostViewModel postViewModel)
+		public async Task<IActionResult> PostEdit(Guid id, [Bind("PostId,State,AlternativeTitle,AlternativeTeaser")] PostViewModel postViewModel)
 		{
 			if (id != postViewModel.PostId)
 			{
@@ -239,8 +242,8 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				.SingleOrDefaultAsync(m => m.PostId == id);
 
 			post.State = postViewModel.State;
-			post.AlternativeTitleText = postViewModel.AlternativeTitleText;
-			post.AlternativeTeaserText = postViewModel.AlternativeTeaserText;
+			post.AlternativeTitle = postViewModel.AlternativeTitle;
+			post.AlternativeTeaser = postViewModel.AlternativeTeaser;
 
 			if (post.State == PostModel.States.Published)
 			{
@@ -409,7 +412,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 		public async Task<IActionResult> Writers()
 		{
-			var writers = await _writerBl.GetWritersWithRoles();
+			var writers = await _writerBl.GetWithRoles();
 			return View(writers);
 		}
 
@@ -441,27 +444,22 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Administrator")]
 		public async Task<IActionResult> WriterCreate([Bind("Name, Mail, AboutMe, Administrator, Password, PasswordCompare")] WriterViewModel writerView)
 		{
-			await _writerBl.WriterCreate(writerView);
+			await _writerBl.Create(writerView);
 			return RedirectToAction(nameof(Writers));
 		}
 
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> WriterEdit(Guid? id)
+		public async Task<IActionResult> WriterEdit(Guid id)
 		{
-			if (id == null)
+			WriterModel writer = null;
+
+			try
 			{
-				return NotFound();
+				writer = await _writerBl.Get(id);
 			}
-
-			var writer = await _context.Writers
-				.AsNoTracking()
-				.Where(p => p.WriterId.Equals(id))
-				.Include(p => p.Roles)
-				.SingleOrDefaultAsync();
-
-			if (writer == default(WriterModel))
+			catch (WriterNotFoundException)
 			{
-				return NotFound();
+				NotFound();
 			}
 
 			var writerView = new WriterViewModel(writer.State, _loc)
@@ -489,23 +487,22 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			if (ModelState.IsValid)
 			{
-				await _writerBl.WriterEdit(writerView);
+				await _writerBl.Edit(writerView);
 			}
 
 			return RedirectToAction(nameof(Writers));
 		}
 
 		[Authorize(Roles = "Administrator")]
-		public async Task<IActionResult> WriterDelete(Guid? id)
+		public async Task<IActionResult> WriterDelete(Guid writerId)
 		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+			WriterModel writer = null;
 
-			var writer = await _context.Writers
-				 .SingleOrDefaultAsync(m => m.WriterId == id);
-			if (writer == null)
+			try
+			{
+				writer = await _writerBl.Get(writerId);
+			}
+			catch (WriterNotFoundException)
 			{
 				return NotFound();
 			}
@@ -518,33 +515,59 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> WriterDeleteConfirmed(Guid id)
 		{
-			var writer = await _context.Writers.SingleOrDefaultAsync(m => m.WriterId == id);
-			_context.Writers.Remove(writer);
-			await _context.SaveChangesAsync();
+			try
+			{
+				await _writerBl.Delete(id);
+			}
+			catch (WriterNotFoundException)
+			{
+				NotFound();
+			}
+
 			return RedirectToAction(nameof(Writers));
 		}
 
-		private bool WriterExists(Guid id)
+		[Authorize(Roles = "Writer")]
+		public async Task<IActionResult> WriterPassword(Guid id)
 		{
-			return _context.Writers.Any(e => e.WriterId == id);
+			WriterModel writer = null;
+
+			try
+			{
+				writer = await _writerBl.Get(id);
+			}
+			catch (WriterNotFoundException)
+			{
+
+				return NotFound();
+			}
+
+			var pwView = new PasswordViewModel
+			{
+				WriterId = writer.WriterId
+			};
+
+			return View(pwView);
 		}
 
+		[HttpPost]
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> WriterPassword(Guid? id)
+		public async Task<IActionResult> WriterPasswordConfirmed([Bind("WriterId, Old, New, Compare")] PasswordViewModel passwordViewModel)
 		{
-			if (id == null)
+			var result = await _writerBl.PasswordChange(passwordViewModel);
+
+			if (result == AuthenticationResult.PasswordChanged)
+			{
+				return RedirectToAction(nameof(Writers));
+			}
+			else if (result == AuthenticationResult.UserNotFound)
 			{
 				return NotFound();
 			}
-
-			var writer = await _context.Writers
-				 .SingleOrDefaultAsync(m => m.WriterId == id);
-			if (writer == null)
+			else
 			{
-				return NotFound();
+				return RedirectToAction(nameof(WriterPassword));
 			}
-
-			return View(writer);
 		}
 	}
 }

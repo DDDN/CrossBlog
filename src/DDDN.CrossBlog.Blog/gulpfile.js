@@ -1,4 +1,4 @@
-/// <binding ProjectOpened='_beforeBuild' />
+/// <binding ProjectOpened='___DEV' />
 var gulp = require('gulp'),
 	notify = require('gulp-notify'),
 	concat = require('gulp-concat'),

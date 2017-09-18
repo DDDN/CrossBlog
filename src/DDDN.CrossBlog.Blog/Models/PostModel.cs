@@ -50,13 +50,15 @@ namespace DDDN.CrossBlog.Blog.Models
 		public string Html { get; set; }
 		[Required]
 		public string Css { get; set; }
-		[StringLength(200)]
+		[StringLength(128)]
 		public string PageCssClassName { get; set; }
+		[StringLength(256)]
 		public string FirstHeader { get; set; }
+		[StringLength(1024)]
 		public string FirstParagraph { get; set; }
-		[StringLength(200)]
+		[StringLength(256)]
 		public string AlternativeTitle { get; set; }
-		[StringLength(500)]
+		[StringLength(1024)]
 		public string AlternativeTeaser { get; set; }
 		[Required]
 		public DateTimeOffset LastRenderd { get; set; }

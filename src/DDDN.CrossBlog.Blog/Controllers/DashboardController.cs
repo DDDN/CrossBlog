@@ -117,7 +117,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Posts()
 		{
-			var posts = await _context.Posts.AsNoTracking().OrderByDescending(p=>p.Created).ToListAsync();
+			var posts = await _context.Posts.AsNoTracking().OrderByDescending(p => p.Created).ToListAsync();
 			return View(posts);
 		}
 		/// <summary>
@@ -416,21 +416,31 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			return View(writers);
 		}
 
-		public async Task<IActionResult> WriterDetails(Guid? id)
+		public async Task<IActionResult> WriterDetails(Guid id)
 		{
-			if (id == null)
+			WriterModel writer = null;
+
+			try
+			{
+				writer = await _writerBl.GetWithRoles(id);
+			}
+			catch (WriterNotFoundException)
 			{
 				return NotFound();
 			}
 
-			var writer = await _context.Writers
-				 .SingleOrDefaultAsync(m => m.WriterId == id);
-			if (writer == null)
+			var writerView = new WriterViewModel(writer.State, _loc)
 			{
-				return NotFound();
-			}
+				WriterId = writer.WriterId,
+				State = writer.State,
+				Mail = writer.Mail,
+				Name = writer.Name,
+				AboutMe = writer.AboutMe,
+				Created = writer.Created,
+				Administrator = writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator))
+			};
 
-			return View(writer);
+			return View(writerView);
 		}
 
 		[Authorize(Roles = "Administrator")]
@@ -455,7 +465,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			try
 			{
-				writer = await _writerBl.Get(id);
+				writer = await _writerBl.GetWithRoles(id);
 			}
 			catch (WriterNotFoundException)
 			{
@@ -500,7 +510,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			try
 			{
-				writer = await _writerBl.Get(writerId);
+				writer = await _writerBl.GetWithRoles(writerId);
 			}
 			catch (WriterNotFoundException)
 			{
@@ -534,7 +544,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			try
 			{
-				writer = await _writerBl.Get(id);
+				writer = await _writerBl.GetWithRoles(id);
 			}
 			catch (WriterNotFoundException)
 			{

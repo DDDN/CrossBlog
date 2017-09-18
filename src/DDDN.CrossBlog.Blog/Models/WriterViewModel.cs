@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace DDDN.CrossBlog.Blog.Models
 {
-   public class WriterViewModel : ViewModel
+	public class WriterViewModel : ViewModel
 	{
 		public WriterViewModel()
 			: base(new List<String>(), null)
@@ -36,5 +36,6 @@ namespace DDDN.CrossBlog.Blog.Models
 		public bool Administrator { get; set; }
 		public string Password { get; set; }
 		public string PasswordCompare { get; set; }
+		public DateTimeOffset Created { get; set; }
 	}
 }

@@ -20,7 +20,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 	public interface IWriterBusinessLayer
 	{
 		Task<bool> Exists(Guid writerId);
-		Task<WriterModel> Get(Guid writerId);
+		Task<WriterModel> GetWithRoles(Guid writerId);
 		Task<IEnumerable<WriterModel>> GetWithRoles();
 		Task<(AuthenticationResult authenticationResult, ClaimsPrincipal principal)> TryToAuthenticateAndGetPrincipal(string loginMail, string loginPassword);
 		Task Edit(WriterViewModel writerView);

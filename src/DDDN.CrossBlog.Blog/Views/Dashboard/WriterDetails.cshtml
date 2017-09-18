@@ -10,7 +10,7 @@
 *@
 
 @inject IViewLocalizer Loc
-@model DDDN.CrossBlog.Blog.Models.WriterModel
+@model WriterViewModel
 
 @{	ViewData["Title"] = Loc["Title"]; }
 <div>
@@ -18,34 +18,44 @@
 	<hr />
 	<dl class="dl-horizontal">
 		<dt>
-			@Html.DisplayNameFor(model => model.Name)
+			@Loc[nameof(Model.Name)]
 		</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Name)
 		</dd>
 		<dt>
-			@Html.DisplayNameFor(model => model.State)
+			@Loc[nameof(Model.State)]
 		</dt>
 		<dd>
-			@Html.DisplayFor(model => model.State)
+			@Model.States.Where(p => p.Value.Equals(Model.State.ToString(), StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Text
 		</dd>
 		<dt>
-			@Html.DisplayNameFor(model => model.Created)
+			@Loc[nameof(Model.Created)]
 		</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Created)
 		</dd>
 		<dt>
-			@Html.DisplayNameFor(model => model.Mail)
+			@Loc[nameof(Model.Mail)]
 		</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Mail)
 		</dd>
+		<dt>
+			@Loc[nameof(Model.Administrator)]
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Administrator)
+		</dd>
+		<dt>
+			@Loc[nameof(Model.AboutMe)]
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.AboutMe)
+		</dd>
 	</dl>
 	<hr />
-	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["Edit"]</a>
-	<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["Password"]</a>
-	<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["Back"]</a>
+	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["LinkEdit"]</a>
+	<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["LinkPassword"]</a>
+	<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["LinkBack"]</a>
 </div>
-
-

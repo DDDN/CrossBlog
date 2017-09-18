@@ -42,9 +42,11 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			return await _context.Writers.AnyAsync(e => e.WriterId.Equals(writerId));
 		}
 
-		public async Task<WriterModel> Get(Guid writerId)
+		public async Task<WriterModel> GetWithRoles(Guid writerId)
 		{
 			var writer = await _context.Writers
+				.AsNoTracking()
+				.Include(p => p.Roles)
 				.AsNoTracking()
 				.FirstOrDefaultAsync(p => p.WriterId.Equals(writerId));
 

@@ -11,61 +11,80 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 
 namespace DDDN.CrossBlog.Blog.Data
 {
-   using DDDN.CrossBlog.Blog.Models;
-   using Microsoft.EntityFrameworkCore;
+	using DDDN.CrossBlog.Blog.Configuration;
+	using DDDN.CrossBlog.Blog.Models;
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.Extensions.Options;
+	using System;
 
-   public class CrossBlogContext : DbContext
-   {
-      public CrossBlogContext(DbContextOptions<CrossBlogContext> options)
-              : base(options)
-      { }
+	public class CrossBlogContext : DbContext
+	{
+		private readonly SeedConfigSection _seedConfig;
 
-      protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-         optionsBuilder
-            .EnableSensitiveDataLogging();
+		public CrossBlogContext(
+			DbContextOptions<CrossBlogContext> options,
+			IOptions<SeedConfigSection> seedConfigSection)
+				  : base(options)
+		{
+			if (seedConfigSection == null)
+			{
+				throw new ArgumentNullException(nameof(seedConfigSection));
+			}
+			_seedConfig = seedConfigSection.Value ?? throw new ArgumentNullException(nameof(seedConfigSection.Value));
+		}
 
-      public DbSet<BlogModel> Blog { get; set; }
-      public DbSet<WriterModel> Writers { get; set; }
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+			optionsBuilder
+				.EnableSensitiveDataLogging();
+
+		public DbSet<BlogModel> Blog { get; set; }
+		public DbSet<WriterModel> Writers { get; set; }
 		public DbSet<RoleModel> Roles { get; set; }
 		public DbSet<PostModel> Posts { get; set; }
-      public DbSet<PostCategoryMap> PostCategories { get; set; }
-      public DbSet<CategoryModel> Categories { get; set; }
-      public DbSet<CommentModel> Comments { get; set; }
-      public DbSet<ContentModel> Contents { get; set; }
+		public DbSet<PostCategoryMap> PostCategories { get; set; }
+		public DbSet<CategoryModel> Categories { get; set; }
+		public DbSet<CommentModel> Comments { get; set; }
+		public DbSet<ContentModel> Contents { get; set; }
 
-      protected override void OnModelCreating(ModelBuilder modelBuilder)
-      {
-         // Post to Categories many to many
-         modelBuilder.Entity<PostCategoryMap>()
-             .HasKey(t => new { t.PostId, t.CategoryId });
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<PostModel>().Property(b => b.PageCssClassName).HasMaxLength(128);
+			modelBuilder.Entity<PostModel>().Property(b => b.FirstHeader).HasMaxLength(_seedConfig.MaxBlogTitleLength);
+			modelBuilder.Entity<PostModel>().Property(b => b.AlternativeTitle).HasMaxLength(_seedConfig.MaxBlogTitleLength);
+			modelBuilder.Entity<PostModel>().Property(b => b.FirstParagraph).HasMaxLength(_seedConfig.MaxBlogTeaserLength);
+			modelBuilder.Entity<PostModel>().Property(b => b.AlternativeTeaser).HasMaxLength(_seedConfig.MaxBlogTeaserLength);
 
-         modelBuilder.Entity<PostCategoryMap>()
-             .HasOne(pt => pt.Post)
-             .WithMany(p => p.PostCategories)
-             .HasForeignKey(pt => pt.PostId);
+			// Post to Categories many to many
+			modelBuilder.Entity<PostCategoryMap>()
+				 .HasKey(t => new { t.PostId, t.CategoryId });
 
-         modelBuilder.Entity<PostCategoryMap>()
-             .HasOne(pt => pt.Category)
-             .WithMany(t => t.PostCategories)
-             .HasForeignKey(pt => pt.CategoryId);
+			modelBuilder.Entity<PostCategoryMap>()
+				 .HasOne(pt => pt.Post)
+				 .WithMany(p => p.PostCategories)
+				 .HasForeignKey(pt => pt.PostId);
 
-         // Post-Content cascade delete
-         modelBuilder.Entity<PostModel>()
-            .HasMany(co => co.Contents)
-            .WithOne(p => p.Post)
-            .OnDelete(DeleteBehavior.Cascade);
+			modelBuilder.Entity<PostCategoryMap>()
+				 .HasOne(pt => pt.Category)
+				 .WithMany(t => t.PostCategories)
+				 .HasForeignKey(pt => pt.CategoryId);
 
-         // Post-Comments cascade delete
-         modelBuilder.Entity<PostModel>()
-            .HasMany(co => co.Comments)
-            .WithOne(p => p.Post)
-            .OnDelete(DeleteBehavior.Cascade);
+			// Post-Content cascade delete
+			modelBuilder.Entity<PostModel>()
+				.HasMany(co => co.Contents)
+				.WithOne(p => p.Post)
+				.OnDelete(DeleteBehavior.Cascade);
 
-         // Post-Categories cascade delete
-         modelBuilder.Entity<PostModel>()
-            .HasMany(co => co.PostCategories)
-            .WithOne(p => p.Post)
-            .OnDelete(DeleteBehavior.Cascade);
-      }
-   }
+			// Post-Comments cascade delete
+			modelBuilder.Entity<PostModel>()
+				.HasMany(co => co.Comments)
+				.WithOne(p => p.Post)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			// Post-Categories cascade delete
+			modelBuilder.Entity<PostModel>()
+				.HasMany(co => co.PostCategories)
+				.WithOne(p => p.Post)
+				.OnDelete(DeleteBehavior.Cascade);
+		}
+	}
 }

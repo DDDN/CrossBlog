@@ -16,5 +16,8 @@ namespace DDDN.CrossBlog.Blog.Configuration
 		public string Name { get; set; } = "Your Name";
       public string Mail { get; set; } = "crossblog@devdone.net";
       public string Copyright { get; set; } = "CrossBlog, Copyright (C) 2017 Lukasz Jaskiewicz";
+		public int MaxBlogTeaserLength { get; set; } = 512;
+		public int MaxBlogTitleLength { get; set; } = 2048;
+		
 	}
 }

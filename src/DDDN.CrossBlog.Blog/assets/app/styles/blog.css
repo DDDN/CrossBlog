@@ -9,9 +9,13 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-a, a:focus, a:hover {
+a {
 	color: #fff !important;
 }
+
+	a:focus, a:hover {
+		color: #868e96 !important;
+	}
 
 body {
 	font-family: 'Playfair Display', serif;
@@ -26,6 +30,9 @@ main {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+	-webkit-box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.5);
+	box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.5);
 }
 
 	main a, main a:focus, main a:hover {
@@ -58,22 +65,22 @@ article, .comments {
 		margin-bottom: 0.3rem;
 	}
 
-	.teaser p a {
-		color: #fff !important;
-	}
+		.teaser p a {
+			color: #fff !important;
+		}
 
 footer {
 	margin: 2rem 0 0 0;
 	text-align: center;
 }
 
-@media (min-width: 57em) {
+@media (min-width: 58em) {
 	.container {
-		max-width: 55rem;
+		max-width: 56rem;
 	}
 }
 
-@media (max-width: 57em) {
+@media (max-width: 58em) {
 	.container {
 		max-width: 100%;
 	}

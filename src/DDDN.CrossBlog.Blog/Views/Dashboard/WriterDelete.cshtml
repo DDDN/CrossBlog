@@ -10,43 +10,17 @@
 *@
 
 @inject IViewLocalizer Loc
-@model WriterModel
+@model WriterViewModel
 
 @{	ViewData["Title"] = Loc["Title"]; }
 <div>
 	<h2>@Loc["Header"]</h2>
-	<h4>@Loc["Info"]</h4>
 	<hr />
-	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.State)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.State)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.Created)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Created)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.Name)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Name)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.Mail)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Mail)
-		</dd>
-	</dl>
+	@{ await Html.RenderPartialAsync("WriterInfoPartialView", Model); }
 	<hr />
 	<form asp-action="WriterDelete">
 		<input type="hidden" asp-for="WriterId" />
-		<input type="submit" value="@Loc["Delete"]" class="btn btn-danger" />
-		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["Cancel"]</a>
+		<input type="submit" value="@Loc["ButtonDelete"]" class="btn btn-danger" />
+		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["LinkCancel"]</a>
 	</form>
 </div>

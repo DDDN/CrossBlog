@@ -446,7 +446,8 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Administrator")]
 		public IActionResult WriterCreate()
 		{
-			return View(new WriterViewModel());
+			var writerView = new WriterViewModel();
+			return View(writerView);
 		}
 
 		[HttpPost]
@@ -454,6 +455,11 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Administrator")]
 		public async Task<IActionResult> WriterCreate([Bind("Name, Mail, AboutMe, Administrator, Password, PasswordCompare")] WriterViewModel writerView)
 		{
+			if (_writerBl.MailExist(writerView.Mail))
+			{
+				return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+			}
+
 			await _writerBl.Create(writerView);
 			return RedirectToAction(nameof(Writers));
 		}
@@ -497,34 +503,55 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 			if (ModelState.IsValid)
 			{
-				await _writerBl.Edit(writerView);
+				await _writerBl.Update(writerView);
 			}
 
 			return RedirectToAction(nameof(Writers));
 		}
 
 		[Authorize(Roles = "Administrator")]
-		public async Task<IActionResult> WriterDelete(Guid writerId)
+		public async Task<IActionResult> WriterDelete(Guid id)
 		{
+			if (_writerBl.IsOwner(id))
+			{
+				return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+			}
+
 			WriterModel writer = null;
 
 			try
 			{
-				writer = await _writerBl.GetWithRoles(writerId);
+				writer = await _writerBl.GetWithRoles(id);
 			}
 			catch (WriterNotFoundException)
 			{
 				return NotFound();
 			}
 
-			return View(writer);
+			var writerView = new WriterViewModel(writer.State, _loc)
+			{
+				WriterId = writer.WriterId,
+				State = writer.State,
+				Mail = writer.Mail,
+				Name = writer.Name,
+				AboutMe = writer.AboutMe,
+				Created = writer.Created,
+				Administrator = writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator))
+			};
+
+			return View(writerView);
 		}
 
 		[Authorize(Roles = "Administrator")]
-		[HttpPost, ActionName("Delete")]
+		[HttpPost, ActionName("WriterDelete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> WriterDeleteConfirmed(Guid id)
 		{
+			if (_writerBl.IsOwner(id))
+			{
+				return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+			}
+
 			try
 			{
 				await _writerBl.Delete(id);

@@ -1,0 +1,52 @@
+﻿@*
+	DDDN.CrossBlog.Blog.Views.Shared.WriterInfoPartialView
+	Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
+	- This program is free software; you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation; version 2 of the License.
+	- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+	- You should have received a copy of the GNU General Public License along with this program; if not, write
+	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*@
+
+@model WriterViewModel
+@inject IViewLocalizer Loc
+
+<dl class="dl-horizontal">
+	<dt>
+		@Loc[nameof(Model.Name)]
+	</dt>
+	<dd>
+		@Html.DisplayFor(model => model.Name)
+	</dd>
+	<dt>
+		@Loc[nameof(Model.State)]
+	</dt>
+	<dd>
+		@Model.States.Where(p => p.Value.Equals(Model.State.ToString(), StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Text
+	</dd>
+	<dt>
+		@Loc[nameof(Model.Created)]
+	</dt>
+	<dd>
+		@Html.DisplayFor(model => model.Created)
+	</dd>
+	<dt>
+		@Loc[nameof(Model.Mail)]
+	</dt>
+	<dd>
+		@Html.DisplayFor(model => model.Mail)
+	</dd>
+	<dt>
+		@Loc[nameof(Model.Administrator)]
+	</dt>
+	<dd>
+		@Html.DisplayFor(model => model.Administrator)
+	</dd>
+	<dt>
+		@Loc[nameof(Model.AboutMe)]
+	</dt>
+	<dd>
+		@Html.DisplayFor(model => model.AboutMe)
+	</dd>
+</dl>

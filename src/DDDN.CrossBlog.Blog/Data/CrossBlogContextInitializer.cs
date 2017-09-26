@@ -59,7 +59,7 @@ namespace DDDN.CrossBlog.Blog.Data
 				Name = _seedConfigSection.Name,
 				PasswordHash = hashed.hashedPassword,
 				Salt = hashed.salt,
-				EmailConfirmed = false,
+				MailConfirmed = false,
 				Roles = new List<RoleModel>
 				{
 					{ RoleModel.Get(RoleModel.Roles.Administrator) },

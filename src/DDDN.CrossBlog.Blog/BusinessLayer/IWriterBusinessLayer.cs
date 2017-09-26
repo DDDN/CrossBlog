@@ -23,8 +23,10 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		Task<WriterModel> GetWithRoles(Guid writerId);
 		Task<IEnumerable<WriterModel>> GetWithRoles();
 		Task<(AuthenticationResult authenticationResult, ClaimsPrincipal principal)> TryToAuthenticateAndGetPrincipal(string loginMail, string loginPassword);
-		Task Edit(WriterViewModel writerView);
+		Task Update(WriterViewModel writerView);
+		bool MailExist(string mail);
 		Task Create(WriterViewModel writerView);
+		bool IsOwner(Guid writerId);
 		Task Delete(Guid writerId);
 		Task<AuthenticationResult> PasswordChange(PasswordViewModel writerPassword);
 	}

@@ -85,6 +85,18 @@ namespace DDDN.CrossBlog.Blog.Data
 				.HasMany(co => co.PostCategories)
 				.WithOne(p => p.Post)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			// Writer-Roles cascade delete
+			modelBuilder.Entity<WriterModel>()
+				.HasMany(r => r.Roles)
+				.WithOne(p => p.Writer)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			// Writer-Posts cascade delete
+			modelBuilder.Entity<WriterModel>()
+				.HasMany(r => r.Posts)
+				.WithOne(p => p.Writer)
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

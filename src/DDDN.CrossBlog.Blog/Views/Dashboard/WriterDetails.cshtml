@@ -16,44 +16,7 @@
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
-	<dl class="dl-horizontal">
-		<dt>
-			@Loc[nameof(Model.Name)]
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Name)
-		</dd>
-		<dt>
-			@Loc[nameof(Model.State)]
-		</dt>
-		<dd>
-			@Model.States.Where(p => p.Value.Equals(Model.State.ToString(), StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Text
-		</dd>
-		<dt>
-			@Loc[nameof(Model.Created)]
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Created)
-		</dd>
-		<dt>
-			@Loc[nameof(Model.Mail)]
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Mail)
-		</dd>
-		<dt>
-			@Loc[nameof(Model.Administrator)]
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Administrator)
-		</dd>
-		<dt>
-			@Loc[nameof(Model.AboutMe)]
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.AboutMe)
-		</dd>
-	</dl>
+	@{ await Html.RenderPartialAsync("WriterInfoPartialView", Model); }
 	<hr />
 	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["LinkEdit"]</a>
 	<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["LinkPassword"]</a>

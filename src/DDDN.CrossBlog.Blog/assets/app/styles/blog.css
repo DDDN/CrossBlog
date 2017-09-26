@@ -13,8 +13,12 @@ a {
 	color: #fff !important;
 }
 
-	a:focus, a:hover {
+	a:hover {
 		color: #636363 !important;
+	}
+
+	a.active {
+		color: #bfbfbf !important;
 	}
 
 body {

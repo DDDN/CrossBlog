@@ -86,6 +86,21 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				.FirstOrDefaultAsync();
 		}
 
+		public async Task<PostModel> GetWithCategories(Guid postId)
+		{
+			var post = await _context.Posts
+				.AsNoTracking()
+				.Include(p => p.PostCategories)
+				.SingleOrDefaultAsync(m => m.PostId == postId);
+
+			if (post == default(PostModel))
+			{
+				throw new PostNotFoundException(postId);
+			}
+
+			return post;
+		}
+
 		public async Task CommentSave(Guid postId, string personName, string commentTitle, string commentText)
 		{
 			var post = await _context.Posts
@@ -196,6 +211,104 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			{
 				return (content.Binary, content.Name);
 			}
+		}
+
+		public async Task Delete(Guid postId)
+		{
+			var post = await _context.Posts.SingleOrDefaultAsync(m => m.PostId.Equals(postId));
+			_context.Posts.Remove(post);
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task Edit(PostViewModel postViewModel, IList<string> categoryIds)
+		{
+			if (postViewModel == null)
+			{
+				throw new ArgumentNullException(nameof(postViewModel));
+			}
+
+			if (categoryIds == null)
+			{
+				throw new ArgumentNullException(nameof(categoryIds));
+			}
+
+			var post = await _context.Posts
+				.Include(p => p.PostCategories)
+				.SingleOrDefaultAsync(m => m.PostId.Equals(postViewModel.PostId));
+
+			if (post == default(PostModel))
+			{
+				throw new PostNotFoundException(postViewModel.PostId);
+			}
+
+			post.State = postViewModel.State;
+			post.AlternativeTitle = postViewModel.AlternativeTitle;
+			post.AlternativeTeaser = postViewModel.AlternativeTeaser;
+
+			if (post.State == PostModel.States.Published)
+			{
+				if (post.FirstPublished == null)
+				{
+					post.FirstPublished = postViewModel.Published;
+				}
+
+				post.LastPublished = postViewModel.Published;
+			}
+
+			for (int i = post.PostCategories.Count() - 1; i >= 0; i--)
+			{
+				var cat = post.PostCategories.ElementAt(i);
+
+				if (categoryIds.Contains(cat.CategoryId.ToString()))
+				{
+					categoryIds.Remove(cat.CategoryId.ToString());
+				}
+				else
+				{
+					post.PostCategories.Remove(cat);
+				}
+			}
+
+			var newCats = new List<PostCategoryMap>();
+
+			foreach (var catIdStr in categoryIds)
+			{
+				var catId = Guid.Parse(catIdStr);
+
+				if (!post.PostCategories.Where(p => p.CategoryId.Equals(catId)).Any())
+				{
+					var pm = new PostCategoryMap
+					{
+						CategoryId = catId,
+						PostId = post.PostId
+					};
+
+					newCats.Add(pm);
+				}
+			}
+
+			post.PostCategories.AddRange(newCats);
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!PostExists(post.PostId))
+				{
+					throw new PostNotFoundException(post.PostId);
+				}
+				else
+				{
+					throw;
+				}
+			}
+		}
+
+		private bool PostExists(Guid postId)
+		{
+			return _context.Posts.Any(e => e.PostId.Equals(postId));
 		}
 	}
 }

@@ -33,22 +33,22 @@ namespace DDDN.CrossBlog.Blog.Controllers
 	{
 		private readonly RoutingConfigSection _routingConfig;
 		private readonly AuthenticationConfigSection _authenticationConfig;
-		private readonly CrossBlogContext _context;
 		private readonly BlogInfo _blogInfo;
 		private readonly IStringLocalizer<DashboardController> _loc;
 		private readonly IWriterBusinessLayer _writerBl;
 		private readonly IBlogBusinessLayer _blogBl;
 		private readonly IPostBusinessLayer _postBl;
+		private readonly ICategoryBusinessLayer _categoryBl;
 
 		public DashboardController(
 			IOptions<RoutingConfigSection> routingConfigSectionOptions,
 			IOptions<AuthenticationConfigSection> authenticationConfigSection,
-			CrossBlogContext context,
 			BlogInfo blogInfo,
 			IStringLocalizer<DashboardController> localizer,
 			IWriterBusinessLayer writerBusinessLayer,
 			IBlogBusinessLayer blogBusinessLayer,
-			IPostBusinessLayer postBusinessLayer)
+			IPostBusinessLayer postBusinessLayer,
+			ICategoryBusinessLayer categoryBusinessLayer)
 		{
 			if (routingConfigSectionOptions == null)
 			{
@@ -62,12 +62,12 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			}
 			_authenticationConfig = authenticationConfigSection.Value ?? throw new ArgumentNullException("authenticationConfigSection.Value");
 
-			_context = context ?? throw new ArgumentNullException(nameof(context));
 			_blogInfo = blogInfo ?? throw new ArgumentNullException(nameof(blogInfo));
 			_loc = localizer ?? throw new ArgumentNullException(nameof(localizer));
 			_writerBl = writerBusinessLayer ?? throw new ArgumentNullException(nameof(writerBusinessLayer));
 			_blogBl = blogBusinessLayer ?? throw new ArgumentNullException(nameof(blogBusinessLayer));
 			_postBl = postBusinessLayer ?? throw new ArgumentNullException(nameof(postBusinessLayer));
+			_categoryBl = categoryBusinessLayer ?? throw new ArgumentNullException(nameof(categoryBusinessLayer));
 		}
 
 		[Authorize(Roles = "Writer")]
@@ -94,16 +94,16 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		}
 
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> PostDetails(Guid? id)
+		public async Task<IActionResult> PostDetails(Guid id)
 		{
-			if (id == null)
+			if (id.Equals(Guid.Empty))
 			{
 				return NotFound();
 			}
 
-			var post = await _context.Posts
-				  .SingleOrDefaultAsync(m => m.PostId == id);
-			if (post == null)
+			var post = await _postBl.GetPostOrDefault(id);
+
+			if (post == default(PostModel))
 			{
 				return NotFound();
 			}
@@ -117,7 +117,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Posts()
 		{
-			var posts = await _context.Posts.AsNoTracking().OrderByDescending(p => p.Created).ToListAsync();
+			var posts = await _postBl.GetNewest(0, int.MaxValue);
 			return View(posts);
 		}
 		/// <summary>
@@ -133,10 +133,9 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				return NotFound();
 			}
 
-			var post = await _context.Posts
-				  .SingleOrDefaultAsync(m => m.PostId == id);
+			var post = await _postBl.GetPostOrDefault(id);
 
-			if (post == null)
+			if (post == default(PostModel))
 			{
 				return NotFound();
 			}
@@ -154,9 +153,12 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Administrator")]
 		public async Task<IActionResult> PostDeleteConfirmed(Guid id)
 		{
-			var post = await _context.Posts.SingleOrDefaultAsync(m => m.PostId == id);
-			_context.Posts.Remove(post);
-			await _context.SaveChangesAsync();
+			if (id.Equals(Guid.Empty))
+			{
+				return NotFound();
+			}
+
+			await _postBl.Delete(id);
 			return RedirectToAction(nameof(Posts));
 		}
 
@@ -167,9 +169,6 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public IActionResult PostUpload()
 		{
-			var uploadedPosts = _context.Posts
-				 .Where(p => p.State == PostModel.States.Published);
-
 			return View();
 		}
 
@@ -183,36 +182,30 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> PostUpload(IList<IFormFile> files)
 		{
-			if (ModelState.IsValid)
+			if (files == null)
+			{
+				throw new ArgumentNullException(nameof(files));
+			}
+
+			if (files.Any())
 			{
 				await _postBl.Upload(files);
 				return RedirectToAction(nameof(Posts));
 			}
-			else
-			{
-				return View();
-			}
+
+			return NotFound();
 		}
 
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> PostEdit(Guid? id)
+		public async Task<IActionResult> PostEdit(Guid id)
 		{
-			if (id == null)
+			if (id.Equals(Guid.Empty))
 			{
 				return NotFound();
 			}
 
-			var post = await _context.Posts
-				.AsNoTracking()
-				.Include(p => p.PostCategories)
-				.SingleOrDefaultAsync(m => m.PostId == id);
-
-			var categories = await _context.Categories.ToListAsync();
-
-			if (post == default(PostModel))
-			{
-				return NotFound();
-			}
+			var post = await _postBl.GetWithCategories(id);
+			var categories = await _categoryBl.Get();
 
 			var postView = new PostViewModel(post, categories, _loc)
 			{
@@ -232,99 +225,21 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> PostEdit(Guid id, [Bind("PostId,State,AlternativeTitle,AlternativeTeaser")] PostViewModel postViewModel)
 		{
-			if (id != postViewModel.PostId)
+			if (!postViewModel.PostId.Equals(id))
 			{
 				return NotFound();
 			}
 
-			var post = await _context.Posts
-				.Include(p => p.PostCategories)
-				.SingleOrDefaultAsync(m => m.PostId == id);
-
-			post.State = postViewModel.State;
-			post.AlternativeTitle = postViewModel.AlternativeTitle;
-			post.AlternativeTeaser = postViewModel.AlternativeTeaser;
-
-			if (post.State == PostModel.States.Published)
-			{
-				if (post.FirstPublished == null)
-				{
-					post.FirstPublished = postViewModel.Published;
-				}
-
-				post.LastPublished = postViewModel.Published;
-			}
-
-			var catIdStrings = Request.Form[nameof(PostViewModel.Categories)].ToList<string>();
-
-			for (int i = post.PostCategories.Count() - 1; i >= 0; i--)
-			{
-				var cat = post.PostCategories.ElementAt(i);
-
-				if (catIdStrings.Contains(cat.CategoryId.ToString()))
-				{
-					catIdStrings.Remove(cat.CategoryId.ToString());
-				}
-				else
-				{
-					post.PostCategories.Remove(cat);
-				}
-			}
-
-			var newCats = new List<PostCategoryMap>();
-
-			foreach (var catIdStr in catIdStrings)
-			{
-				var catId = Guid.Parse(catIdStr);
-
-				if (!post.PostCategories.Where(p => p.CategoryId.Equals(catId)).Any())
-				{
-					var pm = new PostCategoryMap
-					{
-						CategoryId = catId,
-						PostId = post.PostId
-					};
-
-					newCats.Add(pm);
-				}
-			}
-
-			post.PostCategories.AddRange(newCats);
-
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!PostExists(post.PostId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-
-				return RedirectToAction(nameof(Posts));
-			}
-
+			var categoryIds = Request.Form[nameof(PostViewModel.Categories)].ToList<string>();
+			await _postBl.Edit(postViewModel, categoryIds);
 			return View(postViewModel);
-		}
-
-		private bool PostExists(Guid id)
-		{
-			return _context.Posts.Any(e => e.PostId == id);
 		}
 
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Categories()
 		{
-			var categoryNames = await _context.Categories.AsNoTracking().ToListAsync();
-			return View(categoryNames);
+			var categories = await _categoryBl.Get();
+			return View(categories);
 		}
 
 		[HttpPost]
@@ -333,14 +248,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		{
 			if (!string.IsNullOrWhiteSpace(name))
 			{
-				var category = new CategoryModel
-				{
-					CategoryId = Guid.NewGuid(),
-					Name = name
-				};
-
-				_context.Categories.Add(category);
-				await _context.SaveChangesAsync();
+				await _categoryBl.Create(name);
 			}
 
 			return RedirectToAction(nameof(Categories));
@@ -350,14 +258,12 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Administrator")]
 		public async Task<IActionResult> CategoriesDelete(Guid CategoryId)
 		{
-			var category = await _context.Categories.Where(p => p.CategoryId.Equals(CategoryId)).FirstOrDefaultAsync();
-
-			if (category != default(CategoryModel))
+			if (CategoryId.Equals(Guid.Empty))
 			{
-				_context.Remove(category);
-				await _context.SaveChangesAsync();
+				return NotFound();
 			}
 
+			await _categoryBl.Delete(CategoryId);
 			return RedirectToAction(nameof(Categories));
 		}
 

@@ -1,5 +1,5 @@
-﻿/*
-DDDN.CrossBlog.Blog.BusinessLayer.IPostBusinessLayer
+﻿/* 
+DDDN.CrossBlog.Blog.Data.BusinessLayer.ICategoryBusinessLayer
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -10,24 +10,16 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Models;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.BusinessLayer
 {
-	public interface IPostBusinessLayer
+	public interface ICategoryBusinessLayer
 	{
-		Task<IEnumerable<PostModel>> GetNewest(int skip, int take);
-		Task<IEnumerable<PostModel>> GetNewestByCategory(int skip, int take, Guid categoryId);
-		Task<PostModel> GetPostOrDefault(Guid postId);
-		Task<PostModel> GetWithCategories(Guid postId);
-		Task<PostModel> GetPostWithCommentsOrDefault(Guid postId);
-		Task Upload(IList<IFormFile> files);
-		Task CommentSave(Guid postId, string personName, string commentTitle, string commentText);
-		Task<(byte[] binary, string name)> GetContent(Guid contentId);
-		Task Delete(Guid postId);
-		Task Edit(PostViewModel postViewModel, IList<string> categoryIds);
+		Task<IEnumerable<CategoryModel>> Get();
+		Task Create(string categoryName);
+		Task Delete(Guid categoryId);
 	}
 }

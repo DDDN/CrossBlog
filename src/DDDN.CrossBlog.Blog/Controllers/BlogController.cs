@@ -22,34 +22,34 @@ namespace DDDN.CrossBlog.Blog.Controllers
 {
 	public class BlogController : CrossBlogController
 	{
-		private readonly IPostBusinessLayer _postBusinessLayer;
-		private readonly IBlogBusinessLayer _blogBusinessLayer;
+		private readonly IPostBusinessLayer _postBl;
+		private readonly IBlogBusinessLayer _blogBl;
 
 		public BlogController(
 			IPostBusinessLayer postBusinessLayer,
 			IBlogBusinessLayer blogBusinessLayer)
 		{
-			_postBusinessLayer = postBusinessLayer ?? throw new System.ArgumentNullException(nameof(postBusinessLayer));
-			_blogBusinessLayer = blogBusinessLayer ?? throw new System.ArgumentNullException(nameof(blogBusinessLayer));
+			_postBl = postBusinessLayer ?? throw new System.ArgumentNullException(nameof(postBusinessLayer));
+			_blogBl = blogBusinessLayer ?? throw new System.ArgumentNullException(nameof(blogBusinessLayer));
 		}
 
 		public async Task<IActionResult> Newest(Guid id)
 		{
 			if(id.Equals(Guid.Empty))
 			{
-				var posts = await _postBusinessLayer.GetNewest(0, 10);
+				var posts = await _postBl.GetNewest(0, 10);
 				return View(posts);
 			}
 			else
 			{
-				var posts = await _postBusinessLayer.GetNewestByCategory(0, 10, id);
+				var posts = await _postBl.GetNewestByCategory(0, 10, id);
 				return View(posts);
 			}
 		}
 
 		public async Task<IActionResult> Show(Guid id)
 		{
-			var post = await _postBusinessLayer.GetPostWithCommentsOrDefault(id);
+			var post = await _postBl.GetPostWithCommentsOrDefault(id);
 
 			if (post != default(PostModel))
 			{
@@ -65,7 +65,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> CommentAdd(Guid PostId, string personName, string commentTitle, string commentText)
 		{
-			await _postBusinessLayer.CommentSave(PostId, personName, commentTitle, commentText);
+			await _postBl.CommentSave(PostId, personName, commentTitle, commentText);
 			return RedirectToAction(nameof(Show));
 		}
 
@@ -73,7 +73,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		{
 			try
 			{
-				var content = await _postBusinessLayer.GetContent(id);
+				var content = await _postBl.GetContent(id);
 				var contentType = new FileExtensionContentTypeProvider().Mappings[Path.GetExtension(content.name)];
 				var result = new FileContentResult(content.binary, contentType ?? "application/octet-stream");
 				return result;

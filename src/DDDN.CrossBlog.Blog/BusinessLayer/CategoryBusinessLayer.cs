@@ -10,16 +10,54 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Data;
+using DDDN.CrossBlog.Blog.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.BusinessLayer
 {
-	public class CategoryBusinessLayer
+	public class CategoryBusinessLayer : ICategoryBusinessLayer
 	{
 		private CrossBlogContext _context;
 
 		public CategoryBusinessLayer(CrossBlogContext context)
 		{
 			_context = context;
+		}
+
+		public async Task<IEnumerable<CategoryModel>> Get()
+		{
+			var categories = await _context.Categories
+				.AsNoTracking()
+				.ToListAsync();
+
+			return categories;
+		}
+
+		public async Task Create(string categoryName)
+		{
+			var category = new CategoryModel
+			{
+				CategoryId = Guid.NewGuid(),
+				Name = categoryName
+			};
+
+			_context.Categories.Add(category);
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task Delete(Guid categoryId)
+		{
+			var category = await _context.Categories
+				.FirstOrDefaultAsync(p => p.CategoryId.Equals(categoryId));
+
+			if (category != default(CategoryModel))
+			{
+				_context.Remove(category);
+				await _context.SaveChangesAsync();
+			}
 		}
 	}
 }

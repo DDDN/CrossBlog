@@ -199,6 +199,7 @@ namespace DDDN.CrossBlog.Blog
 			services.TryAddScoped<IBlogBusinessLayer, BlogBusinessLayer>();
 			services.TryAddScoped<IPostBusinessLayer, PostBusinessLayer>();
 			services.TryAddScoped<IWriterBusinessLayer, WriterBusinessLayer>();
+			services.TryAddScoped<ICategoryBusinessLayer, CategoryBusinessLayer>();
 		}
 	}
 }

@@ -31,7 +31,7 @@ gulp.task('BUILD_SCSS_Bootstrap', function () {
 	return gulp.src('node_modules/bootstrap/scss/bootstrap.scss')
 		.pipe(sass())
 		.pipe(autoprefixer())
-		.pipe(gulp.dest('assets/styles'));
+		.pipe(gulp.dest('assets_tmp/styles'));
 });
 
 /// compile Font Awesome scss
@@ -40,7 +40,7 @@ gulp.task('BUILD_SCSS_Fontawesome', function () {
 		.pipe(sass())
 		.pipe(autoprefixer())
 		.pipe(plumber())
-		.pipe(gulp.dest('assets/styles'));
+		.pipe(gulp.dest('assets_tmp/styles'));
 });
 
 /// copy resource files from Controllers to wwwroot
@@ -67,7 +67,7 @@ gulp.task('COPY_FOLDER_l10n_Views_Wwwroot', function () {
 /// copy image assets to wwwroot
 gulp.task('COPY_FOLDER_Images_App_Wwwroot', function () {
 	gulp
-		.src('assets/app/images/*.*')
+		.src('assets_app/images/*.*')
 		.pipe(gulp.dest('wwwroot/images'));
 });
 
@@ -81,7 +81,7 @@ var npmJsFiles = [
 gulp.task('COPY_JS_Npm_Assets', function () {
 	gulp
 		.src(npmJsFiles)
-		.pipe(gulp.dest('assets/scripts'));
+		.pipe(gulp.dest('assets_tmp/scripts'));
 });
 
 /// copy Css files from node_modules to the styles assets folder
@@ -92,14 +92,14 @@ var npmCssFiles = [
 gulp.task('COPY_CSS_Npm_Assets', function () {
 	gulp
 		.src(npmCssFiles)
-		.pipe(gulp.dest('assets/styles'));
+		.pipe(gulp.dest('assets_tmp/styles'));
 });
 
 /// copy Blog CSS assets to wwwroot
 var assetsCssBlog = [
-	'assets/styles/font-awesome.css',
-	'assets/styles/bootstrap.css',
-	'assets/app/styles/blog.css'
+	'assets_tmp/styles/font-awesome.css',
+	'assets_tmp/styles/bootstrap.css',
+	'assets_app/styles/blog.css'
 ];
 gulp.task('BUNDLE_CSS_Blog_Header', function () {
 	return gulp.src(assetsCssBlog)
@@ -112,9 +112,9 @@ gulp.task('BUNDLE_CSS_Blog_Header', function () {
 
 /// copy Dashboard CSS assets to wwwroot
 var assetsCssDashboard = [
-	'assets/styles/font-awesome.css',
-	'assets/styles/bootstrap.css',
-	'assets/app/styles/dashboard.css'
+	'assets_tmp/styles/font-awesome.css',
+	'assets_tmp/styles/bootstrap.css',
+	'assets_app/styles/dashboard.css'
 ];
 gulp.task('BUNDLE_CSS_Dashboard_Header', function () {
 	return gulp.src(assetsCssDashboard)
@@ -127,11 +127,11 @@ gulp.task('BUNDLE_CSS_Dashboard_Header', function () {
 
 /// copy and uglify Blog JavaScript assets to wwwroot
 var assetsJsBlogBody = [
-	'assets/scripts/jquery.js',
-	'assets/scripts/popper.js',
-	'assets/scripts/bootstrap.js',
-	'assets/app/scripts/common.js',
-	'assets/app/scripts/blog.js'
+	'assets_tmp/scripts/jquery.js',
+	'assets_tmp/scripts/popper.js',
+	'assets_tmp/scripts/bootstrap.js',
+	'assets_app/scripts/common.js',
+	'assets_app/scripts/blog.js'
 ];
 gulp.task('BUNDLE_JS_Blog_Body', function () {
 	return gulp.src(assetsJsBlogBody)
@@ -144,12 +144,12 @@ gulp.task('BUNDLE_JS_Blog_Body', function () {
 
 /// copy and uglify Dashboard JavaScript assets to wwwroot
 var assetsJsBlogDashboard = [
-	'assets/scripts/jquery.js',
-	'assets/scripts/jquery.validate.js',
-	'assets/scripts/popper.js',
-	'assets/scripts/bootstrap.js',
-	'assets/app/scripts/common.js',
-	'assets/app/scripts/dashboard.js'
+	'assets_tmp/scripts/jquery.js',
+	'assets_tmp/scripts/jquery.validate.js',
+	'assets_tmp/scripts/popper.js',
+	'assets_tmp/scripts/bootstrap.js',
+	'assets_app/scripts/common.js',
+	'assets_app/scripts/dashboard.js'
 ];
 gulp.task('BUNDLE_JS_Dashboard_Body', function () {
 	return gulp.src(assetsJsBlogDashboard)
@@ -163,35 +163,35 @@ gulp.task('BUNDLE_JS_Dashboard_Body', function () {
 /// copy fonts from font-awesome node package to assets folder
 gulp.task('COPY_FOLDER_Fontawesome_Fonts_Npm_Assets', function () {
 	return gulp.src('node_modules/font-awesome/fonts/*.*')
-		.pipe(gulp.dest('assets/fonts'));
+		.pipe(gulp.dest('assets_tmp/fonts'));
 });
 
 /// copy fonts from assets to wwwroot
 gulp.task('COPY_FOLDER_Fonts_Assets_Wwwroot', function () {
-	return gulp.src('assets/fonts/*.*')
+	return gulp.src('assets_tmp/fonts/*.*')
 		.pipe(gulp.dest('wwwroot/fonts'));
 });
 
 /// copy jQuery validation localization folder to Asstes
 gulp.task('COPY_FOLDER_JQueryValidation_Localization_Npm_Assets', function () {
 	return gulp.src('node_modules/jquery-validation/dist/localization/**/*.*')
-		.pipe(gulp.dest('assets/scripts/localization'));
+		.pipe(gulp.dest('assets_tmp/scripts/localization'));
 });
 
 /// copy localization folder to Wwwroot
 gulp.task('COPY_FOLDER_Localization_Assets_Wwwroot', function () {
-	return gulp.src('assets/scripts/localization/**/*.*')
+	return gulp.src('assets_tmp/scripts/localization/**/*.*')
 		.pipe(gulp.dest('wwwroot/js/localization'));
 });
 
 /// copy Assets folder to Wwwroot
 gulp.task('COPY_FOLDER_Assets_Wwwroot', function () {
-	return gulp.src(['assets/**/*.*', '!assets/app/**/*.*'])
+	return gulp.src(['assets_tmp/**/*.*', '!assets_app/**/*.*'])
 		.pipe(gulp.dest('wwwroot'));
 });
 
-/// copy Assets/App folder to Wwwroot
+/// copy assets_app folder to Wwwroot
 gulp.task('COPY_FOLDER_AssetsApp_Wwwroot', function () {
-	return gulp.src('assets/app/**/*.*')
+	return gulp.src('assets_app/**/*.*')
 		.pipe(gulp.dest('wwwroot'));
 });

@@ -14,6 +14,7 @@ using DDDN.CrossBlog.Blog.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.BusinessLayer
@@ -24,7 +25,27 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 		public CategoryBusinessLayer(CrossBlogContext context)
 		{
-			_context = context;
+			_context = context ?? throw new ArgumentNullException(nameof(context));
+		}
+		/// <summary>
+		/// Returns a list of categories that are assigned to published postsand the assigned post count for each category.
+		/// </summary>
+		/// <returns>Returns a list of <list type="CategoryListViewModel"/> objects.</returns>
+		public async Task<IEnumerable<CategoryPostCountViewModel>> GetCategoryNamesListAndPublishedPostsCountsOrderdByCategoryName()
+		{
+			var categories = await _context.PostCategories
+				.Where(p => p.Post.State.Equals(PostModel.States.Published))
+				.GroupBy(p => p.CategoryId)
+				.Select(p => new CategoryPostCountViewModel
+				{
+					CategoryId = p.Key,
+					Name = _context.Categories.First(c => c.CategoryId.Equals(p.Key)).Name,
+					Count = p.Count()
+				})
+				.OrderBy(p => p.Name)
+				.ToListAsync();
+
+			return categories;
 		}
 
 		public async Task<IEnumerable<CategoryModel>> Get()

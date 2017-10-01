@@ -1,5 +1,5 @@
-﻿/* 
-DDDN.CrossBlog.Blog.Data.BusinessLayer.ICategoryBusinessLayer
+﻿/*
+DDDN.CrossBlog.Blog.Models.CategoryPostCountViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -9,18 +9,14 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.CrossBlog.Blog.Models;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace DDDN.CrossBlog.Blog.BusinessLayer
+namespace DDDN.CrossBlog.Blog.Models
 {
-	public interface ICategoryBusinessLayer
+	public class CategoryPostCountViewModel
 	{
-		Task<IEnumerable<CategoryPostCountViewModel>> GetCategoryNamesListAndPublishedPostsCountsOrderdByCategoryName();
-		Task<IEnumerable<CategoryModel>> Get();
-		Task Create(string categoryName);
-		Task Delete(Guid categoryId);
+		public Guid CategoryId { get; set; }
+		public string Name { get; set; }
+		public int Count { get; set; }
 	}
 }

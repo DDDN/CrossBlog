@@ -9,9 +9,8 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.CrossBlog.Blog.Data;
+using DDDN.CrossBlog.Blog.BusinessLayer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -19,19 +18,17 @@ namespace DDDN.CrossBlog.Blog.ViewComponents
 {
 	public class CategoriesViewComponent : ViewComponent
 	{
-		private CrossBlogContext _cxt;
+		private readonly ICategoryBusinessLayer _categoryBl;
 
-		public CategoriesViewComponent(CrossBlogContext cxt)
+		public CategoriesViewComponent(ICategoryBusinessLayer categoryBusinessLayer)
 		{
-			_cxt = cxt ?? throw new ArgumentNullException(nameof(cxt));
+			_categoryBl = categoryBusinessLayer ?? throw new ArgumentNullException(nameof(categoryBusinessLayer));
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
-			var categories = await _cxt.Categories
-				.Include(p => p.PostCategories).ToListAsync();
-
-			return View(categories);
+			var categoryList = await _categoryBl.GetCategoryNamesListAndPublishedPostsCountsOrderdByCategoryName();
+			return View(categoryList);
 		}
 	}
 }

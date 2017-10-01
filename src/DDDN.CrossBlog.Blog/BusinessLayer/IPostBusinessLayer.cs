@@ -20,7 +20,8 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 	public interface IPostBusinessLayer
 	{
 		Task<IEnumerable<PostModel>> GetNewest(int skip, int take);
-		Task<IEnumerable<PostModel>> GetNewestByCategory(int skip, int take, Guid categoryId);
+		Task<IEnumerable<PostModel>> GetNewest(int skip, int take, params PostModel.States[] states);
+		Task<IEnumerable<PostModel>> GetNewestByCategory(int skip, int take, Guid categoryId, params PostModel.States[] states);
 		Task<PostModel> GetPostOrDefault(Guid postId);
 		Task<PostModel> GetWithCategories(Guid postId);
 		Task<PostModel> GetPostWithCommentsOrDefault(Guid postId);

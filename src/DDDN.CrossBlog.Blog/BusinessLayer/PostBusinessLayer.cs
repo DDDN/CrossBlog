@@ -40,6 +40,22 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		{
 			var newestPosts = await _context.Posts
 				 .AsNoTracking()
+				 .OrderByDescending(p => p.Created)
+				 .Include(p => p.Writer)
+				 .Include(pc => pc.PostCategories)
+				 .ThenInclude(c => c.Category)
+				 .Skip(skip)
+				 .Take(take)
+				 .ToListAsync();
+
+			return newestPosts;
+		}
+
+		public async Task<IEnumerable<PostModel>> GetNewest(int skip, int take, params PostModel.States[] states)
+		{
+			var newestPosts = await _context.Posts
+				 .AsNoTracking()
+				 .Where(p => states.Contains(p.State))
 				 .Include(p => p.Writer)
 				 .OrderByDescending(p => p.Created)
 				 .Skip(skip)
@@ -51,11 +67,12 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			return newestPosts;
 		}
 
-		public async Task<IEnumerable<PostModel>> GetNewestByCategory(int skip, int take, Guid categoryId)
+		public async Task<IEnumerable<PostModel>> GetNewestByCategory(int skip, int take, Guid categoryId, params PostModel.States[] states)
 		{
 			var newestPosts = await _context.Posts
 				.AsNoTracking()
 				.Where(post => _context.PostCategories.Any(pt => pt.PostId == post.PostId && pt.CategoryId == categoryId))
+				.Where(p => states.Contains(p.State))
 				.Skip(skip)
 				.Take(take)
 				.OrderByDescending(po => po.Created)

@@ -35,14 +35,14 @@ namespace DDDN.CrossBlog.Blog.Controllers
 
 		public async Task<IActionResult> Newest(Guid id)
 		{
-			if(id.Equals(Guid.Empty))
+			if (id.Equals(Guid.Empty))
 			{
-				var posts = await _postBl.GetNewest(0, 10);
+				var posts = await _postBl.GetNewest(0, 1, PostModel.States.Published);
 				return View(posts);
 			}
 			else
 			{
-				var posts = await _postBl.GetNewestByCategory(0, 10, id);
+				var posts = await _postBl.GetNewestByCategory(0, 10, id, PostModel.States.Published);
 				return View(posts);
 			}
 		}

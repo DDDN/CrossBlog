@@ -25,7 +25,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using System;
 
 namespace DDDN.CrossBlog.Blog
@@ -51,6 +54,8 @@ namespace DDDN.CrossBlog.Blog
 				  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 				  .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 			Config = builder.Build();
+
+			env.ConfigureNLog("nlog.config");
 		}
 
 		public void ConfigureServices(IServiceCollection services)
@@ -102,12 +107,16 @@ namespace DDDN.CrossBlog.Blog
 			  IBlogCultures blogCultures,
 			  CrossBlogContextInitializer crossBlogContextInitializer,
 			  CrossBlogInitializer crossBlogInitializer,
-			  IOptions<RoutingConfigSection> routingSection)
+			  IOptions<RoutingConfigSection> routingSection,
+			  ILoggerFactory loggerFactory)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			loggerFactory.AddNLog();
+			app.AddNLogWeb();
 
 			app.UseAuthentication();
 

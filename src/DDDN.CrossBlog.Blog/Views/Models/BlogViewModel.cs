@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Models.BlogViewModel
+DDDN.CrossBlog.Blog.Views.Models.BlogViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -11,12 +11,12 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 
 using System;
 
-namespace DDDN.CrossBlog.Blog.Models
+namespace DDDN.CrossBlog.Blog.Views.Models
 {
-   public class BlogViewModel
-    {
-        public Guid BlogId { get; set; }
-        public string BlogName { get; set; }
-        public string BlogCopyright { get; set; }
-    }
+	public class BlogViewModel
+	{
+		public Guid BlogId { get; set; }
+		public string BlogName { get; set; }
+		public string BlogCopyright { get; set; }
+	}
 }

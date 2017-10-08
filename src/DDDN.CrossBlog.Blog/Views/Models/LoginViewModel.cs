@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Models.WriterViewModel
+DDDN.CrossBlog.Blog.Views.Models.LoginViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -10,32 +10,14 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Views.Models;
-using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
 
 namespace DDDN.CrossBlog.Blog.Models
 {
-	public class WriterViewModel : ViewModel
+	public class LoginViewModel : BaseViewModel
 	{
-		public WriterViewModel()
-			: base(new List<String>(), null)
-		{
-		}
-
-		public WriterViewModel(WriterModel.States state, IStringLocalizer localizer)
-			: base(WriterModel.StatesTree[state.ToString()], localizer)
-		{
-		}
-
-		public Guid WriterId { get; set; }
-		public WriterModel.States State { get; set; }
-		public string Name { get; set; }
 		public string Mail { get; set; }
-		public string AboutMe { get; set; }
-		public bool Administrator { get; set; }
 		public string Password { get; set; }
-		public string PasswordCompare { get; set; }
-		public DateTimeOffset Created { get; set; }
+		public string ReturnUrl { get; set; }
 	}
 }
+

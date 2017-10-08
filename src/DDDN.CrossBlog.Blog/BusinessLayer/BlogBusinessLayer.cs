@@ -12,6 +12,7 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 using DDDN.CrossBlog.Blog.Data;
 using DDDN.CrossBlog.Blog.Exceptions;
 using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Views.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

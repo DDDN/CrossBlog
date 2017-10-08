@@ -1,5 +1,5 @@
 /*
-DDDN.CrossBlog.Blog.Models.PostViewModel
+DDDN.CrossBlog.Blog.Views.Models.PostViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -9,16 +9,16 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.CrossBlog.Blog.Views.Models;
+using DDDN.CrossBlog.Blog.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DDDN.CrossBlog.Blog.Models
+namespace DDDN.CrossBlog.Blog.Views.Models
 {
-   public class PostViewModel : ViewModel
+	public class PostViewModel : BaseViewModel
 	{
 		public PostViewModel()
 			: base(new List<string>(), null)

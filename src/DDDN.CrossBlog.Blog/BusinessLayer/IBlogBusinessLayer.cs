@@ -9,8 +9,9 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System.Threading.Tasks;
 using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Views.Models;
+using System.Threading.Tasks;
 
 namespace DDDN.CrossBlog.Blog.BusinessLayer
 {

@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Views.Models.ViewModel
+DDDN.CrossBlog.Blog.Views.Models.WriterViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -9,35 +9,27 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using Microsoft.AspNetCore.Mvc.Rendering;
+using DDDN.CrossBlog.Blog.Models;
 using Microsoft.Extensions.Localization;
-using System.Collections.Generic;
+using System;
 
 namespace DDDN.CrossBlog.Blog.Views.Models
 {
-	public class ViewModel
+	public class WriterViewModel : BaseViewModel
 	{
-		public List<SelectListItem> States { get; }
-
-		public ViewModel(IEnumerable<string> states, IStringLocalizer localizer)
+		public WriterViewModel(WriterModel.States state = WriterModel.States.None, IStringLocalizer localizer = null)
+			: base(WriterModel.StatesTree[state.ToString()], localizer)
 		{
-			if (states == null)
-			{
-				throw new System.ArgumentNullException(nameof(states));
-			}
-
-			States = new List<SelectListItem>();
-
-			foreach (var state in states)
-			{
-				var item = new SelectListItem
-				{
-					Value = state,
-					Text = localizer == null ? state : localizer[state]
-				};
-
-				States.Add(item);
-			}
 		}
+
+		public Guid WriterId { get; set; }
+		public WriterModel.States State { get; set; }
+		public string Name { get; set; }
+		public string Mail { get; set; }
+		public string AboutMe { get; set; }
+		public bool Administrator { get; set; }
+		public string Password { get; set; }
+		public string PasswordCompare { get; set; }
+		public DateTimeOffset Created { get; set; }
 	}
 }

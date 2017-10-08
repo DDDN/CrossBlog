@@ -10,6 +10,7 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Views.Models;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -28,6 +29,6 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		Task Create(WriterViewModel writerView);
 		bool IsOwner(Guid writerId);
 		Task Delete(Guid writerId);
-		Task<AuthenticationResult> PasswordChange(PasswordViewModel writerPassword);
+		Task PasswordChange(PasswordViewModel writerPassword);
 	}
 }

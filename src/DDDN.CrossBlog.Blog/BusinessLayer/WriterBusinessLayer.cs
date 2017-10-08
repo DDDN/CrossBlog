@@ -9,13 +9,16 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Data;
 using DDDN.CrossBlog.Blog.Exceptions;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Security;
+using DDDN.CrossBlog.Blog.Views.Models;
 using DDDN.Logging.Messages;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +31,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 	{
 		private readonly CrossBlogContext _context;
 		private readonly BlogInfo _blogInfo;
+		private readonly AuthenticationConfigSection _configSection;
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -35,10 +39,17 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		/// <param name="blogInfo">Singelon with general blog infos.</param>
 		public WriterBusinessLayer(
 			CrossBlogContext context,
-			BlogInfo blogInfo)
+			BlogInfo blogInfo,
+			IOptions<AuthenticationConfigSection> authenticationConfigSection)
 		{
 			_context = context ?? throw new System.ArgumentNullException(nameof(context));
 			_blogInfo = blogInfo ?? throw new ArgumentNullException(nameof(blogInfo));
+
+			if (authenticationConfigSection == null)
+			{
+				throw new ArgumentNullException(nameof(authenticationConfigSection));
+			}
+			_configSection = authenticationConfigSection.Value ?? throw new NullReferenceException("authenticationConfigSection.Value");
 		}
 		/// <summary>
 		/// Checks if an writer exists.
@@ -271,43 +282,92 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			await _context.SaveChangesAsync();
 		}
 		/// <summary>
-		/// Checks if the supported passwords are correct and changes the writers password to a new one.
+		/// Checks if the supported passwords are correct and the new one meets the complexity criteria and changes the writers password to a new one.
 		/// </summary>
-		/// <param name="writerPassword"></param>
+		/// <param name="passwordViewModel"></param>
 		/// <returns></returns>
-		public async Task<AuthenticationResult> PasswordChange(PasswordViewModel writerPassword)
+		public async Task PasswordChange(PasswordViewModel passwordViewModel)
 		{
-			if (writerPassword == null)
+			if (passwordViewModel == null)
 			{
-				throw new ArgumentNullException(nameof(writerPassword));
+				throw new ArgumentNullException(nameof(passwordViewModel));
 			}
 
-			if (!writerPassword.New.Equals(writerPassword.Compare, StringComparison.InvariantCultureIgnoreCase))
+			if (!passwordViewModel.New.Equals(passwordViewModel.Compare, StringComparison.InvariantCultureIgnoreCase))
 			{
-				return AuthenticationResult.PasswordNotMatch;
+				passwordViewModel.Msg.Add("Passwords do not match.", ViewMessage.IsTypeOf.Warning);
+			}
+
+			if (!PasswordMeetsComplexity(passwordViewModel.New, out string msg))
+			{
+				passwordViewModel.Msg.Add(msg, ViewMessage.IsTypeOf.Warning);
 			}
 
 			var writer = await _context.Writers
-				.Where(p => p.WriterId.Equals(writerPassword.WriterId))
-				.FirstOrDefaultAsync();
+			.Where(p => p.WriterId.Equals(passwordViewModel.WriterId))
+			.FirstAsync();
 
-			if (writer == default(WriterModel))
-			{
-				return AuthenticationResult.UserNotFound;
-			}
-
-			var hashedOld = Crypto.HashWithSHA256(writerPassword.Old, writer.Salt);
+			var hashedOld = Crypto.HashWithSHA256(passwordViewModel.Old, writer.Salt);
 
 			if (!hashedOld.hashedPassword.SequenceEqual(writer.PasswordHash))
 			{
-				return AuthenticationResult.WrongPassword;
+				passwordViewModel.Msg.Add("Old password do not match.", ViewMessage.IsTypeOf.Warning);
 			}
 
-			var hashedNew = Crypto.HashWithSHA256(writerPassword.New);
-			writer.PasswordHash = hashedNew.hashedPassword;
-			writer.Salt = hashedNew.salt;
-			await _context.SaveChangesAsync();
-			return AuthenticationResult.PasswordChanged;
+			if (!passwordViewModel.Msg.Any())
+			{
+				var hashedNew = Crypto.HashWithSHA256(passwordViewModel.New);
+				writer.PasswordHash = hashedNew.hashedPassword;
+				writer.Salt = hashedNew.salt;
+				await _context.SaveChangesAsync();
+			}
+		}
+
+		private bool PasswordMeetsComplexity(string password, out string msg)
+		{
+			msg = "Password must meet complexity requirements:";
+			var meets = true;
+
+			if (password == null)
+			{
+				throw new ArgumentNullException(nameof(password));
+			}
+
+			var criteria = _configSection.PasswordComplexity.Split(",")
+				.Select(p => int.Parse(p))
+				.ToArray();
+
+			if (criteria[0] > password.Length)
+			{
+				meets = false;
+				msg += $" Minimal password length is {criteria[0]}.";
+			}
+
+			if (criteria[1] == 1 && password.All(char.IsLetterOrDigit))
+			{
+				meets = false;
+				msg += $" At least one non alphanumeric character is required.";
+			}
+
+			if (criteria[2] == 1 && !password.Any(char.IsUpper))
+			{
+				meets = false;
+				msg += $" At least one uppercase character is required.";
+			}
+
+			if (criteria[3] == 1 && !password.Any(char.IsLower))
+			{
+				meets = false;
+				msg += $" At least one lowercase character is required.";
+			}
+
+			if (criteria[4] == 1 && !password.Any(char.IsNumber))
+			{
+				meets = false;
+				msg += $" At least one number character is required.";
+			}
+
+			return meets;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Models.CategoryPostCountViewModel
+DDDN.CrossBlog.Blog.Views.Models.BaseViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -9,14 +9,34 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 
-namespace DDDN.CrossBlog.Blog.Models
+namespace DDDN.CrossBlog.Blog.Views.Models
 {
-	public class CategoryPostCountViewModel
+	public class BaseViewModel
 	{
-		public Guid CategoryId { get; set; }
-		public string Name { get; set; }
-		public int Count { get; set; }
+		public List<SelectListItem> States { get; set; } = new List<SelectListItem>();
+		public ViewMessage Msg { get; set; } = new ViewMessage();
+
+		public BaseViewModel(IEnumerable<string> states = null, IStringLocalizer localizer = null)
+		{
+			if (states == null)
+			{
+				return;
+			}
+
+			foreach (var state in states)
+			{
+				var item = new SelectListItem
+				{
+					Value = state,
+					Text = localizer == null ? state : localizer[state]
+				};
+
+				States.Add(item);
+			}
+		}
 	}
 }

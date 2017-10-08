@@ -15,5 +15,6 @@ namespace DDDN.CrossBlog.Blog.Configuration
 	{
 		public string Issuer { get; set; } = "http://jaskiewicz.de";
 		public int SessionDurationInMinutes { get; set; } = 30;
+		public string PasswordComplexity { get; set; } = "8,1,1,1,1";
 	}
 }

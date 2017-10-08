@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Models.PasswordViewModel
+DDDN.CrossBlog.Blog.Views.Models.CategoryPostCountViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -11,13 +11,12 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 
 using System;
 
-namespace DDDN.CrossBlog.Blog.Models
+namespace DDDN.CrossBlog.Blog.Views.Models
 {
-	public class PasswordViewModel
+	public class CategoryPostCountViewModel
 	{
-		public Guid WriterId { get; set; }
-		public string Old { get; set; }
-		public string New { get; set; }
-		public string Compare { get; set; }
+		public Guid CategoryId { get; set; }
+		public string Name { get; set; }
+		public int Count { get; set; }
 	}
 }

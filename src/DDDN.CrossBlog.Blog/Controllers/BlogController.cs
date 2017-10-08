@@ -84,17 +84,17 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			}
 		}
 
-		public async Task<IActionResult> Archive()
+		public IActionResult Archive()
 		{
 			return View();
 		}
 
-		public async Task<IActionResult> Categories()
+		public IActionResult Categories()
 		{
 			return View();
 		}
 
-		public async Task<IActionResult> About()
+		public IActionResult About()
 		{
 			return View();
 		}

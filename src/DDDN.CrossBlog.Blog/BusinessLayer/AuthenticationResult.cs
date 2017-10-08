@@ -18,6 +18,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		WrongPassword,
 		UserNotFound,
 		PasswordNotMatch,
-		PasswordChanged
+		PasswordChanged,
+		InsufficientComplexity
 	}
 }

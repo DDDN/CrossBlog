@@ -1,5 +1,5 @@
 ﻿/*
-DDDN.CrossBlog.Blog.Models.LoginViewModel
+DDDN.CrossBlog.Blog.Views.Models.PasswordViewModel
 Copyright(C) 2017 Lukasz Jaskiewicz (lukasz@jaskiewicz.de)
 - This program is free software; you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation; version 2 of the License.
@@ -11,19 +11,14 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 
 using DDDN.CrossBlog.Blog.Views.Models;
 using System;
-using System.Collections.Generic;
 
 namespace DDDN.CrossBlog.Blog.Models
 {
-	public class LoginViewModel : ViewModel
+	public class PasswordViewModel : BaseViewModel
 	{
-		public LoginViewModel()
-			: base(new List<String>(), null)
-		{
-		}
-
-		public string Mail { get; set; }
-		public string Password { get; set; }
-		public string ReturnUrl { get; set; }
+		public Guid WriterId { get; set; }
+		public string Old { get; set; }
+		public string New { get; set; }
+		public string Compare { get; set; }
 	}
 }

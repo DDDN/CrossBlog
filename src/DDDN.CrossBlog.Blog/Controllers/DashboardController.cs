@@ -14,6 +14,7 @@ using DDDN.CrossBlog.Blog.Configuration;
 using DDDN.CrossBlog.Blog.Data;
 using DDDN.CrossBlog.Blog.Exceptions;
 using DDDN.CrossBlog.Blog.Models;
+using DDDN.CrossBlog.Blog.Views.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -223,7 +225,13 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> PostEdit(Guid id, [Bind("PostId,State,AlternativeTitle,AlternativeTeaser")] PostViewModel postViewModel)
+		public async Task<IActionResult> PostEdit(Guid id, [Bind(new []
+		{
+			nameof(PostViewModel.PostId),
+			nameof(PostViewModel.State),
+			nameof(PostViewModel.AlternativeTitle),
+			nameof(PostViewModel.AlternativeTeaser),
+		})] PostViewModel postViewModel)
 		{
 			if (!postViewModel.PostId.Equals(id))
 			{
@@ -473,43 +481,46 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> WriterPassword(Guid id)
 		{
-			WriterModel writer = null;
+			var passwordViewModel = TempData.Get<PasswordViewModel>(nameof(PasswordViewModel));
 
-			try
+			if (passwordViewModel == null)
 			{
-				writer = await _writerBl.GetWithRoles(id);
+				if (id.Equals(Guid.Empty))
+				{
+					return RedirectToAction(nameof(Writers));
+				}
+
+				var writer = await _writerBl.GetWithRoles(id);
+
+				passwordViewModel = new PasswordViewModel
+				{
+					WriterId = writer.WriterId
+				};
 			}
-			catch (WriterNotFoundException)
-			{
 
-				return NotFound();
-			}
-
-			var pwView = new PasswordViewModel
-			{
-				WriterId = writer.WriterId
-			};
-
-			return View(pwView);
+			return View(passwordViewModel);
 		}
 
 		[HttpPost]
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> WriterPasswordConfirmed([Bind("WriterId, Old, New, Compare")] PasswordViewModel passwordViewModel)
+		public async Task<IActionResult> WriterPasswordConfirmed([Bind(new []
 		{
-			var result = await _writerBl.PasswordChange(passwordViewModel);
+			nameof(PasswordViewModel.WriterId),
+			nameof(PasswordViewModel.Old),
+			nameof(PasswordViewModel.New),
+			nameof(PasswordViewModel.Compare)
+		})] PasswordViewModel passwordViewModel)
+		{
+			await _writerBl.PasswordChange(passwordViewModel);
 
-			if (result == AuthenticationResult.PasswordChanged)
+			if (passwordViewModel.Msg.Any())
 			{
-				return RedirectToAction(nameof(Writers));
-			}
-			else if (result == AuthenticationResult.UserNotFound)
-			{
-				return NotFound();
+				TempData.Put(nameof(PasswordViewModel), passwordViewModel);
+				return RedirectToAction(nameof(WriterPassword));
 			}
 			else
 			{
-				return RedirectToAction(nameof(WriterPassword));
+				return View(passwordViewModel);
 			}
 		}
 	}

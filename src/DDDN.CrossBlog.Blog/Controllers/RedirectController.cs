@@ -88,16 +88,16 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				}
 			}
 
-			var blogCulture = BlogRequestCultureProvider.GetCulture(culture, HttpContext, _blogCultures);
+			var cultureName = BlogRequestCultureProvider.GetCulture(culture, HttpContext, _blogCultures).Name;
 
 			var redirect = RedirectToRoute(
 				 routeName: RouteNames.Default,
 				 routeValues: new
 				 {
-					 culture = blogCulture.Name,
-					 controller = controller,
-					 action = action,
-					 ReturnUrl = returnUrl
+					 culture = cultureName,
+					 controller,
+					 action,
+					 returnUrl
 				 });
 
 			return redirect;

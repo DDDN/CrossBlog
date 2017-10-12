@@ -9,7 +9,6 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.Logging.Messages;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Security.Cryptography;
@@ -22,7 +21,7 @@ namespace DDDN.CrossBlog.Blog.Security
 		{
 			if (string.IsNullOrWhiteSpace(password))
 			{
-				throw new ArgumentException(LogMsg.StrArgNullOrWhite, nameof(password));
+				throw new ArgumentException(nameof(string.IsNullOrWhiteSpace), nameof(password));
 			}
 
 			byte[] salt = null;

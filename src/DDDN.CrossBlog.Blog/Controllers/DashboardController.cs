@@ -290,9 +290,9 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Login([Bind("Mail, Password")]LoginViewModel loginViewModel, string returnUrl = null)
 		{
-			var authentication = await _writerBl.TryToAuthenticateAndGetPrincipal(loginViewModel.Mail, loginViewModel.Password);
+			var (authenticationResult, principal) = await _writerBl.TryToAuthenticateAndGetPrincipal(loginViewModel.Mail, loginViewModel.Password);
 
-			if (authentication.authenticationResult == AuthenticationResult.Authenticated)
+			if (authenticationResult == AuthenticationResult.Authenticated)
 			{
 				var props = new AuthenticationProperties
 				{
@@ -300,14 +300,14 @@ namespace DDDN.CrossBlog.Blog.Controllers
 					IsPersistent = true
 				};
 
-				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, authentication.principal, props);
+				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
 				return base.RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
 			}
-			else if (authentication.authenticationResult == AuthenticationResult.WrongPassword)
+			else if (authenticationResult == AuthenticationResult.WrongPassword)
 			{
 				return RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
 			}
-			else if (authentication.authenticationResult == AuthenticationResult.UserNotFound)
+			else if (authenticationResult == AuthenticationResult.UserNotFound)
 			{
 				return RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
 			}

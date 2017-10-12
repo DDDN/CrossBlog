@@ -165,10 +165,11 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 						using (IODTFile odtFile = new ODTFile(fileContent))
 						{
-							var odtConvert = new ODTConvert(odtFile, _routingConfig.BlogPostHtmlUrlPrefix);
+							var odtConvert = new ODTConvert(odtFile);
 							var convertedData = odtConvert.Convert(new ODTConvertSettings
 							{
-								FluidWidth = false
+								RootHtmlTag = "article",
+								LinkUrlPrefix = _routingConfig.BlogPostHtmlUrlPrefix
 							});
 
 							var now = DateTimeOffset.Now;
@@ -180,11 +181,10 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 								Created = now,
 								Binary = fileContentBytes,
 								Hash = sha1Hash,
-								FirstHeader = convertedData.FirstHeader,
-								FirstParagraph = convertedData.FirstParagraph,
+								FirstHeader = convertedData.DocumentFirstHeader,
+								FirstParagraph = convertedData.DocumentFirstParagraph,
 								Html = convertedData.Html,
 								Css = convertedData.Css,
-								PageCssClassName = convertedData.PageCssClassName,
 								Writer = _context.Writers.First(),
 								Contents = new List<ContentModel>(),
 								LastRenderd = now

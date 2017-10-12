@@ -15,7 +15,6 @@ using DDDN.CrossBlog.Blog.Exceptions;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Security;
 using DDDN.CrossBlog.Blog.Views.Models;
-using DDDN.Logging.Messages;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -81,9 +80,9 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			return writer;
 		}
 		/// <summary>
-		/// Returns all writers adn thair roles.
+		/// Returns all writers and their roles.
 		/// </summary>
-		/// <returns>Retruns an IEnumerable with all writers and their roles.</returns>
+		/// <returns>Returns an IEnumerable with all writers and their roles.</returns>
 		public async Task<IEnumerable<WriterModel>> GetWithRoles()
 		{
 			return await _context.Writers
@@ -93,23 +92,23 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				.ToListAsync();
 		}
 		/// <summary>
-		/// Searches a writer by his mail and checks if the password salts maches.
+		/// Searches a writer by his mail and checks if the password salts matches.
 		/// </summary>
-		/// <param name="loginMail">The mail provided on user logon.</param>
-		/// <param name="loginPassword">The pasword provided on user logon.</param>
-		/// <returns>Returns a tulpe with an <see cref="AuthenticationResult"/> value and,
-		/// if sucessfull, also with a CimesProncipal object with the writers info.</returns>
+		/// <param name="loginMail">The mail provided on user login.</param>
+		/// <param name="loginPassword">The password provided on user login.</param>
+		/// <returns>Returns a tuple with an <see cref="AuthenticationResult"/> value and,
+		/// if successful, also with a CimesProncipal object with the writers info.</returns>
 		public async Task<(AuthenticationResult authenticationResult, ClaimsPrincipal principal)>
 			TryToAuthenticateAndGetPrincipal(string loginMail, string loginPassword)
 		{
 			if (string.IsNullOrWhiteSpace(loginMail))
 			{
-				throw new ArgumentException(LogMsg.StrArgNullOrWhite, nameof(loginMail));
+				throw new ArgumentException(nameof(string.IsNullOrWhiteSpace), nameof(loginMail));
 			}
 
 			if (string.IsNullOrWhiteSpace(loginPassword))
 			{
-				throw new ArgumentException(LogMsg.StrArgNullOrWhite, nameof(loginPassword));
+				throw new ArgumentException(nameof(string.IsNullOrWhiteSpace), nameof(loginPassword));
 			}
 
 			var writer = await _context.Writers
@@ -121,9 +120,9 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				return (AuthenticationResult.UserNotFound, null);
 			}
 
-			var hashedLogin = Crypto.HashWithSHA256(loginPassword, writer.Salt);
+			var (hashedPassword, salt) = Crypto.HashWithSHA256(loginPassword, writer.Salt);
 
-			if (hashedLogin.hashedPassword.SequenceEqual(writer.PasswordHash))
+			if (hashedPassword.SequenceEqual(writer.PasswordHash))
 			{
 				var principal = CreateClaimsPrincipal(writer);
 				return (AuthenticationResult.Authenticated, principal);
@@ -231,7 +230,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				throw new CrossBlogException("Mail exists already.");
 			}
 
-			var hashed = Crypto.HashWithSHA256(writerView.Password);
+			var (hashedPassword, salt) = Crypto.HashWithSHA256(writerView.Password);
 
 			var writer = new WriterModel
 			{
@@ -239,8 +238,8 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				Mail = writerView.Mail,
 				AboutMe = writerView.AboutMe,
 				WriterId = Guid.NewGuid(),
-				PasswordHash = hashed.hashedPassword,
-				Salt = hashed.salt,
+				PasswordHash = hashedPassword,
+				Salt = salt,
 				State = WriterModel.States.Active,
 				Created = DateTimeOffset.Now,
 				MailConfirmed = false,
@@ -307,9 +306,9 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			.Where(p => p.WriterId.Equals(passwordViewModel.WriterId))
 			.FirstAsync();
 
-			var hashedOld = Crypto.HashWithSHA256(passwordViewModel.Old, writer.Salt);
+			var (hashedPassword, salt) = Crypto.HashWithSHA256(passwordViewModel.Old, writer.Salt);
 
-			if (!hashedOld.hashedPassword.SequenceEqual(writer.PasswordHash))
+			if (!hashedPassword.SequenceEqual(writer.PasswordHash))
 			{
 				passwordViewModel.Msg.Add("Old password do not match.", ViewMessage.IsTypeOf.Warning);
 			}

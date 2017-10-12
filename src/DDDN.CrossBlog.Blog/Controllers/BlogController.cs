@@ -73,9 +73,9 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		{
 			try
 			{
-				var content = await _postBl.GetContent(id);
-				var contentType = new FileExtensionContentTypeProvider().Mappings[Path.GetExtension(content.name)];
-				var result = new FileContentResult(content.binary, contentType ?? "application/octet-stream");
+				var (binary, name) = await _postBl.GetContent(id);
+				var contentType = new FileExtensionContentTypeProvider().Mappings[Path.GetExtension(name)];
+				var result = new FileContentResult(binary, contentType ?? "application/octet-stream");
 				return result;
 			}
 			catch (PostContentNotFoundException)

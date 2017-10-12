@@ -1,1 +1,0 @@
-dotnet build -c Debug -v n > dotnet_build_debug.txt

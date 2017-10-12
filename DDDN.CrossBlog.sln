@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27009.1
+VisualStudioVersion = 15.0.27004.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.CrossBlog.Blog", "src\DDDN.CrossBlog.Blog\DDDN.CrossBlog.Blog.csproj", "{E7C68E93-8E07-4371-A4C5-39120B6AEFEC}"
 EndProject
@@ -15,11 +15,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{990C564D-DF93-4454-9787-C32EA148F61A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDN.Office.Odf", "..\Office.Odf\src\DDDN.Office.Odf\DDDN.Office.Odf.csproj", "{427A5E50-DFA9-4668-9554-0EDCA039918F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{073C5365-E1F6-4EAC-AD57-8F7AFE901FD9}"
-	ProjectSection(SolutionItems) = preProject
-		tools\dotnet_build_debug.bat = tools\dotnet_build_debug.bat
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

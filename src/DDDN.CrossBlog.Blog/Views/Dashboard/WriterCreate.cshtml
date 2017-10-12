@@ -17,6 +17,7 @@
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	<form id="formValidation" asp-action="WriterCreate">
 		<div class="form-group">
 			<label for="Name">@Loc[nameof(Model.Name)]</label>
@@ -45,7 +46,7 @@
 			<input type="password" asp-for="@Model.PasswordCompare" class="form-control" required>
 		</div>
 		<hr />
-		<button type="submit" class="btn btn-success">@Loc["ButtonSubmit"]</button>
-		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-warning">@Loc["LinkWriters"]</a>
+		<button type="submit" class="btn btn-success">@Loc["ButtonCreate"]</button>
+		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-warning">@Loc["LinkCancel"]</a>
 	</form>
 </div>

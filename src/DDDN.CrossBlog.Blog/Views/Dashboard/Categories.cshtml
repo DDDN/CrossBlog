@@ -17,6 +17,7 @@
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	@foreach (var item in Model)
 	{
 		<button class="btn btn-success cb-btn-mb-5" id="@item.CategoryId" onclick="cb_AdminCathIndex_SetIdForDelete(this.id)">@item.Name</button>

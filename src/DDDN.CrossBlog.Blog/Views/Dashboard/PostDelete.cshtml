@@ -16,8 +16,8 @@
 
 <div>
 	<h2>@Loc["Header"]</h2>
-	<h4>@Loc["Info"]</h4>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	<dl class="dl-horizontal">
 		<dt>
 			@Loc["State"]
@@ -41,7 +41,7 @@
 	<hr />
 	<form asp-action="PostDelete">
 		<input type="hidden" asp-for="PostId" />
-		<input type="submit" value="@Loc["Delete"]" class="btn btn-success" />
-		<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-primary">@Loc["Cancel"]</a>
+		<input type="submit" value="@Loc["ButtonSubmit"]" class="btn btn-success" />
+		<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-primary">@Loc["LinkCancel"]</a>
 	</form>
 </div>

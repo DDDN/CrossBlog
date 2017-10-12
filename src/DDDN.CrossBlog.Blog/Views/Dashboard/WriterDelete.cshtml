@@ -13,9 +13,11 @@
 @model WriterViewModel
 
 @{	ViewData["Title"] = Loc["Title"]; }
+
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	@{ await Html.RenderPartialAsync("WriterInfoPartialView", Model); }
 	<hr />
 	<form asp-action="WriterDelete">

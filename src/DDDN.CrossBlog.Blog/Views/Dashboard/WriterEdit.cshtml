@@ -17,6 +17,7 @@
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	<form id="formValidation" asp-action="WriterEdit">
 		<input type="hidden" asp-for="WriterId" />
 		<div class="form-group">
@@ -42,8 +43,8 @@
 			</label>
 		</div>
 		<hr />
-		<button type="submit" class="btn btn-success">@Loc["Edit"]</button>
-		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-warning">@Loc["Cancel"]</a>
+		<button type="submit" class="btn btn-success">@Loc["ButtonEdit"]</button>
+		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-warning">@Loc["LinkCancel"]</a>
 	</form>
 </div>
 

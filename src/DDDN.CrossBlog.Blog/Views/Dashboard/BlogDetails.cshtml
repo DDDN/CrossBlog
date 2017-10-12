@@ -8,15 +8,13 @@
 	- You should have received a copy of the GNU General Public License along with this program; if not, write
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
-
 @model BlogModel
 @inject IViewLocalizer Loc
-
 @{ ViewData["Title"] = Loc["Title"]; }
-
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	<dl class="dl-horizontal">
 		<dt>
 			@Loc[nameof(Model.Name)]
@@ -44,5 +42,5 @@
 		</dd>
 	</dl>
 	<hr />
-	<a asp-action="@nameof(DashboardController.BlogEdit)" asp-route-id="@Model.BlogId" class="btn btn-primary" >@Loc["LinkEdit"]</a>
+	<a asp-action="@nameof(DashboardController.BlogEdit)" asp-route-id="@Model.BlogId" class="btn btn-primary">@Loc["LinkEdit"]</a>
 </div>

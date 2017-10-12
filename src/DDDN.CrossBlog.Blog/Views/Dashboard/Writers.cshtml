@@ -17,7 +17,8 @@
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
-	<p><a asp-action="@nameof(DashboardController.WriterCreate)" class="btn btn-success">@Loc["WriterCreate"]</a></p>
+	<h4>@Loc["Info"]</h4>
+	<p><a asp-action="@nameof(DashboardController.WriterCreate)" class="btn btn-success">@Loc["LinkCreate"]</a></p>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -66,10 +67,10 @@
 						}
 					</td>
 					<td>
-						<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterEdit)]</a>
-						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterDetails)]</a>
-						<a asp-action="@nameof(DashboardController.WriterDelete)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterDelete)]</a>
-						<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc[nameof(DashboardController.WriterPassword)]</a>
+						<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc["LinkEdit"]</a>
+						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc["LinkDetails"]</a>
+						<a asp-action="@nameof(DashboardController.WriterDelete)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc["LinkDelete"]</a>
+						<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@item.WriterId" class="btn btn-sm btn-primary">@Loc["LinkPassword"]</a>
 					</td>
 				</tr>
 			}

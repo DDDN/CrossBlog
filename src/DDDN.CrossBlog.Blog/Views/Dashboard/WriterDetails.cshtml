@@ -13,12 +13,14 @@
 @model WriterViewModel
 
 @{	ViewData["Title"] = Loc["Title"]; }
+
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	@{ await Html.RenderPartialAsync("WriterInfoPartialView", Model); }
 	<hr />
 	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["LinkEdit"]</a>
 	<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@Model.WriterId" class="btn btn-primary">@Loc["LinkPassword"]</a>
-	<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["LinkBack"]</a>
+	<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["LinkWriters"]</a>
 </div>

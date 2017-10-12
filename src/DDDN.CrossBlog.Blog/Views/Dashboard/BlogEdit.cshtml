@@ -17,6 +17,7 @@
 <div>
 	<h2>@Loc["Header"]</h2>
 	<hr />
+	<h4>@Loc["Info"]</h4>
 	<form id="formValidation" asp-action="BlogEdit">
 		<input type="hidden" asp-for="@Model.BlogId" />
 		<div class="form-group">
@@ -28,7 +29,7 @@
 			<input type="text" asp-for="@Model.BlogCopyright" class="form-control" required maxlength="200">
 		</div>
 		<hr />
-		<button type="submit" class="btn btn-success">@Loc["Edit"]</button>
-		<a asp-action="@nameof(DashboardController.BlogDetails)" class="btn btn-warning">@Loc["Cancel"]</a>
+		<button type="submit" class="btn btn-success">@Loc["ButtonEdit"]</button>
+		<a asp-action="@nameof(DashboardController.BlogDetails)" class="btn btn-warning">@Loc["LinkCancel"]</a>
 	</form>
 </div>

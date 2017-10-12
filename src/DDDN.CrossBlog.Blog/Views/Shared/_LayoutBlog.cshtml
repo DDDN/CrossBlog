@@ -8,7 +8,6 @@
 	- You should have received a copy of the GNU General Public License along with this program; if not, write
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
-
 @using DDDN.CrossBlog.Blog.Data
 @inject BlogInfo blogInfo
 <!DOCTYPE html>
@@ -34,24 +33,44 @@
 <body>
 	<div class="container">
 		<nav class="navbar navbar-expand-md navbar-light">
-			<a asp-controller="Blog" asp-action="@nameof(BlogController.Newest)" asp-route-id="" class="navbar-brand"><h2>CrossBlog</h2></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog" aria-controls="navbarBlog" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarBlog">
-				<ul class="navbar-nav mr-auto"></ul>
-				<div class="navbar-nav">
-					<a asp-controller="Blog" asp-action="@nameof(BlogController.Newest)" asp-route-id="" class="nav-item nav-link">Home</a>
-					<a asp-controller="Blog" asp-action="@nameof(BlogController.Archive)" asp-route-id="" class="nav-item nav-link">Archive</a>
-					<a asp-controller="Blog" asp-action="@nameof(BlogController.About)" asp-route-id="" class="nav-item nav-link">About</a>
+			<div class="navbar-header">
+				<a asp-controller="Blog" asp-action="@nameof(BlogController.Newest)" asp-route-id="" class="navbar-brand">
+					<h1><strong>CrossBlog</strong></h1>
+					<h5>The .Net Core Engine</h5>
+				</a>
+				<button class="navbar-toggler pull-right" type="button" data-toggle="collapse" data-target="#navbarBlog">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</div>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarBlog">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a asp-controller="Blog" asp-action="@nameof(BlogController.Newest)" asp-route-id="" class="nav-link">Home</a>
+					</li>
+					<li class="nav-item">
+						<a asp-controller="Blog" asp-action="@nameof(BlogController.Archive)" asp-route-id="" class="nav-link">Archive</a>
+					</li>
+					<li class="nav-item">
+						<a asp-controller="Blog" asp-action="@nameof(BlogController.Categories)" asp-route-id="" class="nav-link">Categories</a>
+					</li>
+					<li class="nav-item">
+						<a asp-controller="Blog" asp-action="@nameof(BlogController.About)" asp-route-id="" class="nav-link">About</a>
+					</li>
 					@if (Context.User.Identity.IsAuthenticated)
 					{
-						<a asp-controller="Dashboard" asp-action="@nameof(DashboardController.Posts)" class="nav-item nav-link"><i class="fa fa-dashboard"></i></a>
+						<li class="nav-item">
+							<a asp-controller="Dashboard" asp-action="@nameof(DashboardController.Posts)" class="nav-link"><i class="fa fa-dashboard"></i></a>
+						</li>
 					}
 					<environment include="Development">
-						@{ await Html.RenderPartialAsync("CulturesPartialView"); }
+						<li class="nav-item dropdown">
+							<a asp-controller="Blog" data-toggle="dropdown" asp-action="@nameof(BlogController.Newest)" cla class="nav-link dropdown-toggle">I10N</a>
+							<div class="dropdown-menu">
+								@{ await Html.RenderPartialAsync("CulturesPartialView"); }
+							</div>
+						</li>
 					</environment>
-				</div>
+				</ul>
 			</div>
 		</nav>
 		<main class="main">

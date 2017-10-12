@@ -27,7 +27,7 @@
 		foreach (string suppCultName in localizationConfig.Value.SupportedCultures.Split('|'))
 		{
 			var cultureName = suppCultName.Replace("*", "");
-			@Html.ActionLink(cultureName, action, controller, new { culture = cultureName, id = optionalId }, new { @class = "nav-item nav-link" });
+			@Html.ActionLink(cultureName, action, controller, new { culture = cultureName, id = optionalId }, new { @class = "dropdown-item" });
 		}
 	}
 }

@@ -8,9 +8,7 @@
 	- You should have received a copy of the GNU General Public License along with this program; if not, write
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
-
 @inject IViewLocalizer Loc
-
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.Name">
 <head>
@@ -37,18 +35,31 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
+				<ul class="navbar-nav">
 					@if (Context.User.Identity.IsAuthenticated)
 					{
-						<a asp-controller="Dashboard" asp-action="BlogDetails" class="nav-item nav-link"><i class="fa fa-info-circle"></i> @Loc["Info"]</a>
-						<a asp-controller="Dashboard" asp-action="Writers" class="nav-item nav-link"><i class="fa fa-users"></i> @Loc["Writers"]</a>
-						<a asp-controller="Dashboard" asp-action="Posts" class="nav-item nav-link"><i class="fa fa-newspaper-o"></i> @Loc["Posts"]</a>
-						<a asp-controller="Dashboard" asp-action="Categories" class="nav-item nav-link"><i class="fa fa-inbox"></i> @Loc["Categories"]</a>
+						<li class="nav-item">
+							<a asp-controller="Dashboard" asp-action="BlogDetails" class="nav-link"><i class="fa fa-info-circle"></i> @Loc["Info"]</a>
+						</li>
+						<li class="nav-item">
+							<a asp-controller="Dashboard" asp-action="Writers" class="nav-link"><i class="fa fa-users"></i> @Loc["Writers"]</a>
+						</li>
+						<li class="nav-item">
+							<a asp-controller="Dashboard" asp-action="Posts" class="nav-link"><i class="fa fa-newspaper-o"></i> @Loc["Posts"]</a>
+						</li>
+						<li class="nav-item">
+							<a asp-controller="Dashboard" asp-action="Categories" class="nav-link"><i class="fa fa-inbox"></i> @Loc["Categories"]</a>
+						</li>
 					}
 					<environment include="Development">
-						@{ await Html.RenderPartialAsync("CulturesPartialView"); }
+						<li class="nav-item dropdown">
+							<a asp-controller="Dashboard" data-toggle="dropdown" asp-action="@nameof(DashboardController.Posts)" cla class="nav-link dropdown-toggle">I10N</a>
+							<div class="dropdown-menu">
+								@{ await Html.RenderPartialAsync("CulturesPartialView"); }
+							</div>
+						</li>
 					</environment>
-				</div>
+				</ul>
 				<div class="navbar-nav cb-pull-nav-link">
 					<a asp-controller="Blog" asp-action="Newest" class="nav-item nav-link"><i class="fa fa-desktop"></i> @Loc["Blog"]</a>
 					@if (Context.User.Identity.IsAuthenticated)

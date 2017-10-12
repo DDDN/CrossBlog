@@ -15,6 +15,10 @@ body {
 	padding-top: 3rem;
 }
 
+.dropdown-item.active, .dropdown-item:active {
+	background-color: #f8f9fa;
+}
+
 .error {
 	color: red;
 }

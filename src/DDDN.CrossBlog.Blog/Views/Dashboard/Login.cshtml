@@ -17,7 +17,7 @@
 <div>
 	<form id="formValidation" class="form-signin" asp-action="Login">
 		<h4 class="text-center">@Loc["Header"]</h4>
-		@{ await Html.RenderPartialAsync("ViewMessagePartialView", Model.Msg); }
+		@{ await Html.RenderPartialAsync("ViewMessagePartialView", Model.Msgs); }
 		<input hidden asp-for="@Model.ReturnUrl" />
 		<label asp-for="@Model.Password" class="sr-only">@Loc[nameof(Model.Mail)]</label>
 		<input type="email" asp-for="@Model.Mail" class="form-control" placeholder="@Loc[nameof(Model.Mail)]" required autofocus>

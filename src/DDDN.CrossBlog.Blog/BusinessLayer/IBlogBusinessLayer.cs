@@ -17,7 +17,6 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 {
 	public interface IBlogBusinessLayer
 	{
-		Task<BlogModel> DetailsGet();
 		Task<BlogViewModel> EditGet();
 		Task EditSave(BlogViewModel blogViewModel);
 	}

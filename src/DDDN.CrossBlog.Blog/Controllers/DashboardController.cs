@@ -20,10 +20,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,10 +71,9 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		}
 
 		[Authorize(Roles = "Writer")]
-		public async Task<IActionResult> BlogDetails()
+		public IActionResult BlogDetails()
 		{
-			var blog = await _blogBl.DetailsGet();
-			return View(blog);
+			return View();
 		}
 
 		[Authorize(Roles = "Administrator")]
@@ -290,7 +287,49 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Login([Bind("Mail, Password")]LoginViewModel loginViewModel, string returnUrl = null)
 		{
-			var (authenticationResult, principal) = await _writerBl.TryToAuthenticateAndGetPrincipal(loginViewModel.Mail, loginViewModel.Password);
+			if (loginViewModel == null)
+				throw new ArgumentNullException(nameof(loginViewModel));
+
+			if (returnUrl == null)
+				throw new ArgumentNullException(nameof(returnUrl));
+
+			loginViewModel.Msgs.Clear();
+
+			if (string.IsNullOrWhiteSpace(loginViewModel.Mail))
+			{
+				loginViewModel.Mail = String.Empty;
+				loginViewModel.AddMsg(_loc["EmailNotProvided"], ViewMessage.MsgType.Warning);
+			}
+
+			if (string.IsNullOrWhiteSpace(loginViewModel.Password))
+			{
+				loginViewModel.AddMsg(_loc["PasswordNotProvided"], ViewMessage.MsgType.Warning);
+			}
+
+			if (loginViewModel.Msgs.Count > 0)
+			{
+				loginViewModel.Password = String.Empty;
+				return View(loginViewModel);
+			}
+
+			var (authenticationResult, principal) = await _writerBl
+				.TryToAuthenticateAndGetPrincipal(loginViewModel.Mail, loginViewModel.Password);
+
+			if (authenticationResult == AuthenticationResult.WrongPassword)
+			{
+				loginViewModel.AddMsg(_loc["WrongPassword"], ViewMessage.MsgType.Warning);
+			}
+
+			if (authenticationResult == AuthenticationResult.UserNotFound)
+			{
+				loginViewModel.AddMsg(_loc["UserNotFound"], ViewMessage.MsgType.Warning);
+			}
+
+			if (loginViewModel.Msgs.Count > 0)
+			{
+				loginViewModel.Password = String.Empty;
+				return View(loginViewModel);
+			}
 
 			if (authenticationResult == AuthenticationResult.Authenticated)
 			{
@@ -303,17 +342,9 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
 				return base.RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
 			}
-			else if (authenticationResult == AuthenticationResult.WrongPassword)
-			{
-				return RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
-			}
-			else if (authenticationResult == AuthenticationResult.UserNotFound)
-			{
-				return RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
-			}
 			else
 			{
-				return RedirectToLocal(returnUrl, _routingConfig.DefaultController, _routingConfig.DefaultAction);
+				throw new CrossBlogException(nameof(Login));
 			}
 		}
 
@@ -481,15 +512,15 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> WriterPassword(Guid id)
 		{
+			if(id.Equals(Guid.Empty))
+			{
+				throw new ArgumentException(nameof(id));
+			}
+
 			var passwordViewModel = TempData.Get<PasswordViewModel>(nameof(PasswordViewModel));
 
 			if (passwordViewModel == null)
 			{
-				if (id.Equals(Guid.Empty))
-				{
-					return RedirectToAction(nameof(Writers));
-				}
-
 				var writer = await _writerBl.GetWithRoles(id);
 
 				passwordViewModel = new PasswordViewModel
@@ -511,17 +542,59 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			nameof(PasswordViewModel.Compare)
 		})] PasswordViewModel passwordViewModel)
 		{
-			await _writerBl.PasswordChange(passwordViewModel);
+			if (passwordViewModel == null)
+				throw new ArgumentNullException(nameof(passwordViewModel));
 
-			if (passwordViewModel.Msg.Any())
+			passwordViewModel.Msgs.Clear();
+
+			if (string.IsNullOrWhiteSpace(passwordViewModel.Old))
 			{
-				TempData.Put(nameof(PasswordViewModel), passwordViewModel);
-				return RedirectToAction(nameof(WriterPassword));
+				passwordViewModel.AddMsg(_loc["OldNotProvided"], ViewMessage.MsgType.Warning);
+			}
+
+			if (string.IsNullOrWhiteSpace(passwordViewModel.Compare))
+			{
+				passwordViewModel.AddMsg(_loc["CompareNotProvided"], ViewMessage.MsgType.Warning);
+			}
+
+			if (string.IsNullOrWhiteSpace(passwordViewModel.New))
+			{
+				passwordViewModel.AddMsg(_loc["NewNotProvided"], ViewMessage.MsgType.Warning);
 			}
 			else
 			{
-				return View(passwordViewModel);
+				var msgs = _writerBl.PasswordMeetsComplexity(passwordViewModel.New);
+				passwordViewModel.Msgs.AddRange(msgs);
 			}
+
+			if (passwordViewModel.Msgs.Count > 0)
+			{
+				TempData.Put(nameof(PasswordViewModel), passwordViewModel);
+				return RedirectToAction(nameof(WriterPassword), new { id = passwordViewModel.WriterId });
+			}
+
+			var result = await _writerBl.PasswordChange(passwordViewModel);
+
+			if (result == PasswordChangeResult.Changed)
+			{
+				return RedirectToAction(nameof(WriterDetails), new { id = passwordViewModel.WriterId });
+			}
+			else
+			{
+				if (result == PasswordChangeResult.PasswordDoNotMatch)
+				{
+					passwordViewModel.AddMsg(_loc["PasswordDoNotMatch"], ViewMessage.MsgType.Warning);
+				}
+				else if (result == PasswordChangeResult.WrongPassword)
+				{
+					passwordViewModel.AddMsg(_loc["WrongOldPassword"], ViewMessage.MsgType.Warning);
+				}
+
+				TempData.Put(nameof(PasswordViewModel), passwordViewModel);
+				return RedirectToAction(nameof(WriterPassword), new { id = passwordViewModel.WriterId });
+			}
+
+			throw new CrossBlogException(nameof(WriterPasswordConfirmed));
 		}
 	}
 }

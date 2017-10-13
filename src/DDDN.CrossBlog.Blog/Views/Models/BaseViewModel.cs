@@ -12,13 +12,19 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
+using static DDDN.CrossBlog.Blog.Views.Models.ViewMessage;
 
 namespace DDDN.CrossBlog.Blog.Views.Models
 {
 	public class BaseViewModel
 	{
 		public List<SelectListItem> States { get; set; } = new List<SelectListItem>();
-		public ViewMessage Msg { get; set; } = new ViewMessage();
+		public List<ViewMessage> Msgs { get; } = new List<ViewMessage>();
+
+		public void AddMsg(string msgText, MsgType msgType)
+		{
+			Msgs.Add(new ViewMessage(msgText, msgType));
+		}
 
 		public BaseViewModel(IEnumerable<string> states = null, IStringLocalizer localizer = null)
 		{

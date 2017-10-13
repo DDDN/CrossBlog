@@ -9,66 +9,29 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using static DDDN.CrossBlog.Blog.Views.Models.ViewMessage;
-
 namespace DDDN.CrossBlog.Blog.Views.Models
 {
-	public class ViewMessage : ICollection<(string msg, IsTypeOf msgType)>
+	public class ViewMessage
 	{
-		public enum IsTypeOf
+		public enum MsgType
 		{
 			None,
 			Info,
 			Warning,
 			Error
-		};
-
-		private Collection<(string msg, IsTypeOf msgType)> Messages { get; set; } = new Collection<(string msg, IsTypeOf msgType)>();
-
-		public int Count { get { return Messages.Count; } }
-		public bool IsReadOnly { get { return false; } }
-
-		public void Add(string msg, IsTypeOf msgType)
-		{
-			Messages.Add((msg, msgType));
 		}
 
-		public void Add((string msg, IsTypeOf msgType) item)
+		private ViewMessage()
 		{
-			Messages.Add(item);
 		}
 
-		public void Clear()
+		public ViewMessage(string msgText, MsgType msgType)
 		{
-			Messages.Clear();
+			Text = msgText;
+			Type = msgType;
 		}
 
-		public bool Contains((string msg, IsTypeOf msgType) item)
-		{
-			return Messages.Contains(item);
-		}
-
-		public void CopyTo((string msg, IsTypeOf msgType)[] array, int arrayIndex)
-		{
-			Messages.CopyTo(array, arrayIndex);
-		}
-
-		public IEnumerator<(string msg, IsTypeOf msgType)> GetEnumerator()
-		{
-			return Messages.GetEnumerator();
-		}
-
-		public bool Remove((string msg, IsTypeOf msgType) item)
-		{
-			return Messages.Remove(item);
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return Messages.GetEnumerator();
-		}
+		public string Text { get; set; }
+		public MsgType Type { get; set; }
 	}
 }

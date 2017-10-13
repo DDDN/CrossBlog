@@ -10,6 +10,7 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 using DDDN.CrossBlog.Blog.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -35,19 +36,22 @@ namespace DDDN.CrossBlog.Blog.Data
 
 		private void InitBlogInfo()
 		{
-			var blogs = _context.Blog.ToList();
-
-			if (blogs.Count != 1)
+			if (_context.Blog.Count() != 1)
 			{
 				throw new CrossBlogException("There should be only one BlogModel entity.");
 			}
 
-			var blog = blogs.First();
+			var blog = _context.Blog
+				.Include(p => p.Writers)
+				.First();
+
 			var owner = _context.Writers.FirstOrDefault(p => p.WriterId.Equals(blog.OwnerId));
 
 			_blogInfo.BlogName = blog.Name;
+			_blogInfo.BlogSlogan = blog.Slogan;
 			_blogInfo.Version = blog.Version;
 			_blogInfo.Copyright = blog.Copyright;
+			_blogInfo.Created = blog.Created;
 			_blogInfo.OwnerId = owner.WriterId;
 			_blogInfo.OwnerName = owner.Name;
 			_blogInfo.OwnerMail = owner.Mail;

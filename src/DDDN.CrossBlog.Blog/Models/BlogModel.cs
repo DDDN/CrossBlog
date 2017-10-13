@@ -26,14 +26,16 @@ namespace DDDN.CrossBlog.Blog.Models
 		[StringLength(15)]
 		[Required]
 		public string Version { get; set; }
-		[StringLength(200)]
+		[StringLength(100)]
 		[Required]
 		public string Name { get; set; }
+		[StringLength(100)]
+		public string Slogan { get; set; }
 		[StringLength(200)]
 		public string Copyright { get; set; }
-      [Required]
-      public Guid OwnerId { get; set; }
+		[Required]
+		public Guid OwnerId { get; set; }
 
-      public List<WriterModel> Writers { get; set; }
+		public List<WriterModel> Writers { get; set; }
 	}
 }

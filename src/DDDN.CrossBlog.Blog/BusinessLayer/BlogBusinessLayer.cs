@@ -29,13 +29,6 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			_context = context ?? throw new System.ArgumentNullException(nameof(context));
 		}
 
-		public async Task<BlogModel> DetailsGet()
-		{
-			return await _context.Blog
-				.AsNoTracking()
-				.FirstAsync();
-		}
-
 		public async Task<BlogViewModel> EditGet()
 		{
 			var blog = await _context.Blog

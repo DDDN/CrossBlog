@@ -9,10 +9,30 @@
 	to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *@
 
-@model  ViewMessage
+@model  IList<ViewMessage>
 
-@foreach (var msg in Model)
-{
-	<p>@msg.msg</p>
-}
+<div class="justify-content-center">
+	@foreach (var msg in Model)
+	{
+		var alert = "";
+		switch (msg.Type)
+		{
+			case ViewMessage.MsgType.Info:
+				alert = "alert-info";
+				break;
+			case ViewMessage.MsgType.Warning:
+				alert = "alert-warning";
+				break;
+			case ViewMessage.MsgType.Error:
+				alert = "alert-error";
+				break;
+			default:
+				alert = "alert-primary";
+				break;
+		}
 
+		<div class="alert @alert" role="alert">
+			@msg.Text
+		</div>
+	}
+</div>

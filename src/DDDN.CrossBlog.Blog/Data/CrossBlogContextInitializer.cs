@@ -49,14 +49,15 @@ namespace DDDN.CrossBlog.Blog.Data
 		{
 			var hashed = Crypto.HashWithSHA256("Qwerty!23");
 			var version = typeof(Startup).GetTypeInfo().Assembly.GetName().Version.ToString();
+			var now = DateTimeOffset.Now;
 
 			var writer = new WriterModel
 			{
 				WriterId = Guid.NewGuid(),
-				Created = DateTimeOffset.Now,
-				Mail = _seedConfigSection.Mail,
+				Created = now,
+				Mail = _seedConfigSection.OwnerMail,
 				State = WriterModel.States.Active,
-				Name = _seedConfigSection.Name,
+				Name = _seedConfigSection.OwnerName,
 				PasswordHash = hashed.hashedPassword,
 				Salt = hashed.salt,
 				MailConfirmed = false,
@@ -70,8 +71,9 @@ namespace DDDN.CrossBlog.Blog.Data
 			var blog = new BlogModel
 			{
 				BlogId = Guid.NewGuid(),
-				Created = DateTimeOffset.Now,
-				Name = _seedConfigSection.Name,
+				Created = now,
+				Name = _seedConfigSection.BlogName,
+				Slogan = _seedConfigSection.BlogSlogan,
 				Copyright = _seedConfigSection.Copyright,
 				Version = version,
 				OwnerId = writer.WriterId,

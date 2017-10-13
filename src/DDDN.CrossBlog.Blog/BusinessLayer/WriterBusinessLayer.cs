@@ -17,6 +17,7 @@ using DDDN.CrossBlog.Blog.Security;
 using DDDN.CrossBlog.Blog.Views.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -31,15 +32,20 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		private readonly CrossBlogContext _context;
 		private readonly BlogInfo _blogInfo;
 		private readonly AuthenticationConfigSection _configSection;
+		private readonly IStringLocalizer<WriterBusinessLayer> _loc;
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="context">Database context.</param>
 		/// <param name="blogInfo">Singelon with general blog infos.</param>
+		/// <param name="authenticationConfigSection"></param>
+		/// <param name="localizer"></param>
+		/// <param name="stringLocalizer"></param>
 		public WriterBusinessLayer(
 			CrossBlogContext context,
 			BlogInfo blogInfo,
-			IOptions<AuthenticationConfigSection> authenticationConfigSection)
+			IOptions<AuthenticationConfigSection> authenticationConfigSection,
+			IStringLocalizer<WriterBusinessLayer> localizer)
 		{
 			_context = context ?? throw new System.ArgumentNullException(nameof(context));
 			_blogInfo = blogInfo ?? throw new ArgumentNullException(nameof(blogInfo));
@@ -49,6 +55,8 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				throw new ArgumentNullException(nameof(authenticationConfigSection));
 			}
 			_configSection = authenticationConfigSection.Value ?? throw new NullReferenceException("authenticationConfigSection.Value");
+
+			_loc = localizer ?? throw new ArgumentNullException(nameof(localizer));
 		}
 		/// <summary>
 		/// Checks if an writer exists.
@@ -285,21 +293,14 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		/// </summary>
 		/// <param name="passwordViewModel"></param>
 		/// <returns></returns>
-		public async Task PasswordChange(PasswordViewModel passwordViewModel)
+		public async Task<PasswordChangeResult> PasswordChange(PasswordViewModel passwordViewModel)
 		{
 			if (passwordViewModel == null)
-			{
 				throw new ArgumentNullException(nameof(passwordViewModel));
-			}
 
-			if (!passwordViewModel.New.Equals(passwordViewModel.Compare, StringComparison.InvariantCultureIgnoreCase))
+			if (0 != string.Compare(passwordViewModel.New, passwordViewModel.Compare, StringComparison.InvariantCultureIgnoreCase))
 			{
-				passwordViewModel.Msg.Add("Passwords do not match.", ViewMessage.IsTypeOf.Warning);
-			}
-
-			if (!PasswordMeetsComplexity(passwordViewModel.New, out string msg))
-			{
-				passwordViewModel.Msg.Add(msg, ViewMessage.IsTypeOf.Warning);
+				return PasswordChangeResult.PasswordDoNotMatch;
 			}
 
 			var writer = await _context.Writers
@@ -310,27 +311,23 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 			if (!hashedPassword.SequenceEqual(writer.PasswordHash))
 			{
-				passwordViewModel.Msg.Add("Old password do not match.", ViewMessage.IsTypeOf.Warning);
+				return PasswordChangeResult.WrongPassword;
 			}
 
-			if (!passwordViewModel.Msg.Any())
-			{
-				var hashedNew = Crypto.HashWithSHA256(passwordViewModel.New);
-				writer.PasswordHash = hashedNew.hashedPassword;
-				writer.Salt = hashedNew.salt;
-				await _context.SaveChangesAsync();
-			}
+			var hashedNew = Crypto.HashWithSHA256(passwordViewModel.New);
+			writer.PasswordHash = hashedNew.hashedPassword;
+			writer.Salt = hashedNew.salt;
+			await _context.SaveChangesAsync();
+
+			return PasswordChangeResult.Changed;
 		}
 
-		private bool PasswordMeetsComplexity(string password, out string msg)
+		public IList<ViewMessage> PasswordMeetsComplexity(string password)
 		{
-			msg = "Password must meet complexity requirements:";
-			var meets = true;
-
 			if (password == null)
-			{
 				throw new ArgumentNullException(nameof(password));
-			}
+
+			var msgs = new List<ViewMessage>();
 
 			var criteria = _configSection.PasswordComplexity.Split(",")
 				.Select(p => int.Parse(p))
@@ -338,35 +335,29 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 			if (criteria[0] > password.Length)
 			{
-				meets = false;
-				msg += $" Minimal password length is {criteria[0]}.";
+				msgs.Add(new ViewMessage(String.Format(_loc["PasswordComplexityMinimalLength"], criteria[0]), ViewMessage.MsgType.Warning));
 			}
 
 			if (criteria[1] == 1 && password.All(char.IsLetterOrDigit))
 			{
-				meets = false;
-				msg += $" At least one non alphanumeric character is required.";
+				msgs.Add(new ViewMessage(_loc["PasswordComplexityAlphanumeric"], ViewMessage.MsgType.Warning));
 			}
 
 			if (criteria[2] == 1 && !password.Any(char.IsUpper))
 			{
-				meets = false;
-				msg += $" At least one uppercase character is required.";
+				msgs.Add(new ViewMessage(_loc["PasswordComplexityUppercase"], ViewMessage.MsgType.Warning));
 			}
 
 			if (criteria[3] == 1 && !password.Any(char.IsLower))
 			{
-				meets = false;
-				msg += $" At least one lowercase character is required.";
+				msgs.Add(new ViewMessage(_loc["PasswordComplexityLowercase"], ViewMessage.MsgType.Warning));
 			}
 
 			if (criteria[4] == 1 && !password.Any(char.IsNumber))
 			{
-				meets = false;
-				msg += $" At least one number character is required.";
+				msgs.Add(new ViewMessage(_loc["PasswordComplexityNumber"], ViewMessage.MsgType.Warning));
 			}
-
-			return meets;
+			return msgs;
 		}
 	}
 }

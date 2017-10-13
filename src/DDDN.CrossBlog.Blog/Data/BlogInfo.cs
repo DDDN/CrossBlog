@@ -16,10 +16,13 @@ namespace DDDN.CrossBlog.Blog.Data
 	public class BlogInfo
 	{
 		public string BlogName { get; set; }
-		public string Version { get; set; }
-		public string Copyright { get; set; }
-		public Guid OwnerId { get; set; }
+		public string BlogSlogan { get; set; }
 		public String OwnerName { get; set; }
 		public String OwnerMail { get; set; }
+		public Guid OwnerId { get; set; }
+		public DateTimeOffset Created { get; set; }
+		public string Version { get; set; }
+		public string Copyright { get; set; }
+		
 	}
 }

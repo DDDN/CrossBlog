@@ -35,8 +35,8 @@
 		<nav class="navbar navbar-expand-md navbar-light">
 			<div class="navbar-header">
 				<a asp-controller="Blog" asp-action="@nameof(BlogController.Newest)" asp-route-id="" class="navbar-brand">
-					<h1><strong>CrossBlog</strong></h1>
-					<h5>The .Net Core Engine</h5>
+					<h1><strong>@blogInfo.BlogName</strong></h1>
+					<h5>@blogInfo.BlogSlogan</h5>
 				</a>
 				<button class="navbar-toggler pull-right" type="button" data-toggle="collapse" data-target="#navbarBlog">
 					<span class="navbar-toggler-icon"></span>

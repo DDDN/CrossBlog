@@ -12,12 +12,14 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 namespace DDDN.CrossBlog.Blog.Configuration
 {
 	public class SeedConfigSection
-   {
-		public string Name { get; set; } = "Your Name";
-      public string Mail { get; set; } = "crossblog@devdone.net";
-      public string Copyright { get; set; } = "CrossBlog, Copyright (C) 2017 Lukasz Jaskiewicz";
+	{
+		public string BlogName { get; set; } = "CrossBlog";
+		public string BlogSlogan { get; set; } = "The .Net Core Engine";
+		public string OwnerName { get; set; } = "Change to Your Name";
+		public string OwnerMail { get; set; } = "your_mail@devdone.net";
+		public string Copyright { get; set; } = "CrossBlog, Copyright (C) 2017 Lukasz Jaskiewicz";
 		public int MaxBlogTeaserLength { get; set; } = 512;
 		public int MaxBlogTitleLength { get; set; } = 2048;
-		
+
 	}
 }

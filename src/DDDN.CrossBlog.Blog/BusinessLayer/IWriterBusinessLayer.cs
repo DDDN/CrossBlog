@@ -29,6 +29,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		Task Create(WriterViewModel writerView);
 		bool IsOwner(Guid writerId);
 		Task Delete(Guid writerId);
-		Task PasswordChange(PasswordViewModel writerPassword);
+		Task<PasswordChangeResult> PasswordChange(PasswordViewModel passwordViewModel);
+		IList<ViewMessage> PasswordMeetsComplexity(string password);
 	}
 }

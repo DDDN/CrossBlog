@@ -14,7 +14,7 @@ using DDDN.CrossBlog.Blog.Data;
 using DDDN.CrossBlog.Blog.Exceptions;
 using DDDN.CrossBlog.Blog.Models;
 using DDDN.CrossBlog.Blog.Views.Models;
-using DDDN.Office.Odf.Odt;
+using DDDN.OdtToHtml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -163,12 +163,15 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 						var fileContentBytes = fileContent.ToArray();
 						var sha1Hash = sha1.ComputeHash(fileContentBytes);
 
-						using (IODTFile odtFile = new ODTFile(fileContent))
+						using (IOdtFile odtFile = new OdtFile(fileContent))
 						{
-							var odtConvert = new ODTConvert(odtFile);
-							var convertedData = odtConvert.Convert(new ODTConvertSettings
+							var odtConvert = new OdtConvert();
+
+							var convertedData = odtConvert.Convert(odtFile, new OdtConvertSettings
 							{
-								RootHtmlTag = "article",
+								RootElementTagName = "article",
+								RootElementId = "artid",
+								RootElementClassNames = "artclass",
 								LinkUrlPrefix = _routingConfig.BlogPostHtmlUrlPrefix
 							});
 
@@ -194,9 +197,9 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 							{
 								var content = new ContentModel
 								{
-									Binary = ec.Content,
+									Binary = ec.Data,
 									Created = now,
-									Name = ec.Name,
+									Name = ec.ContentFullName,
 									State = ContentModel.States.Visible,
 									ContentId = ec.Id,
 									Post = post

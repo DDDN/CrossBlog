@@ -9,12 +9,12 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU Gene
 to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using DDDN.Office.Odf;
-using DDDN.Office.Odf.Odt;
+using DDDN.OdtToHtml;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace DDDN.CrossBlog.Blog.Localization
@@ -49,9 +49,14 @@ namespace DDDN.CrossBlog.Blog.Localization
 			{
 				var cultureNameFromFileName = Path.GetFileNameWithoutExtension(fileFullPath).Split('.').Last();
 
-				using (IODTFile odtFile = new ODTFile(fileFullPath))
+				using (IOdtFile odtFile = new OdtFile(fileFullPath))
 				{
-					var transl = GetTranslations(cultureNameFromFileName, odtFile);
+					var embedContent = odtFile.GetZipArchiveEntries()
+						.FirstOrDefault(p => p.ContentFullName.Equals("content.xml", StringComparison.InvariantCultureIgnoreCase))?.Data;
+
+					var contentXDoc = OdtFile.GetZipArchiveEntryAsXDocument(embedContent);
+
+					var transl = GetTranslations(cultureNameFromFileName, contentXDoc);
 					ret = ret.Union(transl).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 				}
 			}
@@ -59,15 +64,18 @@ namespace DDDN.CrossBlog.Blog.Localization
 			return ret;
 		}
 
-		public static Dictionary<string, string> GetTranslations(string cultureNameFromFileName, IODTFile odtFile)
+		public static Dictionary<string, string> GetTranslations(string cultureNameFromFileName, XDocument content)
 		{
 			var translations = new Dictionary<string, string>();
 
-			XDocument contentXDoc = odtFile.GetZipArchiveEntryAsXDocument("content.xml");
+			if (content == null)
+			{
+				return translations;
+			}
 
-			var contentEle = contentXDoc.Root
-				 .Elements(XName.Get("body", ODFXmlNamespaces.Office))
-				 .Elements(XName.Get("text", ODFXmlNamespaces.Office))
+			var contentEle = content.Root
+				 .Elements(XName.Get("body", OdtXmlNs.Office))
+				 .Elements(XName.Get("text", OdtXmlNs.Office))
 				 .First();
 
 			foreach (var table in contentEle.Elements()
@@ -82,14 +90,53 @@ namespace DDDN.CrossBlog.Blog.Localization
 
 					if (cells.Any())
 					{
-						var translationKey = ODTReader.GetValue(cells.First());
-						var translation = ODTReader.GetValue(cells.Skip(1).First());
+						var translationKey = GetValue(cells.First());
+						var translation = GetValue(cells.Skip(1).First());
 						translations.Add($"{translationKey}.{cultureNameFromFileName}", translation);
 					}
 				}
 			}
 
 			return translations;
+		}
+
+		private static string GetValue(XElement xElement)
+		{
+			return WalkTheNodes(xElement.Nodes());
+		}
+
+		private static string WalkTheNodes(IEnumerable<XNode> nodes)
+		{
+			if (nodes == null)
+			{
+				throw new ArgumentNullException(nameof(nodes));
+			}
+
+			string val = "";
+
+			foreach (var node in nodes)
+			{
+				if (node.NodeType == XmlNodeType.Text)
+				{
+					var textNode = node as XText;
+					val += textNode.Value;
+				}
+				else if (node.NodeType == XmlNodeType.Element)
+				{
+					var elementNode = node as XElement;
+
+					if (elementNode.Name.Equals(XName.Get("s", OdtXmlNs.Text)))
+					{
+						val += " ";
+					}
+					else
+					{
+						val += WalkTheNodes(elementNode.Nodes());
+					}
+				}
+			}
+
+			return val;
 		}
 
 		private List<string> GetResourcefileFullPaths()

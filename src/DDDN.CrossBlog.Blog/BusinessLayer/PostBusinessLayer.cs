@@ -171,7 +171,8 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 							{
 								RootElementTagName = "article",
 								RootElementId = "artid",
-								RootElementClassNames = "artclass",
+								RootElementClassName = "artclass",
+								DefaultTabSize = "1em",
 								LinkUrlPrefix = _routingConfig.BlogPostHtmlUrlPrefix
 							});
 

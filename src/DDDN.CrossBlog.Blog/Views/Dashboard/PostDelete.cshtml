@@ -41,7 +41,7 @@
 	<hr />
 	<form asp-action="PostDelete">
 		<input type="hidden" asp-for="PostId" />
-		<input type="submit" value="@Loc["ButtonSubmit"]" class="btn btn-success" />
-		<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-primary">@Loc["LinkCancel"]</a>
+		<input type="submit" value="@Loc["ButtonSubmit"]" class="btn btn-primary" />
+		<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
 	</form>
 </div>

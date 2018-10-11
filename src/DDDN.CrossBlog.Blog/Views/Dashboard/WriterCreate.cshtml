@@ -46,7 +46,7 @@
 			<input type="password" asp-for="@Model.PasswordCompare" class="form-control" required>
 		</div>
 		<hr />
-		<button type="submit" class="btn btn-success">@Loc["ButtonCreate"]</button>
-		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-warning">@Loc["LinkCancel"]</a>
+		<button type="submit" class="btn btn-primary">@Loc["ButtonCreate"]</button>
+		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
 	</form>
 </div>

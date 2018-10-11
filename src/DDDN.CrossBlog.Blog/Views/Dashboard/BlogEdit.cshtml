@@ -29,7 +29,7 @@
 			<input type="text" asp-for="@Model.BlogCopyright" class="form-control" required maxlength="200">
 		</div>
 		<hr />
-		<button type="submit" class="btn btn-success">@Loc["ButtonEdit"]</button>
-		<a asp-action="@nameof(DashboardController.BlogDetails)" class="btn btn-warning">@Loc["LinkCancel"]</a>
+		<button type="submit" class="btn btn-primary">@Loc["ButtonEdit"]</button>
+		<a asp-action="@nameof(DashboardController.BlogDetails)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
 	</form>
 </div>

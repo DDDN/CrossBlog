@@ -29,8 +29,8 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" asp-action="@nameof(DashboardController.Posts)"><i class="fa fa-dashboard"></i> CROSSBLOG</a>
+		<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-primary">
+			<a class="navbar-brand text-white" asp-action="@nameof(DashboardController.Posts)"><i class="fa fa-dashboard"></i> CROSSBLOG</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -39,21 +39,21 @@
 					@if (Context.User.Identity.IsAuthenticated)
 					{
 						<li class="nav-item">
-							<a asp-controller="Dashboard" asp-action="BlogDetails" class="nav-link"><i class="fa fa-info-circle"></i> @Loc["Info"]</a>
+							<a asp-controller="Dashboard" asp-action="BlogDetails" class="nav-link text-white"><i class="fa fa-info-circle"></i> @Loc["Info"]</a>
 						</li>
 						<li class="nav-item">
-							<a asp-controller="Dashboard" asp-action="Writers" class="nav-link"><i class="fa fa-users"></i> @Loc["Writers"]</a>
+							<a asp-controller="Dashboard" asp-action="Writers" class="nav-link text-white"><i class="fa fa-users"></i> @Loc["Writers"]</a>
 						</li>
 						<li class="nav-item">
-							<a asp-controller="Dashboard" asp-action="Posts" class="nav-link"><i class="fa fa-newspaper-o"></i> @Loc["Posts"]</a>
+							<a asp-controller="Dashboard" asp-action="Posts" class="nav-link text-white"><i class="fa fa-newspaper-o"></i> @Loc["Posts"]</a>
 						</li>
 						<li class="nav-item">
-							<a asp-controller="Dashboard" asp-action="Categories" class="nav-link"><i class="fa fa-inbox"></i> @Loc["Categories"]</a>
+							<a asp-controller="Dashboard" asp-action="Categories" class="nav-link text-white"><i class="fa fa-inbox"></i> @Loc["Categories"]</a>
 						</li>
 					}
 					<environment include="Development">
 						<li class="nav-item dropdown">
-							<a asp-controller="Dashboard" data-toggle="dropdown" asp-action="@nameof(DashboardController.Posts)" cla class="nav-link dropdown-toggle">I10N</a>
+							<a asp-controller="Dashboard" data-toggle="dropdown" asp-action="@nameof(DashboardController.Posts)" cla class="nav-link dropdown-toggle text-white">I10N</a>
 							<div class="dropdown-menu">
 								@{ await Html.RenderPartialAsync("CulturesPartialView"); }
 							</div>
@@ -61,13 +61,13 @@
 					</environment>
 				</ul>
 				<div class="navbar-nav cb-pull-nav-link">
-					<a asp-controller="Blog" asp-action="Newest" class="nav-item nav-link"><i class="fa fa-desktop"></i> @Loc["Blog"]</a>
+					<a asp-controller="Blog" asp-action="Newest" class="nav-item nav-link text-white"><i class="fa fa-desktop"></i> @Loc["Blog"]</a>
 					@if (Context.User.Identity.IsAuthenticated)
 					{
-						<a asp-controller="Dashboard" asp-action="Logout" class="nav-item nav-link"><i class="fa fa-sign-out"></i> @Loc["Logout"]</a>
+						<a asp-controller="Dashboard" asp-action="Logout" class="nav-item nav-link text-white"><i class="fa fa-sign-out"></i> @Loc["Logout"]</a>
 						var userName = User.Claims.Where(p => p.Type.Equals(ClaimTypes.Name)).FirstOrDefault().Value;
 						var userId = User.Claims.Where(p => p.Type.Equals(ClaimTypes.NameIdentifier)).FirstOrDefault().Value;
-						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@userId" class="nav-item nav-link"><i class="fa fa-user-circle"></i> @userName</a>
+						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@userId" class="nav-item nav-link text-white"><i class="fa fa-user-circle"></i> @userName</a>
 					}
 				</div>
 			</div>

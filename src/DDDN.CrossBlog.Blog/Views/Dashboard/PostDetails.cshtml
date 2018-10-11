@@ -36,6 +36,6 @@
 		</dd>
 	</dl>
 	<hr />
-	<a asp-action="@nameof(DashboardController.PostEdit)" a asp-route-id="@Model.PostId" class="btn btn-primary">@Loc["LinkEdit"]</a>
-	<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-primary">@Loc["LinkPosts"]</a>
+	<a asp-action="@nameof(DashboardController.PostEdit)" asp-route-id="@Model.PostId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
+	<a asp-action="@nameof(DashboardController.Posts)" data-toggle="tooltip" title="@Loc["LinkPosts"]"><i class="fa fa-list fa-2x"></i></a>
 </div>

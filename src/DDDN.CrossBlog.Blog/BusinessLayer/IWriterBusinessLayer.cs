@@ -26,7 +26,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		Task<(AuthenticationResult authenticationResult, ClaimsPrincipal principal)> TryToAuthenticateAndGetPrincipal(string loginMail, string loginPassword);
 		Task Update(WriterViewModel writerView);
 		bool MailExist(string mail);
-		Task Create(WriterViewModel writerView);
+		Task<Guid> Create(WriterViewModel writerView);
 		bool IsOwner(Guid writerId);
 		Task Delete(Guid writerId);
 		Task<PasswordChangeResult> PasswordChange(PasswordViewModel passwordViewModel);

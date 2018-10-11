@@ -226,7 +226,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		/// </summary>
 		/// <param name="writerView"></param>
 		/// <returns></returns>
-		public async Task Create(WriterViewModel writerView)
+		public async Task<Guid> Create(WriterViewModel writerView)
 		{
 			if (writerView == null)
 			{
@@ -257,6 +257,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			HandleAdministratorRole(writerView.Administrator, writer);
 			_context.Add(writer);
 			await _context.SaveChangesAsync();
+			return writer.WriterId;
 		}
 		/// <summary>
 		/// Checks if a writer determinated by his id is also the blog owner.

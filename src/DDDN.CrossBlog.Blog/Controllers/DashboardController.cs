@@ -391,7 +391,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Administrator")]
 		public IActionResult WriterCreate()
 		{
-			var writerView = new WriterViewModel();
+			var writerView = new WriterViewModel(WriterModel.States.Inactive);
 			return View(writerView);
 		}
 
@@ -405,8 +405,8 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 			}
 
-			await _writerBl.Create(writerView);
-			return RedirectToAction(nameof(Writers));
+			var writerId = await _writerBl.Create(writerView);
+			return RedirectToAction(nameof(WriterDetails), new { id = writerId });
 		}
 
 		[Authorize(Roles = "Writer")]
@@ -512,7 +512,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> WriterPassword(Guid id)
 		{
-			if(id.Equals(Guid.Empty))
+			if (id.Equals(Guid.Empty))
 			{
 				throw new ArgumentException(nameof(id));
 			}

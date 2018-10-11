@@ -17,6 +17,10 @@ namespace DDDN.CrossBlog.Blog.Views.Models
 {
 	public class WriterViewModel : BaseViewModel
 	{
+		public WriterViewModel() : base()
+		{
+		}
+
 		public WriterViewModel(WriterModel.States state = WriterModel.States.None, IStringLocalizer localizer = null)
 			: base(WriterModel.StatesTree[state.ToString()], localizer)
 		{

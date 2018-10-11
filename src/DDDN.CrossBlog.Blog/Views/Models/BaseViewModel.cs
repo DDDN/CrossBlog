@@ -26,6 +26,11 @@ namespace DDDN.CrossBlog.Blog.Views.Models
 			Msgs.Add(new ViewMessage(msgText, msgType));
 		}
 
+		public BaseViewModel()
+		{
+
+		}
+
 		public BaseViewModel(IEnumerable<string> states = null, IStringLocalizer localizer = null)
 		{
 			if (states == null)

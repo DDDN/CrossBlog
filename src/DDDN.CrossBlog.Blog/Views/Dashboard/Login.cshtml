@@ -24,6 +24,6 @@
 		<label asp-for="@Model.Password" class="sr-only">@Loc[nameof(Model.Password)]</label>
 		<input type="password" asp-for="@Model.Password" class="form-control" placeholder="@Loc[nameof(Model.Password)]" required>
 		<button class="btn btn-lg btn-primary btn-block" type="submit">@Loc["ButtonSubmit"]</button>
-		<a asp-controller="Blog" asp-action="@nameof(BlogController.Newest)" class="btn btn-lg btn-primary btn-block">@Loc["LinkCancel"]</a>
+		<a asp-controller="Blog" asp-action="@nameof(BlogController.Newest)" class="btn btn-lg btn-secondary btn-block">@Loc["LinkCancel"]</a>
 	</form>
 </div>

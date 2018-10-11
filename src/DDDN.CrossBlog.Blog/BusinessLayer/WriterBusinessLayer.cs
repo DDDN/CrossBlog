@@ -329,34 +329,33 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 
 			var msgs = new List<ViewMessage>();
 
-			var criteria = _configSection.PasswordComplexity.Split(",")
-				.Select(p => int.Parse(p))
-				.ToArray();
+			var criteria = _configSection.PasswordComplexity.Split(",");
 
-			if (criteria[0] > password.Length)
+			if (Int32.Parse(criteria[0]) > password.Length)
 			{
 				msgs.Add(new ViewMessage(String.Format(_loc["PasswordComplexityMinimalLength"], criteria[0]), ViewMessage.MsgType.Warning));
 			}
 
-			if (criteria[1] == 1 && password.All(char.IsLetterOrDigit))
+			if (Boolean.Parse(criteria[1]) && password.All(char.IsLetterOrDigit))
 			{
 				msgs.Add(new ViewMessage(_loc["PasswordComplexityAlphanumeric"], ViewMessage.MsgType.Warning));
 			}
 
-			if (criteria[2] == 1 && !password.Any(char.IsUpper))
+			if (Boolean.Parse(criteria[2]) && !password.Any(char.IsUpper))
 			{
 				msgs.Add(new ViewMessage(_loc["PasswordComplexityUppercase"], ViewMessage.MsgType.Warning));
 			}
 
-			if (criteria[3] == 1 && !password.Any(char.IsLower))
+			if (Boolean.Parse(criteria[3]) && !password.Any(char.IsLower))
 			{
 				msgs.Add(new ViewMessage(_loc["PasswordComplexityLowercase"], ViewMessage.MsgType.Warning));
 			}
 
-			if (criteria[4] == 1 && !password.Any(char.IsNumber))
+			if (Boolean.Parse(criteria[4]) && !password.Any(char.IsNumber))
 			{
 				msgs.Add(new ViewMessage(_loc["PasswordComplexityNumber"], ViewMessage.MsgType.Warning));
 			}
+
 			return msgs;
 		}
 	}

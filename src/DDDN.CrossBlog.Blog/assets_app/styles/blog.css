@@ -41,7 +41,7 @@ main {
 }
 
 .dropdown-item.active, .dropdown-item:active {
-	background-color: #f8f9fa;
+	background-color: #e1e1e1;
 }
 
 .sidebar .categories p {

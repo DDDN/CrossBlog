@@ -10,7 +10,7 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 body {
-	background-color: #ffffff;
+	background-color: rgb(244,244,244);
 	min-height: 75rem;
 	padding-top: 3rem;
 }

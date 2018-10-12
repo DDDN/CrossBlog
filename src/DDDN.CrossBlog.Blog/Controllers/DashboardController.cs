@@ -374,16 +374,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				return NotFound();
 			}
 
-			var writerView = new WriterViewModel(writer.State, _loc)
-			{
-				WriterId = writer.WriterId,
-				State = writer.State,
-				Mail = writer.Mail,
-				Name = writer.Name,
-				AboutMe = writer.AboutMe,
-				Created = writer.Created,
-				Administrator = writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator))
-			};
+			var writerView = new WriterViewModel(writer, writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator)), _loc);
 
 			return View(writerView);
 		}
@@ -423,15 +414,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				NotFound();
 			}
 
-			var writerView = new WriterViewModel(writer.State, _loc)
-			{
-				WriterId = writer.WriterId,
-				State = writer.State,
-				Mail = writer.Mail,
-				Name = writer.Name,
-				AboutMe = writer.AboutMe,
-				Administrator = writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator))
-			};
+			var writerView = new WriterViewModel(writer, writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator)), _loc);
 
 			return View(writerView);
 		}
@@ -457,11 +440,6 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[Authorize(Roles = "Administrator")]
 		public async Task<IActionResult> WriterDelete(Guid id)
 		{
-			if (_writerBl.IsOwner(id))
-			{
-				return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-			}
-
 			WriterModel writer = null;
 
 			try
@@ -473,16 +451,12 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				return NotFound();
 			}
 
-			var writerView = new WriterViewModel(writer.State, _loc)
+			var writerView = new WriterViewModel(writer, writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator)), _loc);
+
+			if (_writerBl.IsOwner(id))
 			{
-				WriterId = writer.WriterId,
-				State = writer.State,
-				Mail = writer.Mail,
-				Name = writer.Name,
-				AboutMe = writer.AboutMe,
-				Created = writer.Created,
-				Administrator = writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator))
-			};
+				writerView.AddMsg(_loc["BlogOwnerCannotBeDeleted"], ViewMessage.MsgType.Warning);
+			}
 
 			return View(writerView);
 		}
@@ -492,21 +466,26 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> WriterDeleteConfirmed(Guid id)
 		{
-			if (_writerBl.IsOwner(id))
-			{
-				return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-			}
-
 			try
 			{
-				await _writerBl.Delete(id);
+				if (_writerBl.IsOwner(id))
+				{
+					var writer = await _writerBl.GetWithRoles(id);
+					var writerView = new WriterViewModel(writer, writer.Roles.Any(p => p.Role.Equals(RoleModel.Roles.Administrator)), _loc);
+					writerView.AddMsg(_loc["BlogOwnerCannotBeDeleted"], ViewMessage.MsgType.Warning);
+					return View(writerView);
+				}
+				else
+				{
+					await _writerBl.Delete(id);
+					return RedirectToAction(nameof(Writers));
+				}
 			}
 			catch (WriterNotFoundException)
 			{
 				NotFound();
+				return View();
 			}
-
-			return RedirectToAction(nameof(Writers));
 		}
 
 		[Authorize(Roles = "Writer")]

@@ -26,6 +26,18 @@ namespace DDDN.CrossBlog.Blog.Views.Models
 		{
 		}
 
+		public WriterViewModel(WriterModel writerModel, bool isAdministrator, IStringLocalizer localizer = null)
+			: base(WriterModel.StatesTree[writerModel.State.ToString()], localizer)
+		{
+			WriterId = writerModel.WriterId;
+			State = writerModel.State;
+			Mail = writerModel.Mail;
+			Name = writerModel.Name;
+			AboutMe = writerModel.AboutMe;
+			Created = writerModel.Created;
+			Administrator = isAdministrator;
+		}
+
 		public Guid WriterId { get; set; }
 		public WriterModel.States State { get; set; }
 		public string Name { get; set; }

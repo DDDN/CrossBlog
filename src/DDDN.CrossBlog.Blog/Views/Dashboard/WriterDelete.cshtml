@@ -15,14 +15,14 @@
 @{	ViewData["Title"] = Loc["Title"]; }
 
 <div>
-	<h2><i class="fa fa-user"></i> @Loc["Header"]</h2>
+	<h2><i class="fa fa-user text-danger"></i> @Loc["Header"]</h2>
 	<hr />
-	<h4>@Loc["Info"]</h4>
+	@{ await Html.RenderPartialAsync("ViewMessagePartialView", Model.Msgs); }
 	@{ await Html.RenderPartialAsync("WriterInfoPartialView", Model); }
 	<hr />
 	<form asp-action="WriterDelete">
 		<input type="hidden" asp-for="WriterId" />
 		<input type="submit" value="@Loc["ButtonDelete"]" class="btn btn-danger" />
-		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-primary">@Loc["LinkCancel"]</a>
+		<a asp-action="@nameof(DashboardController.Writers)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
 	</form>
 </div>

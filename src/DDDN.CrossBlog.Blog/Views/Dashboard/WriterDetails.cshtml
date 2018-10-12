@@ -12,14 +12,16 @@
 @inject IViewLocalizer Loc
 @model WriterViewModel
 
-@{	ViewData["Title"] = Loc["Title"]; }
+@{ ViewData["Title"] = Loc["Title"]; }
 
 <div>
 	<h2><i class="fa fa-user"></i> @Loc["Header"]</h2>
 	<hr />
-	@{ await Html.RenderPartialAsync("WriterInfoPartialView", Model); }
-	<hr />
-	<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
-	<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@Model.WriterId" data-toggle="tooltip" title="@Loc["LinkPassword"]"><i class="fa fa-key fa-2x"></i></a>
-	<a asp-action="@nameof(DashboardController.Writers)" data-toggle="tooltip" title="@Loc["LinkWriters"]"><i class="fa fa-list fa-2x"></i></a>
+	<div class="table-border">
+		@{ await Html.RenderPartialAsync("WriterInfoPartialView", Model); }
+		<hr />
+		<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@Model.WriterId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
+		<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@Model.WriterId" data-toggle="tooltip" title="@Loc["LinkPassword"]"><i class="fa fa-key fa-2x"></i></a>
+		<a asp-action="@nameof(DashboardController.Writers)" data-toggle="tooltip" title="@Loc["LinkWriters"]"><i class="fa fa-list fa-2x"></i></a>
+	</div>
 </div>

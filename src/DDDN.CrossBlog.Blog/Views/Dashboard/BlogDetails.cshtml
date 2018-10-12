@@ -15,50 +15,52 @@
 <div>
 	<h2><i class="fa fa-info-circle"></i> @Loc["Header"]</h2>
 	<hr />
-	<dl class="dl-horizontal">
-		<dt>
-			@Loc[nameof(_blogInfo.BlogName)]
-		</dt>
-		<dd>
-			<p>@_blogInfo.BlogName</p>
-		</dd>
-		<dt>
-			@Loc[nameof(Model.BlogSlogan)]
-		</dt>
-		<dd>
-			<p>@_blogInfo.BlogSlogan</p>
-		</dd>
-		<dt>
-			@Loc[nameof(Model.OwnerName)]
-		</dt>
-		<dd>
-			<p>@_blogInfo.OwnerName</p>
-		</dd>
-		<dt>
-			@Loc[nameof(Model.OwnerMail)]
-		</dt>
-		<dd>
-			<p>@_blogInfo.OwnerMail</p>
-		</dd>
-		<dt>
-			@Loc[nameof(Model.Created)]
-		</dt>
-		<dd>
-			<p>@_blogInfo.Created</p>
-		</dd>
-		<dt>
-			@Loc[nameof(Model.Copyright)]
-		</dt>
-		<dd>
-			<p>@_blogInfo.Copyright</p>
-		</dd>
-		<dt>
-			@Loc[nameof(Model.Version)]
-		</dt>
-		<dd>
-			<p>@_blogInfo.Version</p>
-		</dd>
-	</dl>
-	<hr />
-	<a asp-action="@nameof(DashboardController.BlogEdit)" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
+	<div class="table-border">
+		<dl class="dl-horizontal">
+			<dt>
+				@Loc[nameof(_blogInfo.BlogName)]
+			</dt>
+			<dd>
+				<p>@_blogInfo.BlogName</p>
+			</dd>
+			<dt>
+				@Loc[nameof(Model.BlogSlogan)]
+			</dt>
+			<dd>
+				<p>@_blogInfo.BlogSlogan</p>
+			</dd>
+			<dt>
+				@Loc[nameof(Model.OwnerName)]
+			</dt>
+			<dd>
+				<p>@_blogInfo.OwnerName</p>
+			</dd>
+			<dt>
+				@Loc[nameof(Model.OwnerMail)]
+			</dt>
+			<dd>
+				<p>@_blogInfo.OwnerMail</p>
+			</dd>
+			<dt>
+				@Loc[nameof(Model.Created)]
+			</dt>
+			<dd>
+				<p>@_blogInfo.Created</p>
+			</dd>
+			<dt>
+				@Loc[nameof(Model.Copyright)]
+			</dt>
+			<dd>
+				<p>@_blogInfo.Copyright</p>
+			</dd>
+			<dt>
+				@Loc[nameof(Model.Version)]
+			</dt>
+			<dd>
+				<p>@_blogInfo.Version</p>
+			</dd>
+		</dl>
+		<hr />
+		<a asp-action="@nameof(DashboardController.BlogEdit)" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
+	</div>
 </div>

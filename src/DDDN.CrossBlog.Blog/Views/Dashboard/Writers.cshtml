@@ -12,67 +12,69 @@
 @model IEnumerable<WriterModel>
 @inject IViewLocalizer Loc
 
-@{	ViewData["Title"] = @Loc["Title"]; }
+@{ ViewData["Title"] = @Loc["Title"]; }
 
 <div>
 	<p><a asp-action="@nameof(DashboardController.WriterCreate)" class="btn btn-primary"><i class="fa fa-user"></i> @Loc["LinkCreate"]</a></p>
 	<hr />
 	<h2><i class="fa fa-users"></i> @Loc["Header"]</h2>
-	<table class="table table-hover d-sm-table">
-		<thead class="thead-light">
-			<tr>
-				<th>
-					@Loc[nameof(WriterModel.State)]
-				</th>
-				<th>
-					@Loc[nameof(WriterModel.Created)]
-				</th>
-				<th>
-					@Loc[nameof(WriterModel.Name)]
-				</th>
-				<th>
-					@Loc[nameof(WriterModel.Mail)]
-				</th>
-				<th>
-					@Loc[nameof(RoleModel.Role)]
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model)
-			{
+	<div class="table-border">
+		<table class="table table-hover d-sm-table">
+			<thead class="thead-light">
 				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.State)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Created)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Name)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Mail)
-					</td>
-					<td>
-						@if (item.Roles.Where(p => p.Role.Equals(RoleModel.Roles.Administrator)).Any())
-						{
-							<input type="checkbox" checked disabled>
-						}
-						else
-						{
-							<input type="checkbox" disabled>
-						}
-					</td>
-					<td>
-						<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkDetails"]"><i class="fa fa-info-circle fa-2x"></i></a>
-						<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
-						<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkPassword"]"><i class="fa fa-key fa-2x"></i></a>
-						<a asp-action="@nameof(DashboardController.WriterDelete)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkDelete"]"><i class="fa fa-trash fa-2x"></i></a>
-					</td>
+					<th>
+						@Loc[nameof(WriterModel.State)]
+					</th>
+					<th>
+						@Loc[nameof(WriterModel.Created)]
+					</th>
+					<th>
+						@Loc[nameof(WriterModel.Name)]
+					</th>
+					<th>
+						@Loc[nameof(WriterModel.Mail)]
+					</th>
+					<th>
+						@Loc[nameof(RoleModel.Role)]
+					</th>
+					<th></th>
 				</tr>
-			}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.State)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Created)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Mail)
+						</td>
+						<td>
+							@if (item.Roles.Where(p => p.Role.Equals(RoleModel.Roles.Administrator)).Any())
+							{
+								<input type="checkbox" checked disabled>
+							}
+							else
+							{
+								<input type="checkbox" disabled>
+							}
+						</td>
+						<td>
+							<a asp-action="@nameof(DashboardController.WriterDetails)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkDetails"]"><i class="fa fa-info-circle fa-2x"></i></a>
+							<a asp-action="@nameof(DashboardController.WriterEdit)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
+							<a asp-action="@nameof(DashboardController.WriterPassword)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkPassword"]"><i class="fa fa-key fa-2x"></i></a>
+							<a asp-action="@nameof(DashboardController.WriterDelete)" asp-route-id="@item.WriterId" data-toggle="tooltip" title="@Loc["LinkDelete"]"><i class="fa fa-trash fa-2x"></i></a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 </div>

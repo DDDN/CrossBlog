@@ -18,18 +18,20 @@
 	<h2><i class="fa fa-info-circle"></i> @Loc["Header"]</h2>
 	<hr />
 	<h4>@Loc["Info"]</h4>
-	<form id="formValidation" asp-action="BlogEdit">
-		<input type="hidden" asp-for="@Model.BlogId" />
-		<div class="form-group">
-			<label for="BlogName">@Loc[nameof(Model.BlogName)]</label>
-			<input type="text" asp-for="@Model.BlogName" class="form-control" required maxlength="200">
-		</div>
-		<div class="form-group">
-			<label for="BlogCopyright">@Loc[nameof(Model.BlogCopyright)]</label>
-			<input type="text" asp-for="@Model.BlogCopyright" class="form-control" required maxlength="200">
-		</div>
-		<hr />
-		<button type="submit" class="btn btn-primary">@Loc["ButtonEdit"]</button>
-		<a asp-action="@nameof(DashboardController.BlogDetails)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
-	</form>
+	<div class="table-border">
+		<form id="formValidation" asp-action="BlogEdit">
+			<input type="hidden" asp-for="@Model.BlogId" />
+			<div class="form-group">
+				<label for="BlogName">@Loc[nameof(Model.BlogName)]</label>
+				<input type="text" asp-for="@Model.BlogName" class="form-control" required maxlength="200">
+			</div>
+			<div class="form-group">
+				<label for="BlogCopyright">@Loc[nameof(Model.BlogCopyright)]</label>
+				<input type="text" asp-for="@Model.BlogCopyright" class="form-control" required maxlength="200">
+			</div>
+			<hr />
+			<button type="submit" class="btn btn-primary">@Loc["ButtonEdit"]</button>
+			<a asp-action="@nameof(DashboardController.BlogDetails)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
+		</form>
+	</div>
 </div>

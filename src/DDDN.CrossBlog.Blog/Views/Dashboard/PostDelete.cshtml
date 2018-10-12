@@ -12,36 +12,38 @@
 @model PostModel
 @inject IViewLocalizer Loc
 
-@{  ViewData["Title"] = Loc["Title"]; }
+@{ ViewData["Title"] = Loc["Title"]; }
 
 <div>
 	<h2><i class="fa fa-newspaper-o"></i> @Loc["Header"]</h2>
 	<hr />
 	<h4>@Loc["Info"]</h4>
-	<dl class="dl-horizontal">
-		<dt>
-			@Loc["State"]
-		</dt>
-		<dd>
-			@Model.State
-		</dd>
-		<dt>
-			@Loc["Created"]
-		</dt>
-		<dd>
-			@Model.Created
-		</dd>
-		<dt>
-			@Loc["Title"]
-		</dt>
-		<dd>
-			@{ await Html.RenderPartialAsync("PostTitlePartialView", Model); }
-		</dd>
-	</dl>
-	<hr />
-	<form asp-action="PostDelete">
-		<input type="hidden" asp-for="PostId" />
-		<input type="submit" value="@Loc["ButtonSubmit"]" class="btn btn-primary" />
-		<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
-	</form>
+	<div class="table-border">
+		<dl class="dl-horizontal">
+			<dt>
+				@Loc["State"]
+			</dt>
+			<dd>
+				@Model.State
+			</dd>
+			<dt>
+				@Loc["Created"]
+			</dt>
+			<dd>
+				@Model.Created
+			</dd>
+			<dt>
+				@Loc["Title"]
+			</dt>
+			<dd>
+				@{ await Html.RenderPartialAsync("PostTitlePartialView", Model); }
+			</dd>
+		</dl>
+		<hr />
+		<form asp-action="PostDelete">
+			<input type="hidden" asp-for="PostId" />
+			<input type="submit" value="@Loc["ButtonSubmit"]" class="btn btn-primary" />
+			<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-secondary">@Loc["LinkCancel"]</a>
+		</form>
+	</div>
 </div>

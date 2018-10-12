@@ -18,40 +18,42 @@
 	<a asp-action="PostUpload" class="btn btn-primary"><i class="fa fa-upload"></i> @Loc["Upload"]</a>
 	<hr />
 	<h2><i class="fa fa-newspaper-o"></i> @Loc["Header"]</h2>
-	<table class="table table-hover table-sm">
-		<thead class="thead-light">
-			<tr>
-				<th>
-					@Loc["State"]
-				</th>
-				<th>
-					@Loc["Created"]
-				</th>
-				<th>
-					@Loc["PostTitle"]
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model)
-			{
+	<div class="table-border">
+		<table class="table table-hover table-sm">
+			<thead class="thead-light">
 				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.State)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Created)
-					</td>
-					<td>
-						@{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
-					</td>
-					<td>
-						<a asp-action="@nameof(DashboardController.PostEdit)" asp-route-id="@item.PostId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
-						<a asp-action="@nameof(DashboardController.PostDetails)" asp-route-id="@item.PostId" data-toggle="tooltip" title="@Loc["LinkDetails"]"><i class="fa fa-info-circle fa-2x"></i></a>
-					</td>
+					<th>
+						@Loc["State"]
+					</th>
+					<th>
+						@Loc["Created"]
+					</th>
+					<th>
+						@Loc["PostTitle"]
+					</th>
+					<th></th>
 				</tr>
-			}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.State)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Created)
+						</td>
+						<td>
+							@{ await Html.RenderPartialAsync("PostTitlePartialView", item); }
+						</td>
+						<td>
+							<a asp-action="@nameof(DashboardController.PostEdit)" asp-route-id="@item.PostId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
+							<a asp-action="@nameof(DashboardController.PostDetails)" asp-route-id="@item.PostId" data-toggle="tooltip" title="@Loc["LinkDetails"]"><i class="fa fa-info-circle fa-2x"></i></a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 </div>

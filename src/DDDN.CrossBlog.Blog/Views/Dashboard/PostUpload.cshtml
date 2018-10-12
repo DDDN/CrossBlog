@@ -11,19 +11,21 @@
 
 @inject IViewLocalizer Loc
 
-@{	ViewData["Title"] = Loc["Title"]; }
+@{ ViewData["Title"] = Loc["Title"]; }
 
 <div>
 	<h2><i class="fa fa-newspaper-o"></i> @Loc["Header"]</h2>
 	<hr />
 	<h4>@Loc["Info"]</h4>
-	<form id="formValidation" asp-action="PostUpload" enctype="multipart/form-data">
-		<div class="form-group">
-			<label for="Files">@Loc["Files"]</label>
-			<input type="file" id="Files" name="Files" class="form-control-file" required>
-		</div>
-		<hr />
-		<button type="submit" class="btn btn-primary">@Loc["ButtonSubmit"]</button>
-		<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-secondary">@Loc["LinkPosts"]</a>
-	</form>
+	<div class="table-border">
+		<form id="formValidation" asp-action="PostUpload" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="Files">@Loc["Files"]</label>
+				<input type="file" id="Files" name="Files" class="form-control-file" required>
+			</div>
+			<hr />
+			<button type="submit" class="btn btn-primary">@Loc["ButtonSubmit"]</button>
+			<a asp-action="@nameof(DashboardController.Posts)" class="btn btn-secondary">@Loc["LinkPosts"]</a>
+		</form>
+	</div>
 </div>

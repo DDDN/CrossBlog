@@ -12,40 +12,42 @@
 @model IEnumerable<CategoryModel>
 @inject IViewLocalizer Loc
 
-@{	ViewData["Title"] = Loc["Title"]; }
+@{ ViewData["Title"] = Loc["Title"]; }
 
 <div>
 	<h2><i class="fa fa-inbox"></i> @Loc["Header"]</h2>
 	<hr />
 	<h4>@Loc["Info"]</h4>
-	@foreach (var item in Model)
-	{
-		<button class="btn btn-secondary cb-btn-mb-5" id="@item.CategoryId" onclick="cb_AdminCathIndex_SetIdForDelete(this.id)">@item.Name</button>
-	}
-	<hr />
-	<form id="formDelete" asp-action="CategoriesDelete">
-		<label for="CategoryId" id="labelCategoryId">@Loc["DeleteInfo"]</label>
-		<input hidden type="text" id="CategoryId" name="CategoryId" value="" required>
-		<button hidden type="submit" id="buttonCategoryId" class="btn btn-danger">@Loc["ButtonDelete"]</button>
-	</form>
-	<hr />
-	<form id="formValidation" asp-action="CategoriesCreate">
-		<div class="form-group">
-			<label for="Name">@Loc["Name"]</label>
-			<input type="text" id="Name" name="Name" class="form-control" required maxlength="200">
-		</div>
-		<button type="submit" class="btn btn-primary">@Loc["ButtonCreate"]</button>
-	</form>
-</div>
+	<div class="table-border">
+		@foreach (var item in Model)
+		{
+			<button class="btn btn-secondary cb-btn-mb-5" id="@item.CategoryId" onclick="cb_AdminCathIndex_SetIdForDelete(this.id)">@item.Name</button>
+		}
+	</div>
+		<hr />
+		<form id="formDelete" asp-action="CategoriesDelete">
+			<label for="CategoryId" id="labelCategoryId">@Loc["DeleteInfo"]</label>
+			<input hidden type="text" id="CategoryId" name="CategoryId" value="" required>
+			<button hidden type="submit" id="buttonCategoryId" class="btn btn-danger">@Loc["ButtonDelete"]</button>
+		</form>
+		<hr />
+		<form id="formValidation" asp-action="CategoriesCreate">
+			<div class="form-group">
+				<label for="Name">@Loc["Name"]</label>
+				<input type="text" id="Name" name="Name" class="form-control" required maxlength="200">
+			</div>
+			<button type="submit" class="btn btn-primary">@Loc["ButtonCreate"]</button>
+		</form>
+	</div>
 
-@section  Scripts
-	{
-	<script>
-		function cb_AdminCathIndex_SetIdForDelete(caller_id) {
-			var categoryText = $('#' + caller_id).text();
-			$('#labelCategoryId').text(categoryText);
-			$('#buttonCategoryId').removeAttr('hidden');
-			$('#CategoryId').val(caller_id);
-		};
-	</script>
-}
+	@section Scripts
+		{
+		<script>
+			function cb_AdminCathIndex_SetIdForDelete(caller_id) {
+				var categoryText = $('#' + caller_id).text();
+				$('#labelCategoryId').text(categoryText);
+				$('#buttonCategoryId').removeAttr('hidden');
+				$('#CategoryId').val(caller_id);
+			};
+		</script>
+	}

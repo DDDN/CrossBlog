@@ -14,27 +14,29 @@
 <div>
 	<h2><i class="fa fa-newspaper-o"></i> @Loc["Header"]</h2>
 	<hr />
-	<dl class="dl-horizontal">
-		<dt>
-			@Loc["State"]
-		</dt>
-		<dd>
-			@Model.State
-		</dd>
-		<dt>
-			@Loc["Created"]
-		</dt>
-		<dd>
-			@Model.Created
-		</dd>
-		<dt>
-			@Loc["PostTitle"]
-		</dt>
-		<dd>
-			@{ await Html.RenderPartialAsync("PostTitlePartialView", Model); }
-		</dd>
-	</dl>
-	<hr />
-	<a asp-action="@nameof(DashboardController.PostEdit)" asp-route-id="@Model.PostId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
-	<a asp-action="@nameof(DashboardController.Posts)" data-toggle="tooltip" title="@Loc["LinkPosts"]"><i class="fa fa-list fa-2x"></i></a>
+	<div class="table-border">
+		<dl class="dl-horizontal">
+			<dt>
+				@Loc["State"]
+			</dt>
+			<dd>
+				@Model.State
+			</dd>
+			<dt>
+				@Loc["Created"]
+			</dt>
+			<dd>
+				@Model.Created
+			</dd>
+			<dt>
+				@Loc["PostTitle"]
+			</dt>
+			<dd>
+				@{ await Html.RenderPartialAsync("PostTitlePartialView", Model); }
+			</dd>
+		</dl>
+		<hr />
+		<a asp-action="@nameof(DashboardController.PostEdit)" asp-route-id="@Model.PostId" data-toggle="tooltip" title="@Loc["LinkEdit"]"><i class="fa fa-edit fa-2x"></i></a>
+		<a asp-action="@nameof(DashboardController.Posts)" data-toggle="tooltip" title="@Loc["LinkPosts"]"><i class="fa fa-list fa-2x"></i></a>
+	</div>
 </div>

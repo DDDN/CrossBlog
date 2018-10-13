@@ -71,7 +71,13 @@ article, .comments {
 }
 
 .comments {
-	margin-top: 2rem;
+	margin-top: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid;
+}
+
+.comments h3 {
+	padding-bottom: 1rem;
 }
 
 footer {
@@ -93,6 +99,10 @@ footer {
 	.navbar-header {
 		width: 100% !important;
 	}
+}
+
+nav {
+	border-bottom: 1px solid;
 }
 
 .navbar {

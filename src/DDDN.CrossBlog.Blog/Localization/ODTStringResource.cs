@@ -47,8 +47,6 @@ namespace DDDN.CrossBlog.Blog.Localization
 
 			foreach (var fileFullPath in resourcefileFullPaths)
 			{
-				var cultureNameFromFileName = Path.GetFileNameWithoutExtension(fileFullPath).Split('.').Last();
-
 				using (IOdtFile odtFile = new OdtFile(fileFullPath))
 				{
 					var embedContent = odtFile.GetZipArchiveEntries()
@@ -56,7 +54,7 @@ namespace DDDN.CrossBlog.Blog.Localization
 
 					var contentXDoc = OdtFile.GetZipArchiveEntryAsXDocument(embedContent);
 
-					var transl = GetTranslations(cultureNameFromFileName, contentXDoc);
+					var transl = GetTranslations(contentXDoc);
 					ret = ret.Union(transl).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 				}
 			}
@@ -64,9 +62,9 @@ namespace DDDN.CrossBlog.Blog.Localization
 			return ret;
 		}
 
-		public static Dictionary<string, string> GetTranslations(string cultureNameFromFileName, XDocument content)
+		public static Dictionary<string, string> GetTranslations(XDocument content)
 		{
-			var translations = new Dictionary<string, string>();
+			var translations = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
 			if (content == null)
 			{
@@ -81,18 +79,27 @@ namespace DDDN.CrossBlog.Blog.Localization
 			foreach (var table in contentEle.Elements()
 				 .Where(p => p.Name.LocalName.Equals("table", StringComparison.CurrentCultureIgnoreCase)))
 			{
-				foreach (var row in table.Elements()
-				.Where(p => p.Name.LocalName.Equals("table-row", StringComparison.CurrentCultureIgnoreCase))
-				.Skip(1))
-				{
-					var cells = row.Elements()
-						 .Where(p => p.Name.LocalName.Equals("table-cell", StringComparison.CurrentCultureIgnoreCase));
+				var tableRows = table.Elements().Where(p => p.Name.LocalName.Equals("table-row", StringComparison.CurrentCultureIgnoreCase));
 
-					if (cells.Any())
+				if (tableRows.Count() > 2)
+				{
+					var cultureNameFromFileName = GetValue(tableRows.FirstOrDefault()?
+						.Elements().Where(p => p.Name.LocalName.Equals("table-cell", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault());
+
+					if (!String.IsNullOrWhiteSpace(cultureNameFromFileName))
 					{
-						var translationKey = GetValue(cells.First());
-						var translation = GetValue(cells.Skip(1).First());
-						translations.Add($"{translationKey}.{cultureNameFromFileName}", translation);
+						foreach (var row in tableRows.Skip(2))
+						{
+							var cells = row.Elements()
+								 .Where(p => p.Name.LocalName.Equals("table-cell", StringComparison.CurrentCultureIgnoreCase));
+
+							if (cells.Any())
+							{
+								var translationKey = GetValue(cells.First());
+								var translation = GetValue(cells.Skip(1).First());
+								translations.Add($"{translationKey}.{cultureNameFromFileName}", translation);
+							}
+						}
 					}
 				}
 			}
@@ -107,12 +114,12 @@ namespace DDDN.CrossBlog.Blog.Localization
 
 		private static string WalkTheNodes(IEnumerable<XNode> nodes)
 		{
+			string val = "";
+
 			if (nodes == null)
 			{
-				throw new ArgumentNullException(nameof(nodes));
+				return val;
 			}
-
-			string val = "";
 
 			foreach (var node in nodes)
 			{
@@ -152,7 +159,11 @@ namespace DDDN.CrossBlog.Blog.Localization
 
 			foreach (var file in fileNames)
 			{
-				resourcefileFullPaths.AddRange(Directory.GetFiles(l10nPath, $"{file}.*"));
+				if (Directory.Exists(l10nPath))
+				{
+					var files = Directory.GetFiles(l10nPath, $"{file}.*");
+					resourcefileFullPaths.AddRange(files);
+				}
 			}
 
 			return resourcefileFullPaths;

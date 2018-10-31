@@ -272,6 +272,19 @@ namespace DDDN.CrossBlog.Blog.Controllers
 			return RedirectToAction(nameof(Categories));
 		}
 
+		[HttpPost]
+		[Authorize(Roles = "Administrator")]
+		public async Task<IActionResult> CategoriesRename(Guid CategoryId, string CategoryName)
+		{
+			if (CategoryId.Equals(Guid.Empty))
+			{
+				return NotFound();
+			}
+
+			await _categoryBl.Rename(CategoryId, CategoryName);
+			return RedirectToAction(nameof(Categories));
+		}
+
 		[AllowAnonymous]
 		public IActionResult Login(string returnUrl = null)
 		{

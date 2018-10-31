@@ -54,3 +54,7 @@ body {
 		margin-right: 0;
 	}
 }
+
+input.category-name {
+	margin-bottom: 15px;
+}

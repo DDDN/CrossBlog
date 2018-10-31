@@ -18,35 +18,40 @@
 	<h2><i class="fa fa-inbox"></i> @Loc["Header"]</h2>
 	<hr />
 	<h4>@Loc["Info"]</h4>
+	<p>@Loc["DelRen"]</p>
 	<div class="table-border">
 		@foreach (var item in Model)
 		{
 			<button class="btn btn-secondary cb-btn-mb-5" id="@item.CategoryId" onclick="cb_AdminCathIndex_SetIdForDelete(this.id)">@item.Name</button>
 		}
 	</div>
-		<hr />
-		<form id="formDelete" asp-action="CategoriesDelete">
-			<label for="CategoryId" id="labelCategoryId">@Loc["DeleteInfo"]</label>
-			<input hidden type="text" id="CategoryId" name="CategoryId" value="" required>
-			<button hidden type="submit" id="buttonCategoryId" class="btn btn-danger">@Loc["ButtonDelete"]</button>
-		</form>
-		<hr />
-		<form id="formValidation" asp-action="CategoriesCreate">
-			<div class="form-group">
-				<label for="Name">@Loc["Name"]</label>
-				<input type="text" id="Name" name="Name" class="form-control" required maxlength="200">
-			</div>
-			<button type="submit" class="btn btn-primary">@Loc["ButtonCreate"]</button>
-		</form>
-	</div>
+	<hr hidden id="hrCreateDelete" />
+	<form id="formCategories">
+		<input hidden type="text" id="CategoryId" name="CategoryId" value="" required>
+		<input hidden type="text" id="CategoryName" name="CategoryName" value="" class="form-control category-name" required maxlength="200">
+		<button hidden type="submit" id="buttonCategoryName" formaction="CategoriesRename" formmethod="post" class="btn btn-primary">@Loc["ButtonRename"]</button>
+		<button hidden type="submit" id="buttonCategoryId" formaction="CategoriesDelete" formmethod="post" class="btn btn-danger">@Loc["ButtonDelete"]</button>
+	</form>
+	<hr />
+	<form id="formValidation" asp-action="CategoriesCreate">
+		<div class="form-group">
+			<label for="Name">@Loc["Name"]</label>
+			<input type="text" id="Name" name="Name" class="form-control" required maxlength="200">
+		</div>
+		<button type="submit" class="btn btn-primary">@Loc["ButtonCreate"]</button>
+	</form>
+</div>
 
 	@section Scripts
 		{
 		<script>
 			function cb_AdminCathIndex_SetIdForDelete(caller_id) {
 				var categoryText = $('#' + caller_id).text();
-				$('#labelCategoryId').text(categoryText);
+				$('#CategoryName').val(categoryText);
+				$('#hrCreateDelete').removeAttr('hidden');
 				$('#buttonCategoryId').removeAttr('hidden');
+				$('#CategoryName').removeAttr('hidden');
+				$('#buttonCategoryName').removeAttr('hidden');
 				$('#CategoryId').val(caller_id);
 			};
 		</script>

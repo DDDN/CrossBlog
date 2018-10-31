@@ -23,5 +23,6 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		Task<IEnumerable<CategoryModel>> Get();
 		Task Create(string categoryName);
 		Task Delete(Guid categoryId);
+		Task Rename(Guid categoryId, string categoryName);
 	}
 }

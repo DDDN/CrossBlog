@@ -81,5 +81,15 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 				await _context.SaveChangesAsync();
 			}
 		}
+
+		public async Task Rename(Guid categoryId, string categoryName)
+		{
+			var category = await _context.Categories
+				.FirstOrDefaultAsync(p => p.CategoryId.Equals(categoryId));
+
+			category.Name = categoryName;
+
+			await _context.SaveChangesAsync();
+		}
 	}
 }

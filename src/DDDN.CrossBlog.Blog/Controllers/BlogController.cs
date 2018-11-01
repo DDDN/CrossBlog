@@ -37,7 +37,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		{
 			if (id.Equals(Guid.Empty))
 			{
-				var posts = await _postBl.GetNewest(0, 1, PostModel.States.Published);
+				var posts = await _postBl.GetNewest(0, 10, PostModel.States.Published);
 				return View(posts);
 			}
 			else
@@ -66,17 +66,17 @@ namespace DDDN.CrossBlog.Blog.Controllers
 		public async Task<IActionResult> CommentAdd(Guid PostId, string personName, string commentTitle, string commentText)
 		{
 			await _postBl.CommentSave(PostId, personName, commentTitle, commentText);
-			return RedirectToAction(nameof(Show));
+			return RedirectToAction(nameof(Show), new { id = PostId });
+
 		}
 
-		public async Task<IActionResult> PostContent(Guid id, string filename)
+		public async Task<IActionResult> PostContent(string linkName)
 		{
 			try
 			{
-				var (binary, name) = await _postBl.GetContent(id);
+				var (binary, name) = await _postBl.GetContent(linkName);
 				var contentType = new FileExtensionContentTypeProvider().Mappings[Path.GetExtension(name)];
-				var result = new FileContentResult(binary, contentType ?? "application/octet-stream");
-				return result;
+				return new FileContentResult(binary, contentType ?? "application/octet-stream");
 			}
 			catch (PostContentNotFoundException)
 			{

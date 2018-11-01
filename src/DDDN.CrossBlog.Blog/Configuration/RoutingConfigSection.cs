@@ -14,7 +14,7 @@ namespace DDDN.CrossBlog.Blog.Configuration
 	public class RoutingConfigSection
 	{
 		public string DefaultRouteTemplate { get; set; } = "{culture}/{controller}/{action}/{id?}";
-		public string PostContentTemplate { get; set; } = "PostContent/{id}/{filename}";
+		public string PostContentTemplate { get; set; } = "PostContent/{linkName}";
 		public string BlogPostHtmlUrlPrefix { get; set; } = "/PostContent";
 		public string RedirectRouteTemplate { get; set; } = "{*url}";
 		public string DefaultController { get; set; } = "Blog";

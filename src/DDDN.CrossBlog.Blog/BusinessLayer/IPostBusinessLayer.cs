@@ -28,7 +28,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 		Task<PostModel> GetPostWithCommentsOrDefault(Guid postId);
 		Task Upload(IList<IFormFile> files);
 		Task CommentSave(Guid postId, string personName, string commentTitle, string commentText);
-		Task<(byte[] binary, string name)> GetContent(Guid contentId);
+		Task<(byte[] binary, string name)> GetContent(string linkName);
 		Task Delete(Guid postId);
 		Task Edit(PostViewModel postViewModel, IList<string> categoryIds);
 	}

@@ -21,7 +21,7 @@ namespace DDDN.CrossBlog.Blog.Models
 	{
 		public enum States
 		{
-         None,
+			None,
 			Visible,
 			Unvisible
 		}
@@ -41,8 +41,7 @@ namespace DDDN.CrossBlog.Blog.Models
 		[Required]
 		public byte[] Binary { get; set; }
 		[Required]
-		public string Name { get; set; }
-
+		public string LinkName { get; set; }
 		public PostModel Post { get; set; }
 	}
 }

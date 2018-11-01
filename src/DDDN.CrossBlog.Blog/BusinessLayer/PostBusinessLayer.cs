@@ -200,7 +200,7 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 								{
 									Binary = ec.Data,
 									Created = now,
-									Name = ec.ContentFullName,
+									LinkName = ec.LinkName,
 									State = ContentModel.States.Visible,
 									ContentId = ec.Id,
 									Post = post
@@ -219,19 +219,19 @@ namespace DDDN.CrossBlog.Blog.BusinessLayer
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<(byte[] binary, string name)> GetContent(Guid contentId)
+		public async Task<(byte[] binary, string name)> GetContent(string linkName)
 		{
 			var content = await _context.Contents
-				.Where(p => p.ContentId.Equals(contentId))
+				.Where(p => p.LinkName.Equals(linkName))
 				.FirstOrDefaultAsync();
 
 			if (content == default(ContentModel))
 			{
-				throw new PostContentNotFoundException(contentId);
+				throw new PostContentNotFoundException(linkName);
 			}
 			else
 			{
-				return (content.Binary, content.Name);
+				return (content.Binary, content.LinkName);
 			}
 		}
 

@@ -186,7 +186,7 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				throw new ArgumentNullException(nameof(files));
 			}
 
-			if (files.Any())
+			if (files.Count > 0)
 			{
 				await _postBl.Upload(files);
 				return RedirectToAction(nameof(Posts));
@@ -235,9 +235,10 @@ namespace DDDN.CrossBlog.Blog.Controllers
 				return NotFound();
 			}
 
-			var categoryIds = Request.Form[nameof(PostViewModel.Categories)].ToList<string>();
+			var categoryIds = Request.Form[nameof(PostViewModel.Categories)].ToList();
 			await _postBl.Edit(postViewModel, categoryIds);
-			return View(postViewModel);
+
+			return RedirectToAction(nameof(Posts));
 		}
 
 		[Authorize(Roles = "Writer")]

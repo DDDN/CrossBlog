@@ -10,30 +10,33 @@ to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 */
 
 a {
-	color: #444 !important;
+	color: #000 !important;
 }
 
 	a:hover {
-		color: #000 !important;
+		color: #808080 !important;
 	}
 
 	a.active {
-		color: #555 !important;
+		color: #000 !important;
 	}
 
 body {
-	font-family: 'Playfair Display', serif;
-	padding-top: 3rem;
+	font-family: Georgia, 'Times New Roman', Times, serif;
 	background-color: #fff;
-	color: #444;
+	color: #000;
+}
+
+.container {
+	background-color: transparent;
 }
 
 main {
-	background-color: white;
+	background-color: transparent;
 }
 
 	main a, main a:focus, main a:hover {
-		color: #636363 !important;
+		color: #000 !important;
 	}
 
 .newest, .archive, .about {
@@ -67,7 +70,7 @@ main {
 		}
 
 article, .comments {
-	margin: 0 auto;
+	padding: 2rem;
 }
 
 .comments {
@@ -76,13 +79,14 @@ article, .comments {
 	border-top: 1px solid;
 }
 
-.comments h3 {
-	padding-bottom: 1rem;
-}
+	.comments h3 {
+		padding-bottom: 1rem;
+	}
 
 footer {
 	margin: 2rem 0 0 0;
 	text-align: center;
+	background-color: transparent;
 }
 
 @media (min-width: 54em) {
@@ -101,21 +105,26 @@ footer {
 	}
 }
 
-nav {
-	border-bottom: 1px solid;
+@media (min-width: 62em) {
+	.bg-article {
+		position: absolute;
+		display: none;
+		background-color: transparent;
+		width: 60em;
+		height: 0;
+		left: 50%;
+		margin-top: 115px;
+		margin-left: -30em;
+		border: none;
+		-webkit-box-shadow: 0px 0px 04px 0px rgba(0,0,0,0.33);
+		-moz-box-shadow: 0px 0px 04px 0px rgba(0,0,0,0.33);
+		box-shadow: 0px 0px 04px 0px rgba(0,0,0,0.33);
+		z-index: -11000;
+	}
 }
 
-.navbar {
-	padding: 0.5rem 0;
-}
-
-.no-gutters {
-	margin-right: 0;
-	margin-left: 0;
-	> .col, > [class*="col-"]
-
-{
-	padding-right: 0;
-	padding-left: 0;
-}
+@media (max-width: 62em) {
+	.bg-article {
+		display: none;
+	}
 }
